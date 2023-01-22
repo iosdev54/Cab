@@ -18,27 +18,35 @@ extension UIColor {
 
 extension UIView {
     
-    func inputContainerView(image: UIImage, textField: UITextField) -> UIView {
+    func inputContainerView(image: UIImage, textField: UITextField? = nil, segmentedControl: UISegmentedControl? = nil) -> UIView {
         let view = UIView()
         let imageView = UIImageView()
         imageView.image = image
         imageView.alpha = 0.87
         
         view.addSubview(imageView)
-        imageView.centerY(inView: view)
-        imageView.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
         
-        view.addSubview(textField)
-        textField.centerY(inView: view)
-        textField.anchor(left: imageView.rightAnchor, right: view.rightAnchor, paddingLeft: 8)
+        if let textField = textField {
+            view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            imageView.centerY(inView: view)
+            imageView.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
+            view.addSubview(textField)
+            textField.centerY(inView: view)
+            textField.anchor(left: imageView.rightAnchor, right: view.rightAnchor, paddingLeft: 8)
+        }
+        if let segmentedControl = segmentedControl {
+            view.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, paddingTop: -8, paddingLeft: 8, width: 24, height: 24)
+            view.addSubview(segmentedControl)
+            segmentedControl.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 8, paddingRight: 8)
+            segmentedControl.centerY(inView: view, constants: 8)
+        }
         
         let separatorView = UIView()
         separatorView.backgroundColor = .lightGray
         
         view.addSubview(separatorView)
         separatorView.anchor(left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, paddingLeft: 8, height: 0.75)
-        
-        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         return view
     }
@@ -81,8 +89,8 @@ extension UIView {
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    func centerY(inView view: UIView) {
-        centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    func centerY(inView view: UIView, constants: CGFloat = 0) {
+        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constants).isActive = true
     }
     
 }
@@ -98,7 +106,23 @@ extension UITextField {
         tf.keyboardAppearance = .dark
         tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor : UIColor.lightGray])
         tf.isSecureTextEntry = isSecureTextEntry
-        
         return tf
     }
 }
+
+//extension UIButton {
+//
+//    func button(title: String) -> UIButton {
+//        let button = UIButton(type: .system)
+//        button.setTitle(title, for: .normal)
+//        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
+//        button.backgroundColor = .mainBlueTint
+//        button.layer.cornerRadius = 5
+//        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+//        return button
+//    }
+//
+//
+//
+//}

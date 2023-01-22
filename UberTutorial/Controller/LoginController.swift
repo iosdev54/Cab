@@ -36,13 +36,9 @@ class LoginController: UIViewController {
         return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: true)
     }()
     
-    private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
+    private lazy var loginButton: AuthButton = {
+        let button = AuthButton(type: .system)
         button.setTitle("Log In", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
-        button.backgroundColor = .mainBlueTint
-        button.layer.cornerRadius = 5
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         return button
     }()
@@ -50,7 +46,7 @@ class LoginController: UIViewController {
     private lazy var dontHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let attributedTitle = NSMutableAttributedString(string: "Don't have an account ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray])
+        let attributedTitle = NSMutableAttributedString(string: "Don't have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray])
         attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainBlueTint]))
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
         button.setAttributedTitle(attributedTitle, for: .normal)
@@ -83,8 +79,6 @@ class LoginController: UIViewController {
     }
     
     //MARK: - Helper Functions
-    
-    
     private func configureUI() {
         view.backgroundColor = .backgroundColor
         

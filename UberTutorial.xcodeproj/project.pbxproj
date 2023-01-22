@@ -15,6 +15,7 @@
 		18207B97297AD336000E8EFC /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B96297AD336000E8EFC /* LoginController.swift */; };
 		18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B98297ADEB1000E8EFC /* Extensions.swift */; };
 		18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9A297C2598000E8EFC /* SignUpController.swift */; };
+		18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* AuthButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		18207B96297AD336000E8EFC /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		18207B98297ADEB1000E8EFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18207B9A297C2598000E8EFC /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 		18207B94297AD1D4000E8EFC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				18207B9C297C4A09000E8EFC /* AuthButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */,
+				18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */,
 				18207B97297AD336000E8EFC /* LoginController.swift in Sources */,
 				18207B7E297AD155000E8EFC /* AppDelegate.swift in Sources */,
 				18207B80297AD155000E8EFC /* SceneDelegate.swift in Sources */,
