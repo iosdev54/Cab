@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginController: UIViewController {
     
@@ -40,12 +41,12 @@ class LoginController: UIViewController {
         let button = AuthButton(type: .system)
         button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleLogIn), for: .touchUpInside)
         return button
     }()
     
     private lazy var dontHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray])
         attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainBlueTint]))
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
@@ -72,6 +73,22 @@ class LoginController: UIViewController {
     }
     
     //MARK: - Selectors
+    @objc private func handleLogIn() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("DEBUG: Failder to Log user In with \(error.localizedDescription)")
+                return
+            }
+//            print("Successfylly user Log In")
+            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
+            //Old record
+//            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeController else { return }
+            controller.configureUI()
+            self.dismiss(animated: true)
+        }
+    }
+    
     @objc private func handleShowSignUp() {
         
         let controller = SignUpController()
