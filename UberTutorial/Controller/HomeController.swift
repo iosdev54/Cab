@@ -9,19 +9,25 @@ import UIKit
 import FirebaseAuth
 import MapKit
 
+private let reuseIdentifier = "LocationCell"
+
 class HomeController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
     private let locationManager = CLLocationManager()
     private let inputActivationView = LocationInputActivationView()
+    private let locationInpitView = LocationInputView()
+    private let tableView = UITableView()
+    
+    private final let locationInputViewHeight: CGFloat = 200
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         chechIfUserIsLoggedIn()
-        //                signOut()
+        //                        signOut()
         enableLocationServices()
     }
     
@@ -58,6 +64,12 @@ class HomeController: UIViewController {
         inputActivationView.centerX(inView: view)
         inputActivationView.setDimensions(height: 50, width: view.frame.width - 64)
         inputActivationView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 32)
+        inputActivationView.alpha = 0
+        inputActivationView.delegate = self
+        UIView.animate(withDuration: 2) {
+            self.inputActivationView.alpha = 1
+        }
+        configureTableView()
     }
     
     private func configureMapView() {
@@ -68,15 +80,41 @@ class HomeController: UIViewController {
         mapView.userTrackingMode = .follow
     }
     
+    private func configureLocationInputView() {
+        locationInpitView.delegate = self
+        view.addSubview(locationInpitView)
+        locationInpitView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: locationInputViewHeight)
+        locationInpitView.alpha = 0
+        UIView.animate(withDuration: 0.5) {
+            self.locationInpitView.alpha = 1
+        } completion: { _ in
+//            print("DEBUG: Present table view")
+            UIView.animate(withDuration: 0.3) {
+                self.tableView.frame.origin.y = self.locationInputViewHeight
+            }
+
+        }
+    }
+    
+    private func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = 60
+        let height = view.frame.height - locationInputViewHeight
+        tableView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: height)
+        view.addSubview(tableView)
+    }
+    
 }
 
 //MARK: - Location Services
-
 extension HomeController: CLLocationManagerDelegate {
     
     private func enableLocationServices() {
         
         locationManager.delegate = self
+        
         
         switch CLLocationManager().authorizationStatus {
             
@@ -106,3 +144,44 @@ extension HomeController: CLLocationManagerDelegate {
     
 }
 
+//MARK: - LocationInputActivationViewDelegate
+extension HomeController: LocationInputActivationViewDelegate {
+    
+    func presentLocationInputView() {
+        inputActivationView.alpha = 0
+        configureLocationInputView()
+    }
+    
+}
+
+//MARK: - LocationInputViewDelegate
+extension HomeController: LocationInputViewDelegate {
+    func dismissLocationInputView() {
+        UIView.animate(withDuration: 0.3) {
+            self.locationInpitView.alpha = 0
+            self.tableView.frame.origin.y = self.view.frame.height
+        } completion: { _ in
+            self.locationInpitView.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                self.inputActivationView.alpha = 1
+            }
+        }
+    }
+    
+}
+
+//MARK: - UITableViewDelegate, UITableViewDataSource
+extension HomeController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
+        
+        return cell
+    }
+    
+}

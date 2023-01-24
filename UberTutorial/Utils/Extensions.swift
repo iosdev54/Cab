@@ -86,10 +86,12 @@ extension UIView {
     }
     
     func centerX(inView view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat = 0, constants: CGFloat = 0) {
+        translatesAutoresizingMaskIntoConstraints = false
         centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constants).isActive = true
         if let left = leftAnchor {
             anchor(left: left, paddingLeft: paddingLeft)
@@ -100,6 +102,13 @@ extension UIView {
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    func addShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.55
+        layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
+        layer.masksToBounds = false
     }
     
 }
@@ -118,20 +127,3 @@ extension UITextField {
         return tf
     }
 }
-
-//extension UIButton {
-//
-//    func button(title: String) -> UIButton {
-//        let button = UIButton(type: .system)
-//        button.setTitle(title, for: .normal)
-//        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
-//        button.backgroundColor = .mainBlueTint
-//        button.layer.cornerRadius = 5
-//        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-//        return button
-//    }
-//
-//
-//
-//}
