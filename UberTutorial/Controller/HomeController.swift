@@ -19,9 +19,12 @@ class HomeController: UIViewController {
     private let inputActivationView = LocationInputActivationView()
     private let locationInpitView = LocationInputView()
     private let tableView = UITableView()
+    private var user: User? {
+        didSet { locationInpitView.user = user }
+    }
     
     private final let locationInputViewHeight: CGFloat = 200
-    
+     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +32,16 @@ class HomeController: UIViewController {
         chechIfUserIsLoggedIn()
         //                        signOut()
         enableLocationServices()
+        fetchUserData()
     }
     
     //MARK: - API
+    private func fetchUserData() {
+        Service.shared.fetchUserData { user in
+            self.user = user
+        }
+    }
+    
     private func chechIfUserIsLoggedIn() {
         
         if Auth.auth().currentUser?.uid == nil {
@@ -88,11 +98,11 @@ class HomeController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.locationInpitView.alpha = 1
         } completion: { _ in
-//            print("DEBUG: Present table view")
+            //            print("DEBUG: Present table view")
             UIView.animate(withDuration: 0.3) {
                 self.tableView.frame.origin.y = self.locationInputViewHeight
             }
-
+            
         }
     }
     
@@ -101,6 +111,7 @@ class HomeController: UIViewController {
         tableView.dataSource = self
         tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
+        //        tableView.sectionHeaderTopPadding = 0
         let height = view.frame.height - locationInputViewHeight
         tableView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: height)
         view.addSubview(tableView)
@@ -173,12 +184,31 @@ extension HomeController: LocationInputViewDelegate {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension HomeController: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return section == 0 ? 2 : 5
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Test"
+    }
+    
+    //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //        let headerView = UIView()
+    //        headerView.backgroundColor = .systemGroupedBackground
+    //        let headerTitle = UILabel()
+    //        headerTitle.text = "Test"
+    //        headerTitle.font = UIFont.boldSystemFont(ofSize: 14)
+    //        headerTitle.textAlignment = .left
+    //        headerView.addSubview(headerTitle)
+    //        headerTitle.centerY(inView: headerView, leftAnchor: headerView.leftAnchor, paddingLeft: 20, rightAnchor: headerView.rightAnchor, paddingRight: 20)
+    //        return headerView
+    //    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
         
         return cell

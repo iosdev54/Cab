@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import GeoFire
  
 class SignUpController: UIViewController {
     

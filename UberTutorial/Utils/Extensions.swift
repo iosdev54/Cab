@@ -90,11 +90,14 @@ extension UIView {
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat = 0, constants: CGFloat = 0) {
+    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat = 0, rightAnchor: NSLayoutXAxisAnchor? = nil, paddingRight: CGFloat = 0, constants: CGFloat = 0) {
         translatesAutoresizingMaskIntoConstraints = false
         centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constants).isActive = true
         if let left = leftAnchor {
             anchor(left: left, paddingLeft: paddingLeft)
+        }
+        if let right = rightAnchor {
+            anchor(right: right, paddingRight: paddingRight)
         }
     }
     
