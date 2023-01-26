@@ -80,11 +80,11 @@ class LoginController: UIViewController {
                 print("DEBUG: Failder to Log user In with \(error.localizedDescription)")
                 return
             }
-//            print("Successfylly user Log In")
+            //            print("Successfylly user Log In")
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
             //Old record
-//            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeController else { return }
-            controller.configureUI()
+            //            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeController else { return }
+            controller.configure()
             self.dismiss(animated: true)
         }
     }

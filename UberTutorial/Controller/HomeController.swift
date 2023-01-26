@@ -10,12 +10,14 @@ import FirebaseAuth
 import MapKit
 
 private let reuseIdentifier = "LocationCell"
+private let annotationIdentifier = "DriverAnnotation"
 
 class HomeController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationHandler.shared.locationManager
+    
     private let inputActivationView = LocationInputActivationView()
     private let locationInpitView = LocationInputView()
     private let tableView = UITableView()
@@ -24,22 +26,51 @@ class HomeController: UIViewController {
     }
     
     private final let locationInputViewHeight: CGFloat = 200
-     
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         chechIfUserIsLoggedIn()
-        //                        signOut()
         enableLocationServices()
-        fetchUserData()
+        
+        //        signOut()
     }
     
     //MARK: - API
     private func fetchUserData() {
-        Service.shared.fetchUserData { user in
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        Service.shared.fetchUserData(uid: currentUid) { user in
             self.user = user
         }
+    }
+    
+    private func fetchDrivers() {
+        DispatchQueue.main.async {
+            guard let location = self.locationManager?.location else { return }
+            //            print("DEBUG: Location is \(location)")
+            Service.shared.fechhDrivers(location: location) { driver in
+                guard let coordinate = driver.location?.coordinate else { return }
+                //                print("DEBUG: Driver coorditate is \(coordinate)")
+                let annotation = DriverAnnotation(coordinate: coordinate, uid: driver.uid)
+                
+                var driverIsVisible: Bool {
+                    return self.mapView.annotations.contains { annotation in
+                        guard let driverAnnotation = annotation as? DriverAnnotation else { return false }
+                        if driverAnnotation.uid == driver.uid {
+                            //                            print("DEBUG: Handle update driver position")
+                            driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                            return true
+                        }
+                        return false
+                    }
+                }
+                if !driverIsVisible {
+                    self.mapView.addAnnotation(annotation)
+                }
+            }
+        }
+        
     }
     
     private func chechIfUserIsLoggedIn() {
@@ -52,7 +83,7 @@ class HomeController: UIViewController {
             }
             return
         } else {
-            configureUI()
+            configure()
             //        print("User is logged in")
             //        print("User id is \(uid)")
         }
@@ -61,12 +92,22 @@ class HomeController: UIViewController {
     private func signOut() {
         do {
             try Auth.auth().signOut()
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                self.present(nav, animated: true)
+            }
         } catch {
             print("DEBUG: Error signing out")
         }
     }
     
     //MARK: - Helper Functions
+    func configure() {
+        configureUI()
+        fetchUserData()
+        fetchDrivers()
+    }
+    
     func configureUI() {
         configureMapView()
         
@@ -88,6 +129,7 @@ class HomeController: UIViewController {
         
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        mapView.delegate = self
     }
     
     private func configureLocationInputView() {
@@ -102,7 +144,6 @@ class HomeController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.tableView.frame.origin.y = self.locationInputViewHeight
             }
-            
         }
     }
     
@@ -119,37 +160,40 @@ class HomeController: UIViewController {
     
 }
 
+//MARK: - MKMapViewDelegate
+extension HomeController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation {
+            let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+            view.image = UIImage(named: "chevron-sign-to-right")
+            return view
+        }
+        return nil
+    }
+    
+}
+
 //MARK: - Location Services
-extension HomeController: CLLocationManagerDelegate {
+extension HomeController {
     
     private func enableLocationServices() {
         
-        locationManager.delegate = self
-        
-        
         switch CLLocationManager().authorizationStatus {
-            
         case .notDetermined:
             print("DEBUG: Not deterined")
-            locationManager.requestWhenInUseAuthorization()
+            locationManager?.requestWhenInUseAuthorization()
         case .restricted, .denied:
             break
         case .authorizedAlways:
             print("DEBUG: Auth always")
-            locationManager.startUpdatingLocation()
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager?.startUpdatingLocation()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         case .authorizedWhenInUse:
             print("DEBUG: Auth when in use")
-            locationManager.requestAlwaysAuthorization()
+            locationManager?.requestAlwaysAuthorization()
         @unknown default:
             break
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        if status == .authorizedWhenInUse {
-            locationManager.requestAlwaysAuthorization()
         }
     }
     

@@ -9,10 +9,12 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import GeoFire
- 
+
 class SignUpController: UIViewController {
     
     //MARK: - Properties
+    private var location = LocationHandler.shared.locationManager.location
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "UBER"
@@ -106,14 +108,16 @@ class SignUpController: UIViewController {
                           "fullname": fullname,
                           "accountType": accountTypeIndex]
             
-            Database.database().reference().child("users").child(uid).updateChildValues(values) { error, ref in
-//                print("Successfully register user and saved data")
-                guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
-                controller.configureUI()
-                self.dismiss(animated: true)
+            if accountTypeIndex == 1 {
+                let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+                guard let location = self.location else { return }
+                geofire.setLocation(location, forKey: uid) { error in
+                    self.uploadUserDataAndShowHomeController(uid: uid, values: values)
+                }
             }
+            
+            self.uploadUserDataAndShowHomeController(uid: uid, values: values)
         }
-        
     }
     
     @objc private func handleShowLogIn() {
@@ -121,6 +125,15 @@ class SignUpController: UIViewController {
     }
     
     //MARK: - Helper Functions
+    
+    private func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
+        REF_USERS.child(uid).updateChildValues(values) { error, ref in
+            //                print("Successfully register user and saved data")
+            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
+            controller.configure()
+            self.dismiss(animated: true)
+        }
+    }
     
     private func configureUI() {
         configureNavBar()

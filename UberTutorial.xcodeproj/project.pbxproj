@@ -18,11 +18,13 @@
 		18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* AuthButton.swift */; };
 		18207B9F297D4C19000E8EFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */; };
 		1829534D29814C46007BB880 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1829534C29814C46007BB880 /* User.swift */; };
+		183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F92C92982971500CF05FC /* DriverAnnotation.swift */; };
 		18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18727E05297EB7D40047811B /* LocationInputActivationView.swift */; };
 		18727E0A297ECE840047811B /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18727E09297ECE840047811B /* LocationInputView.swift */; };
 		18886DB1297FFDA4009DF710 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18886DB0297FFDA4009DF710 /* LocationCell.swift */; };
 		18886DB3298028B5009DF710 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18886DB2298028B5009DF710 /* Service.swift */; };
 		18B44071297D8C5100739E91 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B44070297D8C5100739E91 /* HomeController.swift */; };
+		18B97A4D298165740080B104 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B97A4C298165740080B104 /* LocationHandler.swift */; };
 		21F0896842EDFED9AFA9541E /* Pods_UberTutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD85AE6646A0BC1EB877F3C /* Pods_UberTutorial.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,11 +42,13 @@
 		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1829534C29814C46007BB880 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		183F92C92982971500CF05FC /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		18727E05297EB7D40047811B /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		18727E09297ECE840047811B /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
 		18886DB0297FFDA4009DF710 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		18886DB2298028B5009DF710 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		18B44070297D8C5100739E91 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		18B97A4C298165740080B104 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		3592DD44CC3A90CEE626E61E /* Pods-UberTutorial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberTutorial.debug.xcconfig"; path = "Target Support Files/Pods-UberTutorial/Pods-UberTutorial.debug.xcconfig"; sourceTree = "<group>"; };
 		8FD85AE6646A0BC1EB877F3C /* Pods_UberTutorial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UberTutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B23F28A1CD35E0A9E024E710 /* Pods-UberTutorial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberTutorial.release.xcconfig"; path = "Target Support Files/Pods-UberTutorial/Pods-UberTutorial.release.xcconfig"; sourceTree = "<group>"; };
@@ -103,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				18207B98297ADEB1000E8EFC /* Extensions.swift */,
+				18B97A4C298165740080B104 /* LocationHandler.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -140,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				1829534C29814C46007BB880 /* User.swift */,
+				183F92C92982971500CF05FC /* DriverAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,9 +287,11 @@
 				18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */,
 				18B44071297D8C5100739E91 /* HomeController.swift in Sources */,
 				18727E0A297ECE840047811B /* LocationInputView.swift in Sources */,
+				183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */,
 				18207B97297AD336000E8EFC /* LoginController.swift in Sources */,
 				18207B7E297AD155000E8EFC /* AppDelegate.swift in Sources */,
 				18207B80297AD155000E8EFC /* SceneDelegate.swift in Sources */,
+				18B97A4D298165740080B104 /* LocationHandler.swift in Sources */,
 				18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */,
 				1829534D29814C46007BB880 /* User.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
