@@ -32,6 +32,7 @@ class HomeController: UIViewController {
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
     private final let locationInputViewHeight: CGFloat = 200
+    private var route: MKRoute?
     
     private var user: User? {
         didSet { locationInpitView.user = user }
@@ -62,12 +63,12 @@ class HomeController: UIViewController {
         case .showMenu:
             print("Handle show menu...")
         case .dismissActionView:
-            print("Handle dismissal")
-            actionButton.setImage(UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal )
+            removeAnnotationsAndOverlays()
+            mapView.showAnnotations(mapView.annotations, animated: true)
             UIView.animate(withDuration: 0.5) {
                 self.inputActivationView.alpha = 1
+                self.configureActionButton(config: .showMenu)
             }
-            actionButtonConfig = .showMenu
         }
     }
     
@@ -136,13 +137,24 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Helper Functions
+    private func configureActionButton(config: ActionButonConfiguration) {
+        switch config {
+        case .showMenu:
+            actionButton.setImage(UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            actionButtonConfig = .showMenu
+        case .dismissActionView:
+            actionButton.setImage(UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            actionButtonConfig = .dismissActionView
+        }
+    }
+    
     func configure() {
         configureUI()
         fetchUserData()
         fetchDrivers()
     }
     
-    func configureUI() {
+    private func configureUI() {
         configureMapView()
         
         view.addSubview(actionButton)
@@ -205,7 +217,7 @@ class HomeController: UIViewController {
     
 }
 
-//MARK: - Map Helper Functions
+//MARK: - MapView Helper Functions
 private extension HomeController {
     func searchBy(naturalLanguageQuery: String, completion: @escaping ([MKPlacemark]) -> Void) {
         var results = [MKPlacemark]()
@@ -222,6 +234,34 @@ private extension HomeController {
             completion(results)
         }
     }
+    
+    func generatePolyline(toDestination destination: MKMapItem) {
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = destination
+        request.transportType = .automobile
+        let directionRequest = MKDirections(request: request)
+        directionRequest.calculate { responce, error in
+            guard let responce = responce else { return }
+            self.route = responce.routes.first
+            guard let polyline = self.route?.polyline else { return }
+            self.mapView.addOverlay(polyline)
+        }
+    }
+    
+    func removeAnnotationsAndOverlays() {
+        
+        mapView.annotations.forEach { annotation in
+            if let anno = annotation as? MKPointAnnotation {
+                mapView.removeAnnotation(anno)
+            }
+        }
+        if mapView.overlays.count > 0 {
+            mapView.overlays.forEach { overlay in
+                mapView.removeOverlay(overlay)
+            }
+        }
+    }
 }
 
 //MARK: - MKMapViewDelegate
@@ -234,6 +274,17 @@ extension HomeController: MKMapViewDelegate {
             return view
         }
         return nil
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let route = route {
+            let polyline = route.polyline
+            let lineRenderer = MKPolylineRenderer(polyline: polyline)
+            lineRenderer.strokeColor = .mainBlueTint
+            lineRenderer.lineWidth = 4
+            return lineRenderer
+        }
+        return MKOverlayRenderer()
     }
     
 }
@@ -286,7 +337,7 @@ extension HomeController: LocationInputViewDelegate {
     
     func executeSearch(query: String) {
         searchBy(naturalLanguageQuery: query) { results in
-//            print("DEBUG: Placemark is \(results) ")
+            //            print("DEBUG: Placemark is \(results) ")
             self.searchResults = results
             self.tableView.reloadData()
         }
@@ -331,19 +382,24 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPlacemark = self.searchResults[indexPath.row]
         
-        actionButton.setImage(UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        actionButtonConfig = .dismissActionView
+        configureActionButton(config: .dismissActionView)
+        
+        let destination = MKMapItem(placemark: selectedPlacemark)
+        generatePolyline(toDestination: destination)
         
         dissmissLocationView { _ in
-//            print("DEBUG: Add annotation here..")
-            let selectedPlacemark = self.searchResults[indexPath.row]
+            //            print("DEBUG: Add annotation here..")
             let annotation = MKPointAnnotation()
             annotation.coordinate = selectedPlacemark.coordinate
             annotation.title = selectedPlacemark.name
             self.mapView.addAnnotation(annotation)
             self.mapView.selectAnnotation(annotation, animated: true)
+            
+            let annotations = self.mapView.annotations.filter { !($0.isKind(of: DriverAnnotation.self)) }
+            self.mapView.showAnnotations(annotations, animated: true)
+            //            print("DEBUG: Annotation is \(annotations)")
         }
     }
-    
 }
