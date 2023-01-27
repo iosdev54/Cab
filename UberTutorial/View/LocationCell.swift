@@ -6,27 +6,30 @@
 //
 
 import UIKit
+import MapKit
 
 class LocationCell: UITableViewCell {
     
     //MARK: - Properties
-    private let titleLabel: UILabel = {
+    var placemark: MKPlacemark? {
+        didSet {
+            titleLabel.text = placemark?.name
+            addressLabel.text = placemark?.address
+        }
+    }
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "123 Main Street"
         return label
     }()
-    
-    private let addressLabel: UILabel = {
+    let addressLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "123 Main Street, Washington, DC"
         return label
     }()
     
     //MARK: - Lifececle
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         

@@ -21,6 +21,7 @@ class HomeController: UIViewController {
     private let inputActivationView = LocationInputActivationView()
     private let locationInpitView = LocationInputView()
     private let tableView = UITableView()
+    private var searchResults = [MKPlacemark]()
     private var user: User? {
         didSet { locationInpitView.user = user }
     }
@@ -158,6 +159,36 @@ class HomeController: UIViewController {
         view.addSubview(tableView)
     }
     
+    private func dissmissLocationView(completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.locationInpitView.alpha = 0
+            self.tableView.frame.origin.y = self.view.frame.height
+            self.locationInpitView.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                self.inputActivationView.alpha = 1
+            }
+        }, completion: completion)
+    }
+    
+}
+
+//MARK: - Map Helper Functions
+private extension HomeController {
+    func searchBy(naturalLanguageQuery: String, completion: @escaping ([MKPlacemark]) -> Void) {
+        var results = [MKPlacemark]()
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguageQuery
+        
+        let search = MKLocalSearch(request: request)
+        search.start { responce, error in
+            guard let responce = responce else { return }
+            responce.mapItems.forEach { item in
+                results.append(item.placemark)
+            }
+            completion(results)
+        }
+    }
 }
 
 //MARK: - MKMapViewDelegate
@@ -211,15 +242,16 @@ extension HomeController: LocationInputActivationViewDelegate {
 
 //MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
+    
     func dismissLocationInputView() {
-        UIView.animate(withDuration: 0.3) {
-            self.locationInpitView.alpha = 0
-            self.tableView.frame.origin.y = self.view.frame.height
-        } completion: { _ in
-            self.locationInpitView.removeFromSuperview()
-            UIView.animate(withDuration: 0.5) {
-                self.inputActivationView.alpha = 1
-            }
+        dissmissLocationView()
+    }
+    
+    func executeSearch(query: String) {
+        searchBy(naturalLanguageQuery: query) { results in
+//            print("DEBUG: Placemark is \(results) ")
+            self.searchResults = results
+            self.tableView.reloadData()
         }
     }
     
@@ -233,7 +265,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 5
+        return section == 0 ? 2 : searchResults.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -255,7 +287,23 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
         
+        if indexPath.section == 1 {
+            cell.placemark = searchResults[indexPath.row]
+        }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dissmissLocationView { _ in
+//            print("DEBUG: Add annotation here..")
+            let selectedPlacemark = self.searchResults[indexPath.row]
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = selectedPlacemark.coordinate
+            annotation.title = selectedPlacemark.name
+            self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(annotation, animated: true)
+        }
+        
     }
     
 }
