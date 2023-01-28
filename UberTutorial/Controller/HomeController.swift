@@ -32,6 +32,8 @@ class HomeController: UIViewController {
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
     private final let locationInputViewHeight: CGFloat = 200
+    private final let rideActionViewHeight: CGFloat = 300
+    
     private var route: MKRoute?
     
     private var user: User? {
@@ -68,6 +70,7 @@ class HomeController: UIViewController {
             UIView.animate(withDuration: 0.5) {
                 self.inputActivationView.alpha = 1
                 self.configureActionButton(config: .showMenu)
+                self.animateRideActionView(shouldShow: false)
             }
         }
     }
@@ -198,9 +201,8 @@ class HomeController: UIViewController {
     }
     
     private func configureRideActionView() {
-        
         view.addSubview(rideActionView)
-        rideActionView.frame = CGRect(x: 0, y: view.frame.height - 300, width: view.frame.width, height: 300)
+        rideActionView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: rideActionViewHeight)
     }
     
     private func configureTableView() {
@@ -220,6 +222,17 @@ class HomeController: UIViewController {
             self.tableView.frame.origin.y = self.view.frame.height
             self.locationInpitView.removeFromSuperview()
         }, completion: completion)
+    }
+    
+    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
+        let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
+        if shouldShow {
+            guard let destination = destination else { return }
+            rideActionView.destination = destination
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.rideActionView.frame.origin.y = yOrigin
+        }
     }
     
 }
@@ -405,8 +418,11 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.selectAnnotation(annotation, animated: true)
             
             let annotations = self.mapView.annotations.filter { !($0.isKind(of: DriverAnnotation.self)) }
-            self.mapView.showAnnotations(annotations, animated: true)
+//            self.mapView.showAnnotations(annotations, animated: true)
+            self.mapView.zoomToFit(annotations: annotations)
             //            print("DEBUG: Annotation is \(annotations)")
+            
+            self.animateRideActionView(shouldShow: true, destination: selectedPlacemark)
         }
     }
 }
