@@ -8,6 +8,10 @@
 import UIKit
 import MapKit
 
+protocol RideActionViewDelegate: AnyObject {
+    func uploadTrip(_ view: RideActionView)
+}
+
 class RideActionView: UIView {
     
     //MARK: - Properties
@@ -17,6 +21,9 @@ class RideActionView: UIView {
             addressLabel.text = destination?.address
         }
     }
+    
+    weak var delegate: RideActionViewDelegate?
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
@@ -106,7 +113,7 @@ class RideActionView: UIView {
     
     //MARK: - Selectors
     @objc private func actionButtonPressed() {
-        print("DEBUG: 123")
+        delegate?.uploadTrip(self)
     }
     
 }
