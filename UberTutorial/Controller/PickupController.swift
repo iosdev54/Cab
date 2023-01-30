@@ -8,11 +8,16 @@
 import UIKit
 import MapKit
 
+protocol PickupControllerDelegate: AnyObject {
+    func didAcceptTrip(_ trip: Trip)
+}
+
 class PickupController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
     let trip: Trip
+    weak var delegate: PickupControllerDelegate?
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
@@ -38,7 +43,6 @@ class PickupController: UIViewController {
         return button
     }()
     
-    
     init(trip: Trip) {
         self.trip = trip
         super.init(nibName: nil, bundle: nil)
@@ -54,6 +58,7 @@ class PickupController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        configureMapView()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -65,10 +70,14 @@ class PickupController: UIViewController {
         dismiss(animated: true)
     }
     @objc private func handleAcceptTrip() {
-        print("DEBUG: Accept trip here...")
+        Service.shared.acceptTrip(trip: trip) { err, reff in
+            self.delegate?.didAcceptTrip(self.trip)
+//            self.dismiss(animated: true)
+        }
     }
     
     //MARK: - API
+    
     
     //MARK: - Helper Functions
     private func configureUI() {
@@ -90,6 +99,22 @@ class PickupController: UIViewController {
         
         view.addSubview(acceptTripButton)
         acceptTripButton.anchor(top: pickupLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 32, paddingRight: 32, height: 50)
+    }
+    private func configureMapView() {
+        let region = MKCoordinateRegion(center: trip.pickupCoordinates, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        mapView.setRegion(region, animated: false)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = trip.pickupCoordinates
+        mapView.addAnnotation(annotation)
+        mapView.selectAnnotation(annotation, animated: true)
+        
+        //Second way
+        //        let annotation = MKPointAnnotation()
+        //        annotation.coordinate = trip.pickupCoordinates
+        //        mapView.addAnnotation(annotation)
+        //        mapView.selectAnnotation(annotation, animated: true)
+        //        mapView.showAnnotations([annotation], animated: true)
     }
     
 }

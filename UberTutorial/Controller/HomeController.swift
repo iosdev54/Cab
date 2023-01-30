@@ -42,6 +42,7 @@ class HomeController: UIViewController {
             if user?.accountType == .passenger {
                 fetchDrivers()
                 configureInputActivationView()
+                observeCurentTrip()
             } else {
                 observeTrips()
             }
@@ -51,10 +52,16 @@ class HomeController: UIViewController {
     private var trip: Trip? {
         didSet {
 //            print("DEBUG: Show pickup passenger controller")
-            guard let trip = trip else { return }
-            let controller = PickupController(trip: trip)
-            controller.modalPresentationStyle = .fullScreen
-            self.present(controller, animated: true)
+            guard let user = user else { return }
+            if user.accountType == .driver {
+                guard let trip = trip else { return }
+                let controller = PickupController(trip: trip)
+                controller.delegate = self
+                controller.modalPresentationStyle = .fullScreen
+                self.present(controller, animated: true)
+            } else {
+                print("DEBUG: Show ride action view for accepted trip...")
+            }
         }
     }
     
@@ -74,6 +81,13 @@ class HomeController: UIViewController {
         chechIfUserIsLoggedIn()
         enableLocationServices()
 //                signOut()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let trip = trip else { return }
+        print("DEBUG: Trip state is \(trip.state)")
     }
     
     //MARK: - Selectors
@@ -131,6 +145,16 @@ class HomeController: UIViewController {
     private func observeTrips() {
         Service.shared.observeTrip { trip in
             self.trip = trip
+        }
+    }
+    
+    private func observeCurentTrip() {
+        Service.shared.observeCurrentTrip { trip in
+            self.trip = trip
+            if trip.state == .accepted {
+//                print("DEBUG: Trip was accepted...")
+                self.shouldPresentLoadingView(false)
+            }
         }
     }
     
@@ -462,13 +486,29 @@ extension HomeController: RideActionViewDelegate {
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager?.location?.coordinate else { return }
         guard let destinationCoordinates = view.destination?.coordinate else { return }
+        
+        shouldPresentLoadingView(true, message: "Finding you a ride...")
+        
         Service.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { err, feff in
             if let error = err {
                 print("DEBUG: Failed to upload trip with error \(error)")
                 return
             }
-            print("DEBUG: Did uploar trip successfully")
+//            print("DEBUG: Did uploar trip successfully")
+            UIView.animate(withDuration: 0.3) {
+                self.rideActionView.frame.origin.y = self.view.frame.height
+            }
+            
         }
     }
 
+}
+
+//MARK: - PickupControllerDelegate
+extension HomeController: PickupControllerDelegate {
+    func didAcceptTrip(_ trip: Trip) {
+        self.trip?.state = .accepted
+        dismiss(animated: true)
+    }
+    
 }
