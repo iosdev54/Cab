@@ -42,7 +42,19 @@ class HomeController: UIViewController {
             if user?.accountType == .passenger {
                 fetchDrivers()
                 configureInputActivationView()
+            } else {
+                observeTrips()
             }
+        }
+    }
+    
+    private var trip: Trip? {
+        didSet {
+//            print("DEBUG: Show pickup passenger controller")
+            guard let trip = trip else { return }
+            let controller = PickupController(trip: trip)
+            controller.modalPresentationStyle = .fullScreen
+            self.present(controller, animated: true)
         }
     }
     
@@ -61,8 +73,7 @@ class HomeController: UIViewController {
         
         chechIfUserIsLoggedIn()
         enableLocationServices()
-        
-                signOut()
+//                signOut()
     }
     
     //MARK: - Selectors
@@ -117,12 +128,20 @@ class HomeController: UIViewController {
         
     }
     
+    private func observeTrips() {
+        Service.shared.observeTrip { trip in
+            self.trip = trip
+        }
+    }
+    
     private func chechIfUserIsLoggedIn() {
         
         if Auth.auth().currentUser?.uid == nil {
             //            print("Debug: User not logged in")
             DispatchQueue.main.async {
                 let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                nav.modalTransitionStyle = .crossDissolve
                 self.present(nav, animated: true)
             }
             return
@@ -138,6 +157,8 @@ class HomeController: UIViewController {
             try Auth.auth().signOut()
             DispatchQueue.main.async {
                 let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                nav.modalTransitionStyle = .crossDissolve
                 self.present(nav, animated: true)
             }
         } catch {
