@@ -173,19 +173,19 @@ extension UIViewController {
             let indicator = UIActivityIndicatorView()
             indicator.style = .large
             indicator.color = .white
-            indicator.center = view.center
+            indicator.center = loadingView.center
             
             let label = UILabel()
             label.text = message
+            label.textColor = UIColor(white: 1, alpha: 0.87)
             label.font = UIFont.systemFont(ofSize: 20)
             label.textAlignment = .center
-            label.textColor = .white
-            label.alpha = 0.87
             
+            loadingView.addSubview(indicator)
+            loadingView.addSubview(label)
             view.addSubview(loadingView)
-            view.addSubview(indicator)
-            view.addSubview(label)
-            label.centerX(inView: view)
+            
+            label.centerX(inView: loadingView)
             label.anchor(top: indicator.bottomAnchor, paddingTop: 32)
             
             indicator.startAnimating()

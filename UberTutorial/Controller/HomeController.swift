@@ -51,7 +51,7 @@ class HomeController: UIViewController {
     
     private var trip: Trip? {
         didSet {
-//            print("DEBUG: Show pickup passenger controller")
+            //            print("DEBUG: Show pickup passenger controller")
             guard let user = user else { return }
             if user.accountType == .driver {
                 guard let trip = trip else { return }
@@ -80,7 +80,7 @@ class HomeController: UIViewController {
         
         chechIfUserIsLoggedIn()
         enableLocationServices()
-//                signOut()
+        //                signOut()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -152,8 +152,13 @@ class HomeController: UIViewController {
         Service.shared.observeCurrentTrip { trip in
             self.trip = trip
             if trip.state == .accepted {
-//                print("DEBUG: Trip was accepted...")
+                //                                print("DEBUG: Trip was accepted...")
                 self.shouldPresentLoadingView(false)
+                
+                guard let driverUid = trip.driverUid else { return }
+                Service.shared.fetchUserData(uid: driverUid) { driver in
+                    self.animateRideActionView(shouldShow: true, config: .tripAccepted, user: driver)
+                }
             }
         }
     }
@@ -213,7 +218,7 @@ class HomeController: UIViewController {
         
         view.addSubview(actionButton)
         actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 20, width: 30, height: 30)
-
+        
         configureTableView()
     }
     
@@ -278,14 +283,23 @@ class HomeController: UIViewController {
         }, completion: completion)
     }
     
-    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
+    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
+                                       config: RideActionViewConfiguration? = nil, user: User? = nil) {
         let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
-        if shouldShow {
-            guard let destination = destination else { return }
-            rideActionView.destination = destination
-        }
+        
         UIView.animate(withDuration: 0.3) {
             self.rideActionView.frame.origin.y = yOrigin
+        }
+        
+        if shouldShow {
+            guard let config = config else { return }
+            if let destination = destination {
+                rideActionView.destination = destination
+            }
+            if let user = user {
+                rideActionView.user = user
+            }
+            rideActionView.configureUI(withConfig: config)
         }
     }
     
@@ -476,7 +490,7 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
             self.mapView.zoomToFit(annotations: annotations)
             //            print("DEBUG: Annotation is \(annotations)")
             
-            self.animateRideActionView(shouldShow: true, destination: selectedPlacemark)
+            self.animateRideActionView(shouldShow: true, destination: selectedPlacemark, config: .requestRide)
         }
     }
 }
@@ -494,21 +508,34 @@ extension HomeController: RideActionViewDelegate {
                 print("DEBUG: Failed to upload trip with error \(error)")
                 return
             }
-//            print("DEBUG: Did uploar trip successfully")
+            //            print("DEBUG: Did uploar trip successfully")
             UIView.animate(withDuration: 0.3) {
                 self.rideActionView.frame.origin.y = self.view.frame.height
             }
             
         }
     }
-
+    
 }
 
 //MARK: - PickupControllerDelegate
 extension HomeController: PickupControllerDelegate {
     func didAcceptTrip(_ trip: Trip) {
-        self.trip?.state = .accepted
-        dismiss(animated: true)
+        let anno = MKPointAnnotation()
+        anno.coordinate = trip.pickupCoordinates
+        mapView.addAnnotation(anno)
+        mapView.selectAnnotation(anno, animated: true)
+        
+        let placemark = MKPlacemark(coordinate: trip.pickupCoordinates)
+        let mapItem = MKMapItem(placemark: placemark)
+        
+        generatePolyline(toDestination: mapItem)
+        mapView.zoomToFit(annotations: mapView.annotations)
+        
+        dismiss(animated: true) {
+            Service.shared.fetchUserData(uid: trip.passengerUid) { passenger in
+                self.animateRideActionView(shouldShow: true, config: .tripAccepted, user: passenger)
+            }
+        }
     }
-    
 }

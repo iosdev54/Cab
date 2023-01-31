@@ -12,6 +12,40 @@ protocol RideActionViewDelegate: AnyObject {
     func uploadTrip(_ view: RideActionView)
 }
 
+enum RideActionViewConfiguration {
+    case requestRide
+    case tripAccepted
+    case pickupPassenger
+    case tripInProgress
+    case endTrip
+    
+    init() {
+        self = .requestRide
+    }
+}
+
+enum ButtonAction: CustomStringConvertible {
+    case requestRide
+    case cancel
+    case getDirections
+    case pickup
+    case dropOff
+    
+    var description: String {
+        switch self {
+        case .requestRide: return "CONFIRM UBERX"
+        case .cancel: return "CANCEL RIDE"
+        case .getDirections: return "GET DIRECTIONS"
+        case .pickup: return "PICKUP PASSENGER"
+        case .dropOff: return "DROP OFF PASSENGER"
+        }
+    }
+    
+    init() {
+        self = .requestRide
+    }
+}
+
 class RideActionView: UIView {
     
     //MARK: - Properties
@@ -21,8 +55,11 @@ class RideActionView: UIView {
             addressLabel.text = destination?.address
         }
     }
+    var config = RideActionViewConfiguration()
+    var buttonAction = ButtonAction()
     
     weak var delegate: RideActionViewDelegate?
+    var user: User?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -114,6 +151,32 @@ class RideActionView: UIView {
     //MARK: - Selectors
     @objc private func actionButtonPressed() {
         delegate?.uploadTrip(self)
+    }
+    
+    //MARK: - Helper functions
+    func configureUI(withConfig config: RideActionViewConfiguration) {
+        switch config {
+        case .requestRide:
+            buttonAction = .requestRide
+            actionButton.setTitle(buttonAction.description, for: .normal)
+        case .tripAccepted:
+            guard let user = user else { return }
+            if user.accountType == .passenger {
+                titleLabel.text = "En Route To Passenger"
+                buttonAction = .getDirections
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            } else {
+                titleLabel.text = "Driver En Route"
+                buttonAction = .cancel
+                actionButton.setTitle(buttonAction.description, for: .normal)
+            }
+        case .pickupPassenger:
+            break
+        case .tripInProgress:
+            break
+        case .endTrip:
+            break
+        }
     }
     
 }
