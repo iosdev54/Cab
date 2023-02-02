@@ -299,7 +299,7 @@ class HomeController: UIViewController {
             if let user = user {
                 rideActionView.user = user
             }
-            rideActionView.configureUI(withConfig: config)
+            rideActionView.config = config
         }
     }
     
@@ -307,6 +307,7 @@ class HomeController: UIViewController {
 
 //MARK: - MapView Helper Functions
 private extension HomeController {
+    
     func searchBy(naturalLanguageQuery: String, completion: @escaping ([MKPlacemark]) -> Void) {
         var results = [MKPlacemark]()
         let request = MKLocalSearch.Request()
@@ -356,10 +357,23 @@ private extension HomeController {
         let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
         mapView.setRegion(region, animated: true)
     }
+    
+    func setCustomRegion(withCoordinates coordinates: CLLocationCoordinate2D) {
+        
+        let region = CLCircularRegion(center: coordinates, radius: 25, identifier: "pickup")
+        locationManager?.startMonitoring(for: region)
+    }
 }
 
 //MARK: - MKMapViewDelegate
 extension HomeController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        guard let user = user else { return }
+        guard user.accountType == .driver else { return }
+        guard let location = userLocation.location else { return }
+        Service.shared.updateDriverLocation(location: location)
+    }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? DriverAnnotation {
@@ -383,11 +397,22 @@ extension HomeController: MKMapViewDelegate {
     
 }
 
-//MARK: - Location Services
-extension HomeController {
+//MARK: - CLLocationManagerDelegate
+extension HomeController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        print("DEBUG: Did start monitoring for region \(region)")
+    }
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("DEBUG: Driver did enter passenger region \(region)")
+        
+        rideActionView.config = .pickupPassenger
+    }
+    
+    
     
     private func enableLocationServices() {
-        
+        locationManager?.delegate = self
         switch CLLocationManager().authorizationStatus {
         case .notDetermined:
             print("DEBUG: Not deterined")
@@ -567,6 +592,7 @@ extension HomeController: PickupControllerDelegate {
         dismiss(animated: true) {
             Service.shared.fetchUserData(uid: trip.passengerUid) { passenger in
                 self.animateRideActionView(shouldShow: true, config: .tripAccepted, user: passenger)
+                self.setCustomRegion(withCoordinates: trip.pickupCoordinates)
             }
         }
     }
