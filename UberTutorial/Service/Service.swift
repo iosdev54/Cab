@@ -98,8 +98,8 @@ struct Service {
         geoire.setLocation(location, forKey: uid)
     }
     
-    func updateTripState(trip: Trip, state: TripState) {
-        REF_TRIPS.child(trip.passengerUid).child("state").setValue(state.rawValue)
+    func updateTripState(trip: Trip, state: TripState, completion: @escaping (Error?, DatabaseReference) -> Void) {
+        REF_TRIPS.child(trip.passengerUid).child("state").setValue(state.rawValue, withCompletionBlock: completion)
     }
     
 }
