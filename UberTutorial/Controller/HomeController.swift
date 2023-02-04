@@ -130,6 +130,7 @@ class HomeController: UIViewController {
             let mapItem = MKMapItem(placemark: placemark)
             self.setCustomRegion(withType: .destination, coordinates: trip.destinationCoordinates)
             self.generatePolyline(toDestination: mapItem)
+            self.mapView.zoomToFit(annotations: self.mapView.annotations)
             
         }
     }
@@ -192,14 +193,16 @@ class HomeController: UIViewController {
             case .arriveAtDestination:
                 self.rideActionView.config = .endTrip
             case .completed:
-                self.animateRideActionView(shouldShow: false)
-                self.removeAnnotationsAndOverlays()
-                self.centerMapOnUserLocation()
-                self.configureActionButton(config: .showMenu)
-                UIView.animate(withDuration: 0.5) {
-                    self.inputActivationView.alpha = 1
+                Service.shared.deleteTrip { err, ref in
+                    self.animateRideActionView(shouldShow: false)
+                    self.removeAnnotationsAndOverlays()
+                    self.centerMapOnUserLocation()
+                    self.configureActionButton(config: .showMenu)
+                    UIView.animate(withDuration: 0.5) {
+                        self.inputActivationView.alpha = 1
+                    }
+                    self.presentAlertController(withTitle: "Trip Completed", message: "We hope your enjoyed your trip")
                 }
-                self.presentAlertController(withTitle: "Trip Completed", message: "We hope your enjoyed your trip")
             }
         }
     }
@@ -605,22 +608,20 @@ extension HomeController: RideActionViewDelegate {
         
         shouldPresentLoadingView(true, message: "Finding you a ride...")
         
-        Service.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { err, feff in
+        Service.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { err, ref in
             if let error = err {
                 print("DEBUG: Failed to upload trip with error \(error)")
                 return
             }
-            //            print("DEBUG: Did uploar trip successfully")
+//            print("DEBUG: Did uploar trip successfully")
             UIView.animate(withDuration: 0.3) {
                 self.rideActionView.frame.origin.y = self.view.frame.height
             }
-            
         }
     }
     
     func cancelTrip() {
-        print("DEBUG: Handle cancel here...")
-        Service.shared.cancelTrip { error, ref in
+        Service.shared.deleteTrip { error, ref in
             if let error = error {
                 print("DEBUG: Error deleting trip \(error.localizedDescription)")
                 return
