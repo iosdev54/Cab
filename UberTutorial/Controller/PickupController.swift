@@ -70,7 +70,7 @@ class PickupController: UIViewController {
         dismiss(animated: true)
     }
     @objc private func handleAcceptTrip() {
-        Service.shared.acceptTrip(trip: trip) { err, reff in
+        DriverService.shared.acceptTrip(trip: trip) { err, reff in
             self.delegate?.didAcceptTrip(self.trip)
 //            self.dismiss(animated: true)
         }
