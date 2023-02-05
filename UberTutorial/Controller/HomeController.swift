@@ -26,6 +26,11 @@ private enum AnnotationType: String {
     case destination
 }
 
+protocol HomeControllerDelegate: AnyObject {
+    
+    func handleMenuToggle()
+}
+
 class HomeController: UIViewController {
     
     //MARK: - Properties
@@ -40,6 +45,8 @@ class HomeController: UIViewController {
     private final let rideActionViewHeight: CGFloat = 300
     
     private var route: MKRoute?
+    
+    weak var delegate: HomeControllerDelegate?
   
     private var user: User? {
         didSet {
@@ -99,7 +106,7 @@ class HomeController: UIViewController {
     @objc private func actionButtonPressed() {
         switch actionButtonConfig {
         case .showMenu:
-            print("Handle show menu...")
+            delegate?.handleMenuToggle()
         case .dismissActionView:
             removeAnnotationsAndOverlays()
             mapView.showAnnotations(mapView.annotations, animated: true)
