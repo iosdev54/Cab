@@ -35,6 +35,7 @@ class MenuHeader: UIView {
     //MARK: - Lifecycle
     init(user: User, frame: CGRect) {
         self.user = user
+
         super.init(frame: frame)
         
         backgroundColor = .backgroundColor

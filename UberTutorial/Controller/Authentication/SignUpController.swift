@@ -129,7 +129,7 @@ class SignUpController: UIViewController {
     private func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
         REF_USERS.child(uid).updateChildValues(values) { error, ref in
             //                print("Successfully register user and saved data")
-            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
+            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
         }

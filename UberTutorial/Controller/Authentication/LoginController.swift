@@ -81,9 +81,9 @@ class LoginController: UIViewController {
                 return
             }
             //            print("Successfylly user Log In")
-            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? HomeController else { return }
+            guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             //Old record
-            //            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? HomeController else { return }
+            //            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
         }

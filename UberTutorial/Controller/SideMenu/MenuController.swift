@@ -9,7 +9,7 @@ import UIKit
 
 private let reuseIdentifier = "MenuCell"
 
-private enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
+enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
     case yourTrips
     case settings
     case logout
@@ -23,6 +23,10 @@ private enum MenuOptions: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
+protocol MenuControllerDelegate: AnyObject {
+    func didSelect(option: MenuOptions)
+}
+
 class MenuController: UIViewController {
     
     //MARK: - Properties
@@ -34,6 +38,8 @@ class MenuController: UIViewController {
         let view = MenuHeader(user: user, frame: frame)
         return view
     }()
+    
+    weak var delegate: MenuControllerDelegate?
     
     //MARK: - Lyfecycle
     
@@ -69,6 +75,7 @@ class MenuController: UIViewController {
     }
 }
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension MenuController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,5 +87,10 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
         guard let option = MenuOptions(rawValue: indexPath.row) else { return UITableViewCell()}
         cell.textLabel?.text = option.description
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let option = MenuOptions(rawValue: indexPath.row) else { return }
+        delegate?.didSelect(option: option)
     }
 }

@@ -90,9 +90,8 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        chechIfUserIsLoggedIn()
+        configureUI()
         enableLocationServices()
-        //                signOut()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -215,39 +214,6 @@ class HomeController: UIViewController {
         }
     }
     
-    //MARK: - Shared API
-    private func chechIfUserIsLoggedIn() {
-        
-        if Auth.auth().currentUser?.uid == nil {
-            //            print("Debug: User not logged in")
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .crossDissolve
-                self.present(nav, animated: true)
-            }
-            return
-        } else {
-            configure()
-            //        print("User is logged in")
-            //        print("User id is \(uid)")
-        }
-    }
-    
-    private func signOut() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .crossDissolve
-                self.present(nav, animated: true)
-            }
-        } catch {
-            print("DEBUG: Error signing out")
-        }
-    }
-    
     //MARK: - Helper Functions
     private func configureActionButton(config: ActionButonConfiguration) {
         switch config {
@@ -258,10 +224,6 @@ class HomeController: UIViewController {
             actionButton.setImage(UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
             actionButtonConfig = .dismissActionView
         }
-    }
-    
-    func configure() {
-        configureUI()
     }
     
     private func configureUI() {
