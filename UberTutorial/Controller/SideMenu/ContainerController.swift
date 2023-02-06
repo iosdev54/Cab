@@ -6,24 +6,41 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ContainerController: UIViewController {
     
     //MARK: - Properties
     private let homeController = HomeController()
-    private var menuController = MenuController()
+    private var menuController: MenuController!
     private var isExpanded: Bool = false
+    
+    private var user: User? {
+        didSet {
+            guard let user = user else { return }
+            homeController.user = user
+            configureMenuController(withUser: user)
+        }
+    }
     
     //MARK: - Lyfecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
+        view.backgroundColor = .backgroundColor
         configureHomeController()
-        configureMenuController()
+        fetchUserData()
     }
     
     //MARK: - Selectors
+    
+    //MARK: - API
+    private func fetchUserData() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        Service.shared.fetchUserData(uid: currentUid) { user in
+            self.user = user
+        }
+    }
     
     //MARK: - Helper Functions
     private func configureHomeController() {
@@ -33,7 +50,8 @@ class ContainerController: UIViewController {
         homeController.delegate = self
     }
     
-    private func configureMenuController() {
+    private func configureMenuController(withUser user: User) {
+        menuController = MenuController(user: user)
         addChild(menuController)
         menuController.didMove(toParent: self)
         view.insertSubview(menuController.view, at: 0)
@@ -50,6 +68,7 @@ class ContainerController: UIViewController {
             }
         }
     }
+    
 }
 
 extension ContainerController: HomeControllerDelegate {

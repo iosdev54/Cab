@@ -48,7 +48,7 @@ class HomeController: UIViewController {
     
     weak var delegate: HomeControllerDelegate?
   
-    private var user: User? {
+    var user: User? {
         didSet {
             locationInpitView.user = user
             if user?.accountType == .passenger {
@@ -216,13 +216,6 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Shared API
-    private func fetchUserData() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        Service.shared.fetchUserData(uid: currentUid) { user in
-            self.user = user
-        }
-    }
-    
     private func chechIfUserIsLoggedIn() {
         
         if Auth.auth().currentUser?.uid == nil {
@@ -269,7 +262,6 @@ class HomeController: UIViewController {
     
     func configure() {
         configureUI()
-        fetchUserData()
     }
     
     private func configureUI() {
