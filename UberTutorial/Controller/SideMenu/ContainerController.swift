@@ -132,7 +132,7 @@ class ContainerController: UIViewController {
     }
     
     private func animateStatusBar() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.5) {
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
@@ -158,7 +158,12 @@ extension ContainerController: MenuControllerDelegate {
             case .yourTrips:
                 break
             case .settings:
-                break
+                guard let user = self.user else { return }
+                let controller = SettingsController(user: user)
+                let nav = SettingsNavigationController(rootViewController: controller)
+//                let nav = UINavigationController(rootViewController: controller)
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true)
             case .logout:
                 let alert = UIAlertController(title: nil, message: "Are you sure you want to log out?", preferredStyle: .actionSheet)
                 let logout = UIAlertAction(title: "Log Out", style: .destructive) { _ in
