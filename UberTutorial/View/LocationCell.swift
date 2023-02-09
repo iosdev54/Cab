@@ -17,13 +17,6 @@ class LocationCell: UITableViewCell {
             addressLabel.text = placemark?.address
         }
     }
-    var type: LocationType? {
-        didSet {
-            titleLabel.text = type?.description
-            addressLabel.text = type?.subtitle
-        }
-    }
-    
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -41,7 +34,7 @@ class LocationCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-//        selectionStyle = .none
+        //        selectionStyle = .none
         
         let stack = UIStackView(arrangedSubviews: [titleLabel, addressLabel])
         stack.axis = .vertical

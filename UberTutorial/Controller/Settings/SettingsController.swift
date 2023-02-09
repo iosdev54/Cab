@@ -28,13 +28,20 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
+protocol SettingsControllerDelegate: AnyObject {
+    func updateUser(_ controller: SettingsController)
+}
+
 class SettingsController : UIViewController {
     
     //MARK: - Properties
-    private let user: User
-    
+    var user: User
     private let tableView = UITableView()
-    
+    private let locationManager = LocationHandler.shared.locationManager
+
+    weak var delegate: SettingsControllerDelegate?
+//    private var userInfoUpdated = false
+
     private lazy var infoHeader: UserInfoHeader = {
         let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
         let view = UserInfoHeader(user: user, frame: frame)
@@ -61,6 +68,9 @@ class SettingsController : UIViewController {
     
     //MARK: - Selectors
     @objc private func handleDismissal() {
+//        if userInfoUpdated {
+//            delegate?.updateUser(self)
+//        }
         dismiss(animated: true)
     }
     
@@ -102,6 +112,15 @@ class SettingsController : UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
     }
     
+    func locationText(forType type: LocationType) -> String {
+        switch type {
+        case .home:
+            return user.homeLocation ?? type.subtitle
+        case .work:
+            return user.workLocation ?? type.subtitle
+        }
+    }
+    
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource
@@ -113,8 +132,9 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
-        guard let type = LocationType(rawValue: indexPath.row) else { return cell}
-        cell.type = type
+        guard let type = LocationType(rawValue: indexPath.row) else { return cell }
+        cell.titleLabel.text = type.description
+        cell.addressLabel.text = locationText(forType: type)
         return cell
     }
     
@@ -139,8 +159,31 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let type = LocationType(rawValue: indexPath.row) else { return }
-        let controller = AddLocationController()
+        guard let location = locationManager?.location else { return }
+        let controller = AddLocationController(type: type, location: location)
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true)
     }
+}
+
+//MARK: - AddLocationControllerDelegate
+extension SettingsController: AddLocationControllerDelegate {
+   
+    func updateLocation(locationString: String, type: LocationType) {
+        PassengerService.shared.saveLocation(locationString: locationString, type: type) { err, ref in
+            self.dismiss(animated: true)
+//            self.userInfoUpdated = true
+            
+            switch type {
+            case .home:
+                self.user.homeLocation = locationString
+            case .work:
+                self.user.workLocation = locationString
+            }
+            self.delegate?.updateUser(self)
+            self.tableView.reloadData()
+        } 
+    }
+    
 }
