@@ -19,6 +19,18 @@ class PickupController: UIViewController {
     let trip: Trip
     weak var delegate: PickupControllerDelegate?
     
+    private lazy var circularProgressView: CircularProgressView = {
+        let frame = CGRect(x: 0, y: 0, width: 360, height: 360)
+        let cpv = CircularProgressView(frame: frame)
+        
+        cpv.addSubview(mapView)
+        mapView.setDimensions(height: 268, width: 268)
+        mapView.layer.cornerRadius = 268 / 2
+        mapView.centerX(inView: cpv)
+        mapView.centerY(inView: cpv, constants: 32)
+        return cpv
+    }()
+    
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -59,6 +71,7 @@ class PickupController: UIViewController {
         
         configureUI()
         configureMapView()
+        self.perform(#selector(animateProgress), with: nil, afterDelay: 0.5)
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -72,12 +85,15 @@ class PickupController: UIViewController {
     @objc private func handleAcceptTrip() {
         DriverService.shared.acceptTrip(trip: trip) { err, reff in
             self.delegate?.didAcceptTrip(self.trip)
-//            self.dismiss(animated: true)
         }
     }
     
-    //MARK: - API
-    
+    @objc private func animateProgress() {
+        circularProgressView.animatePulsatingLayer()
+        circularProgressView.setProgressWithAnimation(duration: 5, value: 0) {
+//            self.dismiss(animated: true)
+        }
+    }
     
     //MARK: - Helper Functions
     private func configureUI() {
@@ -86,16 +102,14 @@ class PickupController: UIViewController {
         view.addSubview(cancelButton)
         cancelButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingLeft: 16)
         
-        view.addSubview(mapView)
-        mapView.setDimensions(height: 270, width: 270)
-        mapView.layer.cornerRadius = 270 / 2
-        
-        mapView.centerX(inView: view)
-        mapView.centerY(inView: view, constants: -200)
+        view.addSubview(circularProgressView)
+        circularProgressView.setDimensions(height: 360, width: 360)
+        circularProgressView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 32)
+        circularProgressView.centerX(inView: view)
         
         view.addSubview(pickupLabel)
         pickupLabel.centerX(inView: view)
-        pickupLabel.anchor(top: mapView.bottomAnchor, paddingTop: 16)
+        pickupLabel.anchor(top: circularProgressView.bottomAnchor, paddingTop: 32)
         
         view.addSubview(acceptTripButton)
         acceptTripButton.anchor(top: pickupLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 32, paddingRight: 32, height: 50)
@@ -107,8 +121,7 @@ class PickupController: UIViewController {
         mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
         
         //Second way
-//        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
-//        mapView.showAnnotations([annotation], animated: true)
+        //        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
+        //        mapView.showAnnotations([annotation], animated: true)
     }
-    
 }
