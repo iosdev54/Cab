@@ -49,12 +49,7 @@ class ContainerController: UIViewController {
     //MARK: - API
     private func chechIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .crossDissolve
-                self.present(nav, animated: true)
-            }
+            presentLoginController()
             return
         } else {
             configure()
@@ -71,12 +66,7 @@ class ContainerController: UIViewController {
     private func signOut() {
         do {
             try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .crossDissolve
-                self.present(nav, animated: true)
-            }
+            presentLoginController()
         } catch {
             print("DEBUG: Error signing out")
         }
@@ -104,6 +94,15 @@ class ContainerController: UIViewController {
         menuController.delegate = self
         
         configureBlackView()
+    }
+    
+    private func presentLoginController() {
+        DispatchQueue.main.async {
+            let nav = UINavigationController(rootViewController: LoginController())
+            nav.isModalInPresentation = true
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+        }
     }
     
     private func configureBlackView() {
