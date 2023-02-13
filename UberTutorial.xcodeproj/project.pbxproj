@@ -51,7 +51,7 @@
 		18207B98297ADEB1000E8EFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18207B9A297C2598000E8EFC /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
-		18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "UberTutorial/SupportFiles/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1829534C29814C46007BB880 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1836D079298FE562008AEBE8 /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		183F92C92982971500CF05FC /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
@@ -114,14 +114,8 @@
 				18207B93297AD1CE000E8EFC /* Controller */,
 				18207B92297AD1CD000E8EFC /* Service */,
 				18207B91297AD1C9000E8EFC /* Utils */,
-				18207B7D297AD155000E8EFC /* AppDelegate.swift */,
-				18207B7F297AD155000E8EFC /* SceneDelegate.swift */,
-				18207B83297AD155000E8EFC /* Main.storyboard */,
-				18B97A4C298165740080B104 /* LocationHandler.swift */,
-				18207B86297AD157000E8EFC /* Assets.xcassets */,
-				18207B88297AD157000E8EFC /* LaunchScreen.storyboard */,
-				18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */,
-				18207B8B297AD157000E8EFC /* Info.plist */,
+				18B4FBAF29991B3200DF09B5 /* SupportFiles */,
+				18B4FBB029991BA700DF09B5 /* InterfaceBuilder */,
 			);
 			path = UberTutorial;
 			sourceTree = "<group>";
@@ -138,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				18886DB2298028B5009DF710 /* Service.swift */,
+				18B97A4C298165740080B104 /* LocationHandler.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -173,8 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				1829534C29814C46007BB880 /* User.swift */,
-				183F92C92982971500CF05FC /* DriverAnnotation.swift */,
 				18931FEA29869E9B000818DD /* Trip.swift */,
+				183F92C92982971500CF05FC /* DriverAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -187,6 +182,27 @@
 				1891BA352992714000DDD9E7 /* SettingsNavigationController.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		18B4FBAF29991B3200DF09B5 /* SupportFiles */ = {
+			isa = PBXGroup;
+			children = (
+				18207B7D297AD155000E8EFC /* AppDelegate.swift */,
+				18207B7F297AD155000E8EFC /* SceneDelegate.swift */,
+				18207B86297AD157000E8EFC /* Assets.xcassets */,
+				18207B8B297AD157000E8EFC /* Info.plist */,
+				18207B9E297D4C19000E8EFC /* GoogleService-Info.plist */,
+			);
+			path = SupportFiles;
+			sourceTree = "<group>";
+		};
+		18B4FBB029991BA700DF09B5 /* InterfaceBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				18207B83297AD155000E8EFC /* Main.storyboard */,
+				18207B88297AD157000E8EFC /* LaunchScreen.storyboard */,
+			);
+			path = InterfaceBuilder;
 			sourceTree = "<group>";
 		};
 		18E57399298FCB8000106C38 /* Authentication */ = {
@@ -514,7 +530,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N84H63QL52;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = UberTutorial/Info.plist;
+				INFOPLIST_FILE = UberTutorial/SupportFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -543,7 +559,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N84H63QL52;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = UberTutorial/Info.plist;
+				INFOPLIST_FILE = UberTutorial/SupportFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

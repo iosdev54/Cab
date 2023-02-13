@@ -181,16 +181,19 @@ class RideActionView: UIView {
         case .requestRide:
             buttonAction = .requestRide
             actionButton.setTitle(buttonAction.description, for: .normal)
+            actionButton.isEnabled = true
         case .tripAccepted:
             guard let user = user else { return }
             if user.accountType == .passenger {
                 titleLabel.text = "En Route To Passenger"
                 buttonAction = .getDirections
                 actionButton.setTitle(buttonAction.description, for: .normal)
+                actionButton.isEnabled = false
             } else {
                 titleLabel.text = "Driver En Route"
                 buttonAction = .cancel
                 actionButton.setTitle(buttonAction.description, for: .normal)
+                actionButton.isEnabled = true
             }
             
             infoViewLabel.text = String(user.fullname.first ?? "X")
@@ -204,14 +207,16 @@ class RideActionView: UIView {
             titleLabel.text = "Arrived At Passenger Location"
             buttonAction = .pickup
             actionButton.setTitle(buttonAction.description, for: .normal)
+            actionButton.isEnabled = true
         case .tripInProgress:
             guard let user = user else { return }
             if user.accountType == .driver {
                 actionButton.setTitle("TRIP IN PROGRESS", for: .normal)
                 actionButton.isEnabled = false
             } else {
-                buttonAction = .getDirections
+                buttonAction = .cancel
                 actionButton.setTitle(buttonAction.description, for: .normal)
+                actionButton.isEnabled = true
             }
             titleLabel.text = "En Route to Destination"
         case .endTrip:
@@ -222,6 +227,7 @@ class RideActionView: UIView {
             } else {
                 buttonAction = .dropOff
                 actionButton.setTitle(buttonAction.description, for: .normal)
+                actionButton.isEnabled = true
             }
             titleLabel.text = "Arrive at Destination"
         }

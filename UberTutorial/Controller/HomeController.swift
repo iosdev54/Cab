@@ -65,10 +65,10 @@ class HomeController: UIViewController {
     
     private var trip: Trip? {
         didSet {
-            //            print("DEBUG: Show pickup passenger controller")
+            print("DEBUG: TRIP IS \(trip?.state)")
             guard let user = user else { return }
             if user.accountType == .driver {
-                guard let trip = trip else { return }
+                guard let trip = trip, trip.state == .requested else { return }
                 let controller = PickupController(trip: trip)
                 controller.delegate = self
                 controller.modalPresentationStyle = .fullScreen
@@ -94,13 +94,6 @@ class HomeController: UIViewController {
         
         configureUI()
         enableLocationServices()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        guard let trip = trip else { return }
-        print("DEBUG: Trip state is \(trip.state)")
     }
     
     //MARK: - Selectors
@@ -132,6 +125,7 @@ class HomeController: UIViewController {
                 self.shouldPresentLoadingView(false)
                 self.presentAlertController(withTitle: "Oops!", message: "It looks like we couldnt find you a driver. Please try again.")
                 PassengerService.shared.deleteTrip { err, fef in
+                    print("DEBUG: DELETE TRIP")
                     self.removeAnnotationsAndOverlays()
                     self.centerMapOnUserLocation()
                     self.configureActionButton(config: .showMenu)
@@ -151,6 +145,18 @@ class HomeController: UIViewController {
                 self.rideActionView.config = .driverArrived
             case .inProgress:
                 self.rideActionView.config = .tripInProgress
+            case .danger:
+                PassengerService.shared.deleteTrip { err, ref in
+                    self.animateRideActionView(shouldShow: false)
+                    self.removeAnnotationsAndOverlays()
+                    self.centerMapOnUserLocation()
+                    self.configureActionButton(config: .showMenu)
+                    UIView.animate(withDuration: 0.5) {
+                        self.inputActivationView.alpha = 1
+                    }
+                    self.presentAlertController(withTitle: "Trip Completed", message: "You are behaving inappropriately.")
+                }
+                
             case .arriveAtDestination:
                 self.rideActionView.config = .endTrip
             case .completed:
@@ -643,20 +649,39 @@ extension HomeController: RideActionViewDelegate {
     }
     
     func cancelTrip() {
-        PassengerService.shared.deleteTrip { error, ref in
-            if let error = error {
-                print("DEBUG: Error deleting trip \(error.localizedDescription)")
-                return
+        if user?.accountType == .passenger {
+            PassengerService.shared.deleteTrip { error, ref in
+                if let error = error {
+                    print("DEBUG: Error deleting trip \(error.localizedDescription)")
+                    return
+                }
+                self.animateRideActionView(shouldShow: false)
+                self.removeAnnotationsAndOverlays()
+                self.centerMapOnUserLocation()
+                self.configureActionButton(config: .showMenu)
+                
+                UIView.animate(withDuration: 0.5) {
+                    self.inputActivationView.alpha = 1
+                }
             }
-            self.animateRideActionView(shouldShow: false)
-            self.removeAnnotationsAndOverlays()
-            self.centerMapOnUserLocation()
-            self.configureActionButton(config: .showMenu)
-            
-            UIView.animate(withDuration: 0.5) {
-                self.inputActivationView.alpha = 1
+        } else {
+            guard let trip = trip else { return }
+            DriverService.shared.updateTripState(trip: trip, state: .danger) { err, ref in
+                if let error = err {
+                    print("DEBUG: Error deleting trip \(error.localizedDescription)")
+                    return
+                }
+                self.animateRideActionView(shouldShow: false)
+                self.removeAnnotationsAndOverlays()
+                self.centerMapOnUserLocation()
+                self.configureActionButton(config: .showMenu)
+                
+                UIView.animate(withDuration: 0.5) {
+                    self.inputActivationView.alpha = 1
+                }
             }
         }
+
     }
     
     func pickupPassenger() {

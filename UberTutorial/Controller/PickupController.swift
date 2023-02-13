@@ -16,7 +16,8 @@ class PickupController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
-    let trip: Trip
+    var trip: Trip
+    private var isAccepted = false
     weak var delegate: PickupControllerDelegate?
     
     private lazy var circularProgressView: CircularProgressView = {
@@ -83,15 +84,20 @@ class PickupController: UIViewController {
         dismiss(animated: true)
     }
     @objc private func handleAcceptTrip() {
-        DriverService.shared.acceptTrip(trip: trip) { err, reff in
+        isAccepted = true
+        DriverService.shared.acceptTrip(trip: trip) { [weak self] err, reff in
+            guard let `self` = self else { return }
+            self.trip.state = .accepted
             self.delegate?.didAcceptTrip(self.trip)
         }
     }
     
     @objc private func animateProgress() {
         circularProgressView.animatePulsatingLayer()
-        circularProgressView.setProgressWithAnimation(duration: 5, value: 0) {
-            DriverService.shared.updateTripState(trip: self.trip, state: .denied) { err, ref in
+        circularProgressView.setProgressWithAnimation(duration: 10, value: 0) {
+            guard self.isAccepted == false else { return }
+            DriverService.shared.updateTripState(trip: self.trip, state: .denied) { [weak self] err, ref in
+                guard let `self` = self else { return }
                 self.dismiss(animated: true)
             }
         }
@@ -126,4 +132,6 @@ class PickupController: UIViewController {
         //        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
         //        mapView.showAnnotations([annotation], animated: true)
     }
+    
+    
 }
