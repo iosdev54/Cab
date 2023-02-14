@@ -16,6 +16,8 @@
 		18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B98297ADEB1000E8EFC /* Extensions.swift */; };
 		18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9A297C2598000E8EFC /* SignUpController.swift */; };
 		18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* AuthButton.swift */; };
+		1823C5E1299C3D110002E65A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E0299C3D110002E65A /* .gitignore */; };
+		1823C5E3299C3D190002E65A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E2299C3D190002E65A /* README.md */; };
 		1829534D29814C46007BB880 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1829534C29814C46007BB880 /* User.swift */; };
 		1836D07A298FE562008AEBE8 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1836D079298FE562008AEBE8 /* MenuHeader.swift */; };
 		183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F92C92982971500CF05FC /* DriverAnnotation.swift */; };
@@ -51,6 +53,8 @@
 		18207B98297ADEB1000E8EFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18207B9A297C2598000E8EFC /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
+		1823C5E0299C3D110002E65A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		1823C5E2299C3D190002E65A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1829534C29814C46007BB880 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1836D079298FE562008AEBE8 /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		183F92C92982971500CF05FC /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		18207B71297AD155000E8EFC = {
 			isa = PBXGroup;
 			children = (
+				1823C5E0299C3D110002E65A /* .gitignore */,
+				1823C5E2299C3D190002E65A /* README.md */,
 				18207B7C297AD155000E8EFC /* Cab */,
 				18207B7B297AD155000E8EFC /* Products */,
 				7D23D8C9953D78C8E5215A02 /* Pods */,
@@ -300,6 +306,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1823C5E3299C3D190002E65A /* README.md in Resources */,
+				1823C5E1299C3D110002E65A /* .gitignore in Resources */,
 				18207B8A297AD157000E8EFC /* LaunchScreen.storyboard in Resources */,
 				18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */,
 				18207B87297AD157000E8EFC /* Assets.xcassets in Resources */,
