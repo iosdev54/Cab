@@ -17,56 +17,30 @@ class SignUpController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "UBER"
+        label.text = "CAB"
         label.font = UIFont(name: "Avenir-light", size: 36)
-        label.textColor = UIColor(white: 1, alpha: 0.8)
+        label.textColor = UIColor(white: 0.9, alpha: 1)
         return label
     }()
     
-    private lazy var emailContainerView: UIView = {
-        guard let image = UIImage(named: "ic_mail_outline_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, textField: emailTextField)
-    }()
-    private lazy var fullNameContainerView: UIView = {
-        guard let image = UIImage(named: "ic_person_outline_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, textField: fullNameTextField)
-    }()
-    
-    private lazy var passwordContainerView: UIView = {
-        guard let image = UIImage(named: "ic_lock_outline_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, textField: passwordTextField)
-    }()
-    
-    private lazy var accountTypeContainerView: UIView = {
-        guard let image = UIImage(named: "ic_account_box_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, segmentedControl: accountTypeSegmentedControl)
-    }()
-    
     private lazy var emailTextField: UITextField = {
-        return UITextField().textField(withPlaceholder: "Email", isSecureTextEntry: false)
+        return UITextField().inputTextField(withImage: UIImage.envelopeImage, placeholder: "Email", isSecureTextEntry: false)
     }()
     
     private lazy var fullNameTextField: UITextField = {
-        return UITextField().textField(withPlaceholder: "Fullname", isSecureTextEntry: false)
+        return UITextField().inputTextField(withImage: UIImage.personImage, placeholder: "Name", isSecureTextEntry: false)
     }()
     
     private lazy var passwordTextField: UITextField = {
-        return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: true)
+        return UITextField().inputTextField(withImage: UIImage.lockImage, placeholder: "Password", isSecureTextEntry: false)
     }()
     
-    private lazy var accountTypeSegmentedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["Rider", "Driver"])
-        segmentedControl.backgroundColor = .backgroundColor
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor(white: 1, alpha: 0.87)], for: .normal)
-        segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
-        segmentedControl.layer.borderWidth = 0.75
-        segmentedControl.layer.borderColor = UIColor.lightGray.cgColor
-        return segmentedControl
+    private lazy var accountTypeSegmentedControl: AccountTypeSegmentedControl = {
+        return AccountTypeSegmentedControl(items: ["Passenger", "Driver"])
     }()
     
     private lazy var signUpButton: AuthButton = {
-        let button = AuthButton(title: "Log In")
+        let button = AuthButton(title: "Sign Up")
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()
@@ -80,6 +54,10 @@ class SignUpController: UIViewController {
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }()
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     //MARK: - Lyfecycle
     override func viewDidLoad() {
@@ -149,7 +127,7 @@ class SignUpController: UIViewController {
                     }
                 }
             }
-                            print("DEBUG: Successfully register user and saved data")
+            print("DEBUG: Successfully register user and saved data")
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
@@ -160,17 +138,24 @@ class SignUpController: UIViewController {
         configureNavBar()
         view.backgroundColor = .backgroundColor
         
+        emailTextField.delegate = self
+        fullNameTextField.delegate = self
+        passwordTextField.delegate = self
+        
         view.addSubview(titleLabel)
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor)
         titleLabel.centerX(inView: view)
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, fullNameContainerView, passwordContainerView, accountTypeContainerView, signUpButton])
+        let stack = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, passwordTextField, passwordTextField, passwordTextField, passwordTextField, accountTypeSegmentedControl])
         stack.axis = .vertical
         stack.distribution = .fill
-        stack.spacing = 24
+        stack.spacing = 20
         
         view.addSubview(stack)
-        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 16, paddingRight: 16)
+        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 16)
+        
+        view.addSubview(signUpButton)
+        signUpButton.anchor(top: stack.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 16, paddingRight: 16)
         
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.centerX(inView: view)
@@ -183,6 +168,16 @@ class SignUpController: UIViewController {
         if let topItem = navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "")
         }
+    }
+    
+}
+
+//MARK: - Description
+
+extension SignUpController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
     
 }

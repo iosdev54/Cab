@@ -53,7 +53,7 @@ class AuthButton: UIButton {
         setTitleColor(UIColor.white, for: .normal)
         backgroundColor = .mainBlueTint
         layer.cornerRadius = 5
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         spinner.hidesWhenStopped = true
         spinner.color = .white
