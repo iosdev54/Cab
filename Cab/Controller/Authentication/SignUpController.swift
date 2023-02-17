@@ -24,15 +24,18 @@ class SignUpController: UIViewController {
     }()
     
     private lazy var emailTextField: UITextField = {
-        return UITextField().inputTextField(withImage: UIImage.envelopeImage, placeholder: "Email", isSecureTextEntry: false)
+        return UITextField().inputTextField(withImage: UIImage.envelopeImage, placeholder: "Email", keyboardType: .emailAddress, isSecureTextEntry: false)
     }()
     
     private lazy var fullNameTextField: UITextField = {
-        return UITextField().inputTextField(withImage: UIImage.personImage, placeholder: "Name", isSecureTextEntry: false)
+        return AccountTextField(leftImage: UIImage.personImage, placeholderString: "Name", typeOfKeyboard: .alphabet, isSecureText: false, isRightButton: false)
+//        return UITextField().inputTextField(withImage: UIImage.personImage, placeholder: "Name", keyboardType: .alphabet, isSecureTextEntry: false)
     }()
     
-    private lazy var passwordTextField: UITextField = {
-        return UITextField().inputTextField(withImage: UIImage.lockImage, placeholder: "Password", isSecureTextEntry: false)
+    private lazy var passwordTextField: AccountTextField = {
+        return AccountTextField(leftImage: UIImage.lockImage!, placeholderString: "Password", typeOfKeyboard: .default, isSecureText: true, isRightButton: true)
+        
+//        return UITextField().inputTextField(withImage: UIImage.lockImage, placeholder: "Password", keyboardType: .default, isSecureTextEntry: true)
     }()
     
     private lazy var accountTypeSegmentedControl: AccountTypeSegmentedControl = {

@@ -31,7 +31,7 @@ extension UIView {
         view.addSubview(imageView)
         
         if let textField = textField {
-            view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+            view.heightAnchor.constraint(equalToConstant: 40).isActive = true
             imageView.centerY(inView: view)
             imageView.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
             view.addSubview(textField)

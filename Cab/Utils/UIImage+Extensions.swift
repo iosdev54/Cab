@@ -14,6 +14,7 @@ extension UIImage {
     static let personImage = UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal)
     static let lockImage = UIImage(systemName: "lock")?.withTintColor(.white, renderingMode: .alwaysOriginal)
     static let personFill = UIImage(systemName: "person.crop.square.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    
+    static let showPassword = UIImage(systemName: "eye")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+    static let hidePassword = UIImage(systemName: "eye.slash")?.withTintColor(.white, renderingMode: .alwaysOriginal)
 }
 
