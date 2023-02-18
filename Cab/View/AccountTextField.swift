@@ -10,19 +10,17 @@ import UIKit
 class AccountTextField: UITextField {
     
     //MARK: - Properties
-    private let leftImage: UIImage?
+    private let leftImage: UIImage
     private let placeholderString: String
     private let typeOfKeyboard: UIKeyboardType
     private let isSecureText: Bool
-    private var isRightButton: Bool = false
-    private let padding: CGFloat = 20
-    //    private let height: CGFloat = 40
+    private var isRightButton: Bool
     
-    private var rightButton: UIButton = UIButton(type: .custom)
+    private let containerSize: CGFloat = 40
+    private lazy var rightButton: UIButton = UIButton(type: .custom)
     
     //MARK: - Lifecycle
-    
-    init(leftImage: UIImage?, placeholderString: String, typeOfKeyboard: UIKeyboardType, isSecureText: Bool, isRightButton: Bool) {
+    init(leftImage: UIImage, placeholderString: String, typeOfKeyboard: UIKeyboardType, isSecureText: Bool = false, isRightButton: Bool = false) {
         self.leftImage = leftImage
         self.placeholderString = placeholderString
         self.typeOfKeyboard = typeOfKeyboard
@@ -42,7 +40,7 @@ class AccountTextField: UITextField {
     //MARK: - Helper Function
     private func configureTextField() {
         borderStyle = .none
-        layer.borderColor = UIColor.borderColor
+        layer.borderColor = UIColor.borderTint
         layer.borderWidth = 0.75
         layer.cornerRadius = 5
         font = .systemFont(ofSize: 16)
@@ -51,14 +49,13 @@ class AccountTextField: UITextField {
         keyboardAppearance = .dark
         keyboardType = typeOfKeyboard
         isSecureTextEntry = isSecureText
-        anchor(height: 40)
+        anchor(height: containerSize)
     }
     
     private func setLeftIcon() {
-        guard let image = leftImage else { return }
-        let frame = CGRect(x: 0, y: 0, width: image.size.width + padding, height: image.size.height)
+        let frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
         let iconView = UIImageView(frame: frame)
-        iconView.image = image
+        iconView.image = leftImage
         iconView.contentMode = .center
         let iconContainerView: UIView = UIView(frame: frame)
         iconContainerView.addSubview(iconView)
@@ -68,20 +65,18 @@ class AccountTextField: UITextField {
     
     private func setRightButton() {
         if isRightButton {
-            guard let showImage = UIImage.showPassword, let hideImage = UIImage.hidePassword else { return }
-            let frame = CGRect(x: 0, y: 0, width: showImage.size.width + padding, height: showImage.size.height)
+            let frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
             rightButton.frame = frame
-            rightButton.setImage(showImage, for: .normal)
-            rightButton.setImage(hideImage, for: .selected)
+            rightButton.setImage(UIImage.showPassword.unwrapImage(), for: .normal)
+            rightButton.setImage(UIImage.hidePassword.unwrapImage(), for: .selected)
             rightButton.contentMode = .center
-            rightButton.alpha = 0.8
+            rightButton.alpha = 0.7
             rightButton.addTarget(self, action: #selector(togglePasswordVisibility), for: .touchUpInside)
             let iconContainerView: UIView = UIView(frame: frame)
             iconContainerView.addSubview(rightButton)
             rightViewMode = .always
             rightView = iconContainerView
         }
-        
     }
     
     @objc private func togglePasswordVisibility() {

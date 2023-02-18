@@ -38,7 +38,7 @@ class ContainerController: UIViewController {
         super.viewDidLoad()
         
         chechIfUserIsLoggedIn()
-        signOut()
+//        signOut()
     }
     
     //MARK: - Selectors
@@ -99,7 +99,9 @@ class ContainerController: UIViewController {
     
     private func presentLoginController() {
         DispatchQueue.main.async {
-            let nav = UINavigationController(rootViewController: LoginController())
+            let controller = LoginController()
+            let nav = CustomNavigationController(rootViewController: controller)
+//            let nav = UINavigationController(rootViewController: LoginController())
             nav.isModalInPresentation = true
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true)
@@ -170,7 +172,7 @@ extension ContainerController: MenuControllerDelegate {
                 guard let user = self.user else { return }
                 let controller = SettingsController(user: user)
                 controller.delegate = self
-                let nav = SettingsNavigationController(rootViewController: controller)
+                let nav = CustomNavigationController(rootViewController: controller)
 //                let nav = UINavigationController(rootViewController: controller)
                 nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: true)

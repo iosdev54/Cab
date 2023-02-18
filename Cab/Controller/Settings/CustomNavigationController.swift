@@ -1,5 +1,5 @@
 //
-//  SettingsNavigationController.swift
+//  CustomNavigationController.swift
 //  Cab
 //
 //  Created by Dmytro Grytsenko on 07.02.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsNavigationController: UINavigationController {
+class CustomNavigationController: UINavigationController {
     
     let navController = UINavigationController()
     

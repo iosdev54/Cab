@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
-import FirebaseDatabase
 import GeoFire
 
 class SignUpController: UIViewController {
@@ -19,23 +17,21 @@ class SignUpController: UIViewController {
         let label = UILabel()
         label.text = "CAB"
         label.font = UIFont(name: "Avenir-light", size: 36)
-        label.textColor = UIColor(white: 0.9, alpha: 1)
+        label.textAlignment = .center
+        label.textColor = .mainWhiteTint
         return label
     }()
     
     private lazy var emailTextField: UITextField = {
-        return UITextField().inputTextField(withImage: UIImage.envelopeImage, placeholder: "Email", keyboardType: .emailAddress, isSecureTextEntry: false)
+        return AccountTextField(leftImage: UIImage.envelopeImage.unwrapImage(), placeholderString: "Email", typeOfKeyboard: .emailAddress)
     }()
     
     private lazy var fullNameTextField: UITextField = {
-        return AccountTextField(leftImage: UIImage.personImage, placeholderString: "Name", typeOfKeyboard: .alphabet, isSecureText: false, isRightButton: false)
-//        return UITextField().inputTextField(withImage: UIImage.personImage, placeholder: "Name", keyboardType: .alphabet, isSecureTextEntry: false)
+        return AccountTextField(leftImage: UIImage.personImage.unwrapImage(), placeholderString: "Name", typeOfKeyboard: .alphabet)
     }()
     
     private lazy var passwordTextField: AccountTextField = {
-        return AccountTextField(leftImage: UIImage.lockImage!, placeholderString: "Password", typeOfKeyboard: .default, isSecureText: true, isRightButton: true)
-        
-//        return UITextField().inputTextField(withImage: UIImage.lockImage, placeholder: "Password", keyboardType: .default, isSecureTextEntry: true)
+        return AccountTextField(leftImage: UIImage.lockImage.unwrapImage(), placeholderString: "Password", typeOfKeyboard: .default, isSecureText: true, isRightButton: true)
     }()
     
     private lazy var accountTypeSegmentedControl: AccountTypeSegmentedControl = {
@@ -50,9 +46,8 @@ class SignUpController: UIViewController {
     
     private lazy var alreadyHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        let attributedTitle = NSMutableAttributedString(string: "Already have an account?  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray])
-        attributedTitle.append(NSAttributedString(string: "Log In", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainBlueTint]))
+        let attributedTitle = NSMutableAttributedString(string: "Already have an account?  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.mainWhiteTint])
+        attributedTitle.append(NSAttributedString(string: "Log In", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainGreenTint]))
         button.addTarget(self, action: #selector(handleShowLogIn), for: .touchUpInside)
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
@@ -66,17 +61,18 @@ class SignUpController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.isHidden = false
+        configureNavBar()
         configureUI()
     }
     
     //MARK: - Selectors
-    @objc func handleSignUp() {
+    @objc private func handleSignUp() {
         signUpButton.isLoading = true
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              let fullname = fullNameTextField.text
+        else { return }
         
-        guard let email = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
-        guard let fullname = fullNameTextField.text else { return }
         let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
         
         if fullname.count < 6 || email.isEmpty || password.isEmpty {
@@ -85,7 +81,8 @@ class SignUpController: UIViewController {
             return
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+        Service.shared.signUp(withEmail: email, password: password) { [weak self] result, error in
+            guard let `self` = self else { return }
             if let error = error {
                 self.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
                 self.signUpButton.isLoading = false
@@ -117,20 +114,17 @@ class SignUpController: UIViewController {
     private func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
         REF_USERS.child(uid).updateChildValues(values) { error, ref in
             if error != nil {
-                let user = Auth.auth().currentUser
-                self.signUpButton.isLoading = false
-                
-                user?.delete { error in
+                Service.shared.deleteAccount { [weak self] error in
+                    guard let `self` = self else { return }
                     if let error = error {
-                        self.presentAlertController(withTitle: "Oops!", message: "Registration failed. \(error.localizedDescription)")
-                        // An error happened.
+                        self.signUpButton.isLoading = false
+                        self.presentAlertController(withTitle: "Oops!", message: "Registration failed, \(error.localizedDescription)")
                     } else {
-                        // Account deleted.
-                        self.presentAlertController(withTitle: "Oops!", message: "Account deleted.")
+                        self.signUpButton.isLoading = false
+                        self.presentAlertController(withTitle: "Oops!", message: "Registration failed. Try to register later.")
                     }
                 }
             }
-            print("DEBUG: Successfully register user and saved data")
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             controller.configure()
             self.dismiss(animated: true)
@@ -138,7 +132,6 @@ class SignUpController: UIViewController {
     }
     
     private func configureUI() {
-        configureNavBar()
         view.backgroundColor = .backgroundColor
         
         emailTextField.delegate = self
@@ -149,7 +142,7 @@ class SignUpController: UIViewController {
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor)
         titleLabel.centerX(inView: view)
         
-        let stack = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, passwordTextField, passwordTextField, passwordTextField, passwordTextField, accountTypeSegmentedControl])
+        let stack = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, passwordTextField, accountTypeSegmentedControl])
         stack.axis = .vertical
         stack.distribution = .fill
         stack.spacing = 20
@@ -167,7 +160,7 @@ class SignUpController: UIViewController {
     
     private func configureNavBar() {
         navigationController?.navigationBar.isHidden = false
-        navigationController?.view.tintColor = .mainBlueTint
+        navigationController?.view.tintColor = .mainGreenTint
         if let topItem = navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "")
         }
@@ -175,8 +168,7 @@ class SignUpController: UIViewController {
     
 }
 
-//MARK: - Description
-
+//MARK: - UITextFieldDelegate
 extension SignUpController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

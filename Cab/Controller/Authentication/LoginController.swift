@@ -13,49 +13,41 @@ class LoginController: UIViewController {
     //MARK: - Properties
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "UBER"
+        label.text = "CAB"
         label.font = UIFont(name: "Avenir-light", size: 36)
-        label.textColor = UIColor(white: 1, alpha: 0.8)
+        label.textAlignment = .center
+        label.textColor = .mainWhiteTint
         return label
     }()
     
-    private lazy var emailContainerView: UIView = {
-        guard let image = UIImage(named: "ic_mail_outline_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, textField: emailTextField)
-    }()
-    
-    private lazy var passwordContainerView: UIView = {
-        guard let image = UIImage(named: "ic_lock_outline_white_2x") else { return UIView() }
-        return UIView().inputContainerView(image: image, textField: passwordTextField)
-    }()
-    
     private lazy var emailTextField: UITextField = {
-        return UITextField().textField(withPlaceholder: "Email", isSecureTextEntry: false)
+        return AccountTextField(leftImage: UIImage.envelopeImage.unwrapImage(), placeholderString: "Email", typeOfKeyboard: .emailAddress)
     }()
     
-    private lazy var passwordTextField: UITextField = {
-        return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: true)
+    private lazy var passwordTextField: AccountTextField = {
+        return AccountTextField(leftImage: UIImage.lockImage.unwrapImage(), placeholderString: "Password", typeOfKeyboard: .default, isSecureText: true, isRightButton: true)
     }()
     
     private lazy var loginButton: AuthButton = {
         let button = AuthButton(title: "Log In")
-//        button.setTitle("Log In", for: .normal)
-//        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
         button.addTarget(self, action: #selector(handleLogIn), for: .touchUpInside)
         return button
     }()
     
     private lazy var dontHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        let attributedTitle = NSMutableAttributedString(string: "Don't have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.lightGray])
-        attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainBlueTint]))
+        let attributedTitle = NSMutableAttributedString(string: "Don't have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.mainWhiteTint])
+        attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [.font: UIFont.boldSystemFont(ofSize: 16), .foregroundColor: UIColor.mainGreenTint]))
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }()
     
-    //MARK: - Lifecycle
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
+    //MARK: - Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -68,19 +60,18 @@ class LoginController: UIViewController {
         configureUI()
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     //MARK: - Selectors
     @objc private func handleLogIn() {
+        loginButton.isLoading = true
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+        
+        Service.shared.logIn(withEmail: email, password: password) { [weak self] result, error in
+            guard let `self` = self else { return }
             if let error = error {
-                print("DEBUG: Failder to Log user In with \(error.localizedDescription)")
+                self.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
+                self.loginButton.isLoading = false
                 return
             }
-            //            print("Successfylly user Log In")
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             //Old record
             //            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? ContainerController else { return }
@@ -90,7 +81,6 @@ class LoginController: UIViewController {
     }
     
     @objc private func handleShowSignUp() {
-        
         let controller = SignUpController()
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -99,17 +89,23 @@ class LoginController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .backgroundColor
         
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
         view.addSubview(titleLabel)
-        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor)
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: navigationController?.navigationBar.frame.height ?? 0)
         titleLabel.centerX(inView: view)
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView, loginButton])
+        let stack = UIStackView(arrangedSubviews: [emailTextField, passwordTextField])
         stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = 24
+        stack.distribution = .fill
+        stack.spacing = 20
         
         view.addSubview(stack)
-        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 16, paddingRight: 16)
+        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 16)
+        
+        view.addSubview(loginButton)
+        loginButton.anchor(top: stack.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 16, paddingRight: 16)
         
         view.addSubview(dontHaveAccountButton)
         dontHaveAccountButton.centerX(inView: view)
@@ -118,7 +114,15 @@ class LoginController: UIViewController {
     
     private func configureNavBar() {
         navigationController?.navigationBar.isHidden = true
-        navigationController?.navigationBar.barStyle = .black
+    }
+    
+}
+
+//MARK: - UITextFieldDelegate
+extension LoginController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
     
 }

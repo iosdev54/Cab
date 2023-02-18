@@ -30,7 +30,7 @@
 		18886DB1297FFDA4009DF710 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18886DB0297FFDA4009DF710 /* LocationCell.swift */; };
 		18886DB3298028B5009DF710 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18886DB2298028B5009DF710 /* Service.swift */; };
 		1891BA3429924D3B00DDD9E7 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1891BA3329924D3B00DDD9E7 /* SettingsController.swift */; };
-		1891BA362992714000DDD9E7 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1891BA352992714000DDD9E7 /* SettingsNavigationController.swift */; };
+		1891BA362992714000DDD9E7 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1891BA352992714000DDD9E7 /* CustomNavigationController.swift */; };
 		1891BA382992892800DDD9E7 /* UserInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1891BA372992892800DDD9E7 /* UserInfoHeader.swift */; };
 		1891BA3B2992B00200DDD9E7 /* AddLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1891BA3A2992B00200DDD9E7 /* AddLocationController.swift */; };
 		18931FEB29869E9B000818DD /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18931FEA29869E9B000818DD /* Trip.swift */; };
@@ -38,6 +38,9 @@
 		189FE634299D051100361CB2 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189FE633299D051100361CB2 /* UIImage+Extensions.swift */; };
 		18A0133F2997C8E7003D721C /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A0133E2997C8E7003D721C /* CircularProgressView.swift */; };
 		18B44071297D8C5100739E91 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B44070297D8C5100739E91 /* HomeController.swift */; };
+		18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */; };
+		18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */; };
+		18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */; };
 		18B97A4D298165740080B104 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B97A4C298165740080B104 /* LocationHandler.swift */; };
 		18C309FD299FE29000669E75 /* AccountTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C309FC299FE29000669E75 /* AccountTextField.swift */; };
 		18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D4C703299B86E900A87007 /* GoogleService-Info.plist */; };
@@ -72,7 +75,7 @@
 		18886DB0297FFDA4009DF710 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		18886DB2298028B5009DF710 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		1891BA3329924D3B00DDD9E7 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
-		1891BA352992714000DDD9E7 /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
+		1891BA352992714000DDD9E7 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		1891BA372992892800DDD9E7 /* UserInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeader.swift; sourceTree = "<group>"; };
 		1891BA3A2992B00200DDD9E7 /* AddLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationController.swift; sourceTree = "<group>"; };
 		18931FEA29869E9B000818DD /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
@@ -80,6 +83,9 @@
 		189FE633299D051100361CB2 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		18A0133E2997C8E7003D721C /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		18B44070297D8C5100739E91 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extensions.swift"; sourceTree = "<group>"; };
+		18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPlacemark+Extensions.swift"; sourceTree = "<group>"; };
 		18B97A4C298165740080B104 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		18C309FC299FE29000669E75 /* AccountTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTextField.swift; sourceTree = "<group>"; };
 		18D4C703299B86E900A87007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -140,9 +146,12 @@
 			isa = PBXGroup;
 			children = (
 				18207B98297ADEB1000E8EFC /* Extensions.swift */,
+				18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */,
 				189FE633299D051100361CB2 /* UIImage+Extensions.swift */,
 				18883FF8299E6B6B00393ED3 /* UIColor+Extensions.swift */,
 				180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */,
+				18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */,
+				18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -200,7 +209,7 @@
 			children = (
 				1891BA3A2992B00200DDD9E7 /* AddLocationController.swift */,
 				1891BA3329924D3B00DDD9E7 /* SettingsController.swift */,
-				1891BA352992714000DDD9E7 /* SettingsNavigationController.swift */,
+				1891BA352992714000DDD9E7 /* CustomNavigationController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -379,13 +388,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */,
 				18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */,
 				18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */,
 				18B44071297D8C5100739E91 /* HomeController.swift in Sources */,
 				189FE634299D051100361CB2 /* UIImage+Extensions.swift in Sources */,
 				1891BA3429924D3B00DDD9E7 /* SettingsController.swift in Sources */,
 				18727E0A297ECE840047811B /* LocationInputView.swift in Sources */,
-				1891BA362992714000DDD9E7 /* SettingsNavigationController.swift in Sources */,
+				1891BA362992714000DDD9E7 /* CustomNavigationController.swift in Sources */,
 				18931FEB29869E9B000818DD /* Trip.swift in Sources */,
 				18931FED2987DFB8000818DD /* PickupController.swift in Sources */,
 				183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */,
@@ -398,11 +408,13 @@
 				18E5739C298FCBE200106C38 /* MenuController.swift in Sources */,
 				18B97A4D298165740080B104 /* LocationHandler.swift in Sources */,
 				18E5739E298FCC2100106C38 /* ContainerController.swift in Sources */,
+				18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */,
 				1836D07A298FE562008AEBE8 /* MenuHeader.swift in Sources */,
 				18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */,
 				18C309FD299FE29000669E75 /* AccountTextField.swift in Sources */,
 				18883FFB299E6F8800393ED3 /* AccountTypeSegmentedControl.swift in Sources */,
 				183F92CC298515ED00CF05FC /* RideActionView.swift in Sources */,
+				18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */,
 				1829534D29814C46007BB880 /* User.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
 				18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */,

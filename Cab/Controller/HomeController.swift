@@ -471,7 +471,7 @@ extension HomeController: MKMapViewDelegate {
         if let route = route {
             let polyline = route.polyline
             let lineRenderer = MKPolylineRenderer(polyline: polyline)
-            lineRenderer.strokeColor = .mainBlueTint
+            lineRenderer.strokeColor = .mainGreenTint
             lineRenderer.lineWidth = 4
             return lineRenderer
         }

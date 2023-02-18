@@ -12,7 +12,7 @@ extension UITextField {
     func inputTextField(withImage image: UIImage?, placeholder: String, keyboardType: UIKeyboardType, isSecureTextEntry: Bool) -> UITextField {
         let tf = UITextField()
         tf.borderStyle = .none
-        tf.layer.borderColor = UIColor.borderColor
+        tf.layer.borderColor = UIColor.borderTint
         tf.layer.borderWidth = 0.75
         tf.layer.cornerRadius = 5
         tf.font = .systemFont(ofSize: 16)

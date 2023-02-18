@@ -114,6 +114,25 @@ struct PassengerService {
 struct Service {
     static let shared = Service()
     
+    func signUp(withEmail email: String, password: String, completion: @escaping(AuthDataResult?, Error?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password, completion: completion)
+    }
+    
+    //    func uploadUserData(uid: String, values: [String: Any], completion: @escaping(Error?, DatabaseReference) -> Void) {
+    //        REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)
+    //    }
+    
+    func logIn(withEmail email: String, password: String, completion: @escaping(AuthDataResult?, Error?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password, completion: completion)
+    }
+    
+    func deleteAccount(completion: @escaping(Error?) -> Void) {
+        let user = Auth.auth().currentUser
+        user?.delete(completion: completion)
+    }
+    
+    
+    
     func fetchUserData(uid: String, completion: @escaping (User) -> Void) {
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }

@@ -10,11 +10,18 @@ import UIKit
 
 extension UIImage {
     
-    static let envelopeImage = UIImage(systemName: "envelope")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    static let personImage = UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    static let lockImage = UIImage(systemName: "lock")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    static let personFill = UIImage(systemName: "person.crop.square.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    static let showPassword = UIImage(systemName: "eye")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-    static let hidePassword = UIImage(systemName: "eye.slash")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+    static let envelopeImage = UIImage(systemName: "envelope")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
+    static let personImage = UIImage(systemName: "person")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
+    static let lockImage = UIImage(systemName: "lock")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
+    static let showPassword = UIImage(systemName: "eye")?.withTintColor(.mainGreenTint, renderingMode: .alwaysOriginal)
+    static let hidePassword = UIImage(systemName: "eye.slash")?.withTintColor(.mainGreenTint, renderingMode: .alwaysOriginal)
+}
+
+extension Optional where Wrapped == UIImage {
+    
+    func unwrapImage() -> UIImage {
+        guard let image = self else { return UIImage() }
+        return image
+    }
 }
 

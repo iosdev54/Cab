@@ -8,18 +8,29 @@
 import UIKit
 
 class AccountTypeSegmentedControl: UISegmentedControl {
-
-    //MARK: - Properties
-    private lazy var radius: CGFloat = 5
     
-        private var segmentInset: CGFloat = 0.1 {
-            didSet{
-                if segmentInset == 0 {
-                    segmentInset = 0.1
-                }
+    //MARK: - Properties
+    private var radius: CGFloat = 5
+    
+    private var segmentInset: CGFloat = 0.1 {
+        didSet{
+            if segmentInset == 0 {
+                segmentInset = 0.1
             }
         }
-
+    }
+    
+    //MARK: - Lifecycle
+    override init(items: [Any]?) {
+        super.init(items: items)
+        
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -27,48 +38,36 @@ class AccountTypeSegmentedControl: UISegmentedControl {
         
         layer.cornerRadius = radius
         layer.masksToBounds = true
-
+        
         let selectedImageViewIndex = numberOfSegments
         if let selectedImageView = subviews[selectedImageViewIndex] as? UIImageView {
-            selectedImageView.backgroundColor = UIColor(white: 0.8, alpha: 1)
+            selectedImageView.backgroundColor = UIColor.mainWhiteTint
             selectedImageView.image = nil
-
+            
             selectedImageView.bounds = selectedImageView.bounds.insetBy(dx: segmentInset, dy: segmentInset)
-
+            
             selectedImageView.layer.cornerRadius = radius
             selectedImageView.layer.masksToBounds = true
             
             selectedImageView.layer.removeAnimation(forKey: "SelectionBounds")
         }
+        
         for i in 0 ..< (self.numberOfSegments)  {
             let backgroundSegmentView = self.subviews[i]
             backgroundSegmentView.isHidden = true
         }
     }
-
-   //MARK: - Lifecycle
-
-    override init(items: [Any]?) {
-        super.init(items: items)
-        
-        configure()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
+    
     //MARK: - Helper Functions
-    func configure() {
+    private func configure() {
         selectedSegmentIndex = 0
         setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16),
-                                                 .foregroundColor: UIColor.lightGray], for: .normal)
+                                .foregroundColor: UIColor.mainWhiteTint], for: .normal)
         setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16),
-                                                 .foregroundColor: UIColor.black], for: .selected)
+                                .foregroundColor: UIColor.black], for: .selected)
         layer.borderWidth = 0.75
-        layer.borderColor = UIColor.borderColor
-
+        layer.borderColor = UIColor.borderTint
         anchor(height: 40)
     }
-
+    
 }

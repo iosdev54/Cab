@@ -17,6 +17,7 @@ class AuthButton: UIButton {
             updateView()
         }
     }
+    private let animationDuration = 0.25
     
     override var isHighlighted: Bool {
         get { return super.isHighlighted }
@@ -26,7 +27,7 @@ class AuthButton: UIButton {
             if newValue == true {
                 titleLabel?.alpha = 0.25
             } else {
-                UIView.animate(withDuration: 0.25) {
+                UIView.animate(withDuration: animationDuration) {
                     self.titleLabel?.alpha = 1
                 }
                 super.isHighlighted = newValue
@@ -38,6 +39,7 @@ class AuthButton: UIButton {
     //MARK: - Lifecycle
     init(title: String) {
         self.title = title
+        
         super.init(frame: .zero)
         setupView()
     }
@@ -51,9 +53,9 @@ class AuthButton: UIButton {
         setTitle(title, for: .normal)
         titleLabel?.font = .boldSystemFont(ofSize: 20)
         setTitleColor(UIColor.white, for: .normal)
-        backgroundColor = .mainBlueTint
+        backgroundColor = .mainGreenTint
         layer.cornerRadius = 5
-        heightAnchor.constraint(equalToConstant: 40).isActive = true
+        anchor(height: 40)
         
         spinner.hidesWhenStopped = true
         spinner.color = .white
@@ -69,13 +71,13 @@ class AuthButton: UIButton {
     private func updateView() {
         
         if isLoading {
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: animationDuration) {
                 self.spinner.startAnimating()
                 self.setTitle("", for: .normal)
                 self.isEnabled = false
             }
         } else {
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: animationDuration) {
                 self.spinner.stopAnimating()
                 self.setTitle(self.title, for: .normal)
                 self.isEnabled = true
