@@ -24,7 +24,7 @@ class AccountTypeSegmentedControl: UISegmentedControl {
     override init(items: [Any]?) {
         super.init(items: items)
         
-        configure()
+        configureSegmentedControl()
     }
     
     required init?(coder: NSCoder) {
@@ -59,7 +59,7 @@ class AccountTypeSegmentedControl: UISegmentedControl {
     }
     
     //MARK: - Helper Functions
-    private func configure() {
+    private func configureSegmentedControl() {
         selectedSegmentIndex = 0
         setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16),
                                 .foregroundColor: UIColor.mainWhiteTint], for: .normal)

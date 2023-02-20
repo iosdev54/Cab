@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 private let reuseIdentifier = "MenuCell"
 
@@ -31,18 +32,33 @@ class MenuController: UIViewController {
     
     //MARK: - Properties
     private let user: User
-    private var tableView = UITableView()
+    private let tableView = UITableView()
     
     private lazy var menuHeader: MenuHeader = {
-        let frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 80, height: 140)
-        let view = MenuHeader(user: user, frame: frame)
+        let view = MenuHeader(user: user)
+        view.frame.size.height = 100
+        return view
+    }()
+    
+    private lazy var menuFooter: UIView = {
+        let view = UIView()
+        
+        let animationView = LottieAnimationView(name: "water-animation-on-the-map")
+        animationView.setDimensions(height: 150, width: 150)
+        animationView.loopMode = .loop
+        animationView.animationSpeed = 0.5
+        animationView.play()
+        
+        view.addSubview(animationView)
+        animationView.centerX(inView: view)
+        animationView.centerY(inView: view)
+        
         return view
     }()
     
     weak var delegate: MenuControllerDelegate?
     
     //MARK: - Lyfecycle
-    
     init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
@@ -58,20 +74,43 @@ class MenuController: UIViewController {
         configureTableView()
     }
     
-    //MARK: - Selectors
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        adjustFooterViewHeightToFillTableView()
+    }
     
     //MARK: - Helper Functions
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .mainWhiteTint
         tableView.isScrollEnabled = false
-        tableView.rowHeight = 60
+        tableView.rowHeight = 50
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableHeaderView = menuHeader
+        tableView.tableFooterView = menuFooter
         self.view.addSubview(tableView)
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor)
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, paddingRight: 80 - 10)
+    }
+    
+    func adjustFooterViewHeightToFillTableView() {
+        guard let tableFooterView = tableView.tableFooterView else { return }
+        
+        let minHeight = tableFooterView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        let currentFooterHeight = tableFooterView.frame.height
+        let fitHeight = tableView.frame.height - tableView.adjustedContentInset.top - tableView.adjustedContentInset.bottom - tableView.contentSize.height + currentFooterHeight
+        let nextHeight = (fitHeight > minHeight) ? fitHeight : minHeight
+        
+        // No height change needed ?
+        guard round(nextHeight) != round(currentFooterHeight) else { return }
+        
+        var frame = tableFooterView.frame
+        frame.size.height = nextHeight
+        tableFooterView.frame = frame
+        tableView.tableFooterView = tableFooterView
     }
 }
 
@@ -84,13 +123,23 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        
         guard let option = MenuOptions(rawValue: indexPath.row) else { return UITableViewCell()}
-        cell.textLabel?.text = option.description
+        
+        var content = cell.defaultContentConfiguration()
+        content.text = option.description
+        content.textProperties.color = .white
+        content.textProperties.font = UIFont.systemFont(ofSize: 18)
+        cell.backgroundColor = .clear
+        cell.contentConfiguration = content
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         guard let option = MenuOptions(rawValue: indexPath.row) else { return }
         delegate?.didSelect(option: option)
     }
+    
 }
