@@ -118,6 +118,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		181F728629A4F43D009852D7 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				185DF6B829A2529C00692D3B /* yellow-taxi.json */,
+				185DF6BA29A2778500692D3B /* taxiPath.json */,
+				1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */,
+				1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */,
+				1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		18207B71297AD155000E8EFC = {
 			isa = PBXGroup;
 			children = (
@@ -219,11 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				18207B86297AD157000E8EFC /* Assets.xcassets */,
-				185DF6B829A2529C00692D3B /* yellow-taxi.json */,
-				185DF6BA29A2778500692D3B /* taxiPath.json */,
-				1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */,
-				1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */,
-				1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */,
+				181F728629A4F43D009852D7 /* Animation */,
 			);
 			path = Assets;
 			sourceTree = "<group>";

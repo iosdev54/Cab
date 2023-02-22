@@ -15,6 +15,8 @@ class MenuHeader: UIView {
     private lazy var profileImageView: UIView = {
         let view = UIView()
         view.backgroundColor = .mainGreenTint
+        view.setDimensions(height: 64, width: 64)
+        view.layer.cornerRadius = 64 / 2
         
         view.addSubview(initialLabel)
         initialLabel.centerX(inView: view)
@@ -50,7 +52,25 @@ class MenuHeader: UIView {
     private lazy var bottomSingleLine: UIView = {
         let view = UIView()
         view.backgroundColor = .mainGreenTint
+        view.anchor(height: 1.25)
         return view
+    }()
+    
+    private lazy var pickupModeLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    private lazy var pickupModeSwitch: UISwitch = {
+        let s = UISwitch()
+        s.isOn = true
+        s.tintColor = .mainWhiteTint
+        s.onTintColor = .mainGreenTint
+        s.layer.cornerRadius = s.frame.height / 2
+        s.backgroundColor = .lightGray
+        s.clipsToBounds = true
+        s.addTarget(self, action: #selector(handlePickupModeChanged), for: .valueChanged)
+        return s
     }()
     
     //MARK: - Lifecycle
@@ -68,23 +88,74 @@ class MenuHeader: UIView {
     //MARK: - HelperFunctions
     func setupView() {
         
-        addSubview(profileImageView)
-        profileImageView.centerY(inView: self)
-        profileImageView.anchor(left: leftAnchor, paddingLeft: 16, width: 64, height: 64)
-        profileImageView.layer.cornerRadius = 64 / 2
+        let stackUser = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
+        stackUser.axis = .vertical
+        stackUser.distribution = .fillEqually
+        stackUser.spacing = 4
+        stackUser.alignment = .leading
         
-        let stack = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = 4
-        stack.alignment = .leading
+        let stackProfile = UIStackView(arrangedSubviews: [profileImageView, stackUser])
+        stackProfile.axis = .horizontal
+        stackProfile.distribution = .fill
+        stackProfile.spacing = 16
+        stackProfile.alignment = .center
         
-        addSubview(stack)
-        stack.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 16)
-        //        stack.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 16, rightAnchor: rightAnchor, paddingRight: 16 + 10)
+        stackProfile.isLayoutMarginsRelativeArrangement = true
+        stackProfile.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
         
-        addSubview(bottomSingleLine)
-        bottomSingleLine.anchor(left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, height: 1.25)
+        let stackMain = UIStackView(arrangedSubviews: [stackProfile])
+        stackMain.axis = .vertical
+        stackMain.distribution = .fill
+        stackMain.spacing = 16
+        
+        addSubview(stackMain)
+        
+        //Hack to fix AutoLayout bug related to UIView-Encapsulated-Layout-Width
+        stackMain.translatesAutoresizingMaskIntoConstraints = false
+        let leftConstraint = stackMain.leftAnchor.constraint(equalTo: leftAnchor)
+        leftConstraint.priority = .defaultHigh
+        
+        let topConstraint = stackMain.topAnchor.constraint(equalTo: topAnchor)
+        topConstraint.priority = .defaultHigh
+        
+        NSLayoutConstraint.activate([
+            leftConstraint,
+            topConstraint,
+            stackMain.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            stackMain.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+        ])
+        
+        if user.accountType == .driver {
+            let stackPickup = UIStackView(arrangedSubviews: [pickupModeLabel, pickupModeSwitch])
+            stackPickup.axis = .horizontal
+            stackPickup.distribution = .fill
+            
+            stackPickup.isLayoutMarginsRelativeArrangement = true
+            stackPickup.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+            
+            stackMain.addArrangedSubview(stackPickup)
+            
+            pickupModeLabel.attributedText = attributtedStringForPickupModeLabel()
+        }
+        
+        stackMain.addArrangedSubview(bottomSingleLine)
+        
+    }
+    
+    func attributtedStringForPickupModeLabel() -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: "PICKUP MODE  ", attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.mainWhiteTint])
+        if pickupModeSwitch.isOn {
+            attributedString.append(NSAttributedString(string: "ENABLED", attributes: [.font: UIFont.boldSystemFont(ofSize: 12), .foregroundColor: UIColor.mainGreenTint]))
+        } else {
+            attributedString.append(NSAttributedString(string: "DISABLED", attributes: [.font: UIFont.boldSystemFont(ofSize: 12), .foregroundColor: UIColor.red]))
+        }
+        return attributedString
+    }
+    
+    //MARK: - Selectors
+    @objc func handlePickupModeChanged() {
+        //FIXME: - handlePickupModeChanged
+        pickupModeLabel.attributedText = attributtedStringForPickupModeLabel()
     }
     
 }

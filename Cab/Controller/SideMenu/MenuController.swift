@@ -35,9 +35,7 @@ class MenuController: UIViewController {
     private let tableView = UITableView()
     
     private lazy var menuHeader: MenuHeader = {
-        let view = MenuHeader(user: user)
-        view.frame.size.height = 100
-        return view
+        return MenuHeader(user: user)
     }()
     
     private lazy var menuFooter: UIView = {
@@ -45,6 +43,7 @@ class MenuController: UIViewController {
         
         let animationView = LottieAnimationView(name: "water-animation-on-the-map")
         animationView.setDimensions(height: 150, width: 150)
+        animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
         animationView.animationSpeed = 0.5
         animationView.play()
@@ -53,6 +52,12 @@ class MenuController: UIViewController {
         animationView.centerX(inView: view)
         animationView.centerY(inView: view)
         
+        return view
+    }()
+    
+    private lazy var selectedBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .mainGreenTint.withAlphaComponent(0.5)
         return view
     }()
     
@@ -77,6 +82,7 @@ class MenuController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        autoLayoutHeaderView()
         adjustFooterViewHeightToFillTableView()
     }
     
@@ -86,14 +92,27 @@ class MenuController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .mainWhiteTint
+        tableView.separatorColor = .mainGreenTint
         tableView.isScrollEnabled = false
         tableView.rowHeight = 50
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.tableHeaderView = menuHeader
         tableView.tableFooterView = menuFooter
+        
         self.view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, paddingRight: 80 - 10)
+    }
+    
+    func autoLayoutHeaderView() {
+        guard let headerView = self.tableView.tableHeaderView else { return }
+        
+        let width = self.tableView.bounds.size.width
+        let size = headerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+        
+        if headerView.frame.size.height != size.height {
+            headerView.frame.size.height = size.height
+            tableView.tableHeaderView = headerView
+        }
     }
     
     func adjustFooterViewHeightToFillTableView() {
@@ -104,7 +123,6 @@ class MenuController: UIViewController {
         let fitHeight = tableView.frame.height - tableView.adjustedContentInset.top - tableView.adjustedContentInset.bottom - tableView.contentSize.height + currentFooterHeight
         let nextHeight = (fitHeight > minHeight) ? fitHeight : minHeight
         
-        // No height change needed ?
         guard round(nextHeight) != round(currentFooterHeight) else { return }
         
         var frame = tableFooterView.frame
@@ -123,6 +141,7 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        cell.selectedBackgroundView = selectedBackgroundView
         
         guard let option = MenuOptions(rawValue: indexPath.row) else { return UITableViewCell()}
         
