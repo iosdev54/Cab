@@ -16,6 +16,15 @@ extension UIViewController {
         present(alert, animated: true)
     }
     
+    func presentAlertController(withTitle title: String, message: String, actionName: String, completion: @escaping (UIAlertAction) -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: actionName, style: .destructive, handler: completion)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+    
     func shouldPresentLoadingView(_ present: Bool, message: String? = nil) {
         if present {
             let loadingView = UIView()

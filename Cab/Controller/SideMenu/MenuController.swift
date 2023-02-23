@@ -55,12 +55,6 @@ class MenuController: UIViewController {
         return view
     }()
     
-    private lazy var selectedBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .mainGreenTint.withAlphaComponent(0.5)
-        return view
-    }()
-    
     weak var delegate: MenuControllerDelegate?
     
     //MARK: - Lyfecycle
@@ -141,7 +135,8 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.selectedBackgroundView = selectedBackgroundView
+        cell.selectedBackgroundView = UIView().selectedBackgroundView
+        cell.backgroundColor = .clear
         
         guard let option = MenuOptions(rawValue: indexPath.row) else { return UITableViewCell()}
         
@@ -149,7 +144,6 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
         content.text = option.description
         content.textProperties.color = .white
         content.textProperties.font = UIFont.systemFont(ofSize: 18)
-        cell.backgroundColor = .clear
         cell.contentConfiguration = content
         return cell
     }

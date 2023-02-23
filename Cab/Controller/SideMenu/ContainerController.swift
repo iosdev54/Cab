@@ -147,6 +147,17 @@ extension ContainerController: SettingsControllerDelegate {
         self.user = controller.user
     }
     
+    func deleteUser() {
+        print("DEBUG: Container deleteUser")
+        menuController.dismiss(animated: true)
+        homeController.dismiss(animated: true)
+        
+        presentLoginController()
+        self.presentAlertController(withTitle: "Account deleted!", message: "")
+        print("DEBUG: user \(user)")
+        
+    }
+    
 }
 
 //MARK: - HomeControllerDelegate

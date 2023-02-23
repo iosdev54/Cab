@@ -30,6 +30,7 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
 
 protocol SettingsControllerDelegate: AnyObject {
     func updateUser(_ controller: SettingsController)
+    func deleteUser()
 }
 
 class SettingsController : UIViewController {
@@ -38,18 +39,16 @@ class SettingsController : UIViewController {
     var user: User
     private let tableView = UITableView()
     private let locationManager = LocationHandler.shared.locationManager
-
+    
     weak var delegate: SettingsControllerDelegate?
-//    private var userInfoUpdated = false
-
-    private lazy var infoHeader: UserInfoHeader = {
-        let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100)
-        let view = UserInfoHeader(user: user, frame: frame)
+    
+    private lazy var userProfileHeader: UserProfileHeader = {
+        let view = UserProfileHeader(user: user)
+        view.delegate = self
         return view
     }()
     
     //MARK: - Lifecycle
-    
     init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
@@ -62,15 +61,19 @@ class SettingsController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .backgroundColor
         configureTableView()
         configureNavigatoionBar()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        autoLayoutHeaderView()
+    }
+    
     //MARK: - Selectors
     @objc private func handleDismissal() {
-//        if userInfoUpdated {
-//            delegate?.updateUser(self)
-//        }
         dismiss(animated: true)
     }
     
@@ -78,38 +81,30 @@ class SettingsController : UIViewController {
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .white
-        tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .mainGreenTint
+        tableView.isScrollEnabled = false
         tableView.rowHeight = 60
-        tableView.tableHeaderView = infoHeader
+        tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.sectionHeaderTopPadding = 10
+        tableView.tableHeaderView = userProfileHeader
         
         view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor)
     }
     
     private func configureNavigatoionBar() {
-        //        view.backgroundColor = .backgroundColor
-        //        navigationController?.navigationBar.prefersLargeTitles = true
-        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        //        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        //        navigationItem.title = "Settings"
-        //
-        //        navigationController?.navigationBar.tintColor = .white
-        //        navigationController?.navigationBar.barTintColor = .backgroundColor
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
-        
-        //Second way
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .backgroundColor
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.mainGreenTint]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.mainGreenTint]
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Settings"
-        navigationController?.navigationBar.barTintColor = .backgroundColor //Doesn't work
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.dismiss.unwrapImage(), style: .plain, target: self, action: #selector(handleDismissal))
     }
     
     func locationText(forType type: LocationType) -> String {
@@ -118,6 +113,18 @@ class SettingsController : UIViewController {
             return user.homeLocation ?? type.subtitle
         case .work:
             return user.workLocation ?? type.subtitle
+        }
+    }
+    
+    func autoLayoutHeaderView() {
+        guard let headerView = self.tableView.tableHeaderView else { return }
+        
+        let width = self.tableView.bounds.size.width
+        let size = headerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+        
+        if headerView.frame.size.height != size.height {
+            headerView.frame.size.height = size.height
+            tableView.tableHeaderView = headerView
         }
     }
     
@@ -138,24 +145,6 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .backgroundColor
-        
-        let title = UILabel()
-        title.font = UIFont.systemFont(ofSize: 16)
-        title.textColor = .white
-        title.text = "Favorites"
-        
-        view.addSubview(title)
-        title.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 16)
-        
-        return view
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let type = LocationType(rawValue: indexPath.row) else { return }
@@ -165,15 +154,33 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .clear
+        
+        let title = UILabel()
+        title.font = UIFont.systemFont(ofSize: 18)
+        title.textColor = .white
+        title.text = "Favorites"
+        
+        view.addSubview(title)
+        title.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 20, paddingRight: 16)
+        
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
 }
 
 //MARK: - AddLocationControllerDelegate
 extension SettingsController: AddLocationControllerDelegate {
-   
+    
     func updateLocation(locationString: String, type: LocationType) {
         PassengerService.shared.saveLocation(locationString: locationString, type: type) { err, ref in
             self.dismiss(animated: true)
-//            self.userInfoUpdated = true
             
             switch type {
             case .home:
@@ -183,7 +190,29 @@ extension SettingsController: AddLocationControllerDelegate {
             }
             self.delegate?.updateUser(self)
             self.tableView.reloadData()
-        } 
+        }
+    }
+    
+}
+
+//MARK: - UserProfileHeaderDelegate
+extension SettingsController: UserProfileHeaderDelegate {
+    func handleChangeData() {
+        print("DEBUG: handleChangeData")
+    }
+    
+    func handleDeleteAccount() {
+        
+        presentAlertController(withTitle: "Are you sure you want to delete your account?", message: "All your data will be deleted.", actionName: "Delete") { _ in
+            Service.shared.deleteAccount { [weak self] error in
+                guard let `self` = self else { return }
+                if let error {
+                    self.presentAlertController(withTitle: "Oops!", message: "Deletion error, \(error.localizedDescription)")
+                } else {
+                    self.delegate?.deleteUser()
+                }
+            }
+        }
     }
     
 }

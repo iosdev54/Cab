@@ -27,6 +27,7 @@ class AddLocationController: UIViewController {
     }
     private let type: LocationType
     private let location: CLLocation
+    private let regionInMetters = 2_000.00
     
     weak var delegate: AddLocationControllerDelegate?
     
@@ -54,9 +55,11 @@ class AddLocationController: UIViewController {
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .mainWhiteTint
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .lightGray
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 60
-        //        tableView.addShadow()
+        tableView.rowHeight = 50
         
         view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor)
@@ -66,12 +69,13 @@ class AddLocationController: UIViewController {
         searchBar.sizeToFit()
         searchBar.delegate = self
         searchBar.backgroundColor = .backgroundColor
-        searchBar.searchTextField.backgroundColor = .white
+        searchBar.placeholder = "Enter the name or address of the location"
+        searchBar.searchTextField.backgroundColor = .mainWhiteTint
         navigationItem.titleView = searchBar
     }
     
     private func configureSearchCompleter() {
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: regionInMetters, longitudinalMeters: regionInMetters)
         searchCompleter.region = region
         searchCompleter.delegate = self
     }
@@ -85,6 +89,7 @@ extension AddLocationController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        cell.backgroundColor = .clear
         let result = searchResults[indexPath.row]
         var content = cell.defaultContentConfiguration()
         content.text = result.title
@@ -110,9 +115,7 @@ extension AddLocationController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchCompleter.queryFragment = searchText
         
-        if searchText == "" {
-            searchResults.removeAll()
-        }
+        if searchText == "" { searchResults.removeAll() }
     }
     
 }
@@ -121,6 +124,6 @@ extension AddLocationController: UISearchBarDelegate {
 extension AddLocationController: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         searchResults = completer.results
-//        print("DEBUG: Search results \(searchResults)")
     }
+    
 }
