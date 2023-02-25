@@ -123,7 +123,7 @@ class RideActionView: UIView {
         super.init(frame: frame)
         
         backgroundColor = .white
-        addShadow()
+        applyShadow()
         
         let stack = UIStackView(arrangedSubviews: [titleLabel, addressLabel])
         stack.axis = .vertical

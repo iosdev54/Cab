@@ -20,12 +20,12 @@ class LoginController: UIViewController {
         return label
     }()
     
-    private lazy var emailTextField: UITextField = {
-        return AccountTextField(leftImage: UIImage.envelopeImage.unwrapImage(), placeholderString: "Email", typeOfKeyboard: .emailAddress)
+    private lazy var emailTextField: CustomTextField = {
+        return CustomTextField(config: .autorization, placeholder: "Email", leftImage: UIImage.envelopeImageIcon.unwrapImage(), keyboardType: .emailAddress)
     }()
     
-    private lazy var passwordTextField: AccountTextField = {
-        return AccountTextField(leftImage: UIImage.lockImage.unwrapImage(), placeholderString: "Password", typeOfKeyboard: .default, isSecureText: true, isRightButton: true)
+    private lazy var passwordTextField: CustomTextField = {
+        return CustomTextField(config: .autorization, placeholder: "Password", leftImage: UIImage.lockImageIcon.unwrapImage(), keyboardType: .default, isSecureTextEntry: true, rightButtonAction: .password)
     }()
     
     private lazy var loginButton: AuthButton = {

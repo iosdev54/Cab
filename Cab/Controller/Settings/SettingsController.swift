@@ -104,7 +104,7 @@ class SettingsController : UIViewController {
         navigationItem.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Settings"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.dismiss.unwrapImage(), style: .plain, target: self, action: #selector(handleDismissal))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.dismissIcon.unwrapImage(), style: .plain, target: self, action: #selector(handleDismissal))
     }
     
     func locationText(forType type: LocationType) -> String {

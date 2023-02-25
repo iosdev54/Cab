@@ -11,7 +11,7 @@ class AuthButton: UIButton {
     
     //MARK: - Properties
     private let title: String
-    private var spinner = UIActivityIndicatorView()
+    private let spinner = UIActivityIndicatorView()
     var isLoading = false {
         didSet {
             updateView()
@@ -63,8 +63,6 @@ class AuthButton: UIButton {
         spinner.style = .medium
         
         addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        
         spinner.centerX(inView: self)
         spinner.centerY(inView: self)
     }

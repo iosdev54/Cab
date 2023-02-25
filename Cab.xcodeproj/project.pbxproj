@@ -48,10 +48,10 @@
 		18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */; };
 		18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */; };
 		18B97A4D298165740080B104 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B97A4C298165740080B104 /* LocationHandler.swift */; };
-		18C309FD299FE29000669E75 /* AccountTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C309FC299FE29000669E75 /* AccountTextField.swift */; };
 		18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D4C703299B86E900A87007 /* GoogleService-Info.plist */; };
 		18E5739C298FCBE200106C38 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739B298FCBE200106C38 /* MenuController.swift */; };
 		18E5739E298FCC2100106C38 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739D298FCC2100106C38 /* ContainerController.swift */; };
+		18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F267AF29A8EED2007735A2 /* CustomTextField.swift */; };
 		2D2E5DBC0E03C81A2D71BA4D /* Pods_Cab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C7A236092560C4EB0DF411 /* Pods_Cab.framework */; };
 /* End PBXBuildFile section */
 
@@ -99,10 +99,10 @@
 		18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPlacemark+Extensions.swift"; sourceTree = "<group>"; };
 		18B97A4C298165740080B104 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
-		18C309FC299FE29000669E75 /* AccountTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTextField.swift; sourceTree = "<group>"; };
 		18D4C703299B86E900A87007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18E5739B298FCBE200106C38 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		18E5739D298FCC2100106C38 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		18F267AF29A8EED2007735A2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		23C7A236092560C4EB0DF411 /* Pods_Cab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42C3EBD47776177E14FCD421 /* Pods-Cab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cab.debug.xcconfig"; path = "Target Support Files/Pods-Cab/Pods-Cab.debug.xcconfig"; sourceTree = "<group>"; };
 		E7E5CD4333DF6CBA9DB7D9BE /* Pods-Cab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cab.release.xcconfig"; path = "Target Support Files/Pods-Cab/Pods-Cab.release.xcconfig"; sourceTree = "<group>"; };
@@ -207,7 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				18207B9C297C4A09000E8EFC /* AuthButton.swift */,
-				18C309FC299FE29000669E75 /* AccountTextField.swift */,
+				18F267AF29A8EED2007735A2 /* CustomTextField.swift */,
 				18883FFA299E6F8800393ED3 /* AccountTypeSegmentedControl.swift */,
 				18727E05297EB7D40047811B /* LocationInputActivationView.swift */,
 				18727E09297ECE840047811B /* LocationInputView.swift */,
@@ -451,12 +451,12 @@
 				18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */,
 				1836D07A298FE562008AEBE8 /* MenuHeader.swift in Sources */,
 				18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */,
-				18C309FD299FE29000669E75 /* AccountTextField.swift in Sources */,
 				18883FFB299E6F8800393ED3 /* AccountTypeSegmentedControl.swift in Sources */,
 				183F92CC298515ED00CF05FC /* RideActionView.swift in Sources */,
 				18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */,
 				1829534D29814C46007BB880 /* User.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
+				18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */,
 				18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */,
 				180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */,
 				18A0133F2997C8E7003D721C /* CircularProgressView.swift in Sources */,

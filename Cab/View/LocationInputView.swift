@@ -8,7 +8,6 @@
 import UIKit
 
 protocol LocationInputViewDelegate: AnyObject {
-    
     func dismissLocationInputView()
     func executeSearch(query: String)
 }
@@ -16,111 +15,62 @@ protocol LocationInputViewDelegate: AnyObject {
 class LocationInputView: UIView {
     
     //MARK: - Properties
-    weak var delegate: LocationInputViewDelegate?
-    
     var user: User? {
         didSet { titleLabel.text = user?.fullname }
     }
     
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage.backIcon.unwrapImage(), for: .normal)
         button.addTarget(self, action: #selector(handleBackTapped), for: .touchUpInside)
         return button
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .darkGray
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .backgroundColor
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
     }()
     
-    private let startLocationIndicatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }()
-    
-    private let linkingView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .darkGray
-        return view
-    }()
-    
-    private let destinationIndicatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .black
-        return view
-    }()
-    
-    private lazy var startingLocationTextField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Current location"
-        tf.backgroundColor = .systemGroupedBackground
-        tf.font = UIFont.systemFont(ofSize: 14)
-        tf.isEnabled = false
-        
-        let paddingView = UIView()
-        paddingView.setDimensions(height: 30, width: 8)
-        tf.leftView = paddingView
-        tf.leftViewMode = .always
-        
-        return tf
-    }()
-    
-    private lazy var destinationLocationTextField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Enter a destination..."
-        tf.backgroundColor = .lightGray
-        tf.returnKeyType = .search
-        tf.font = UIFont.systemFont(ofSize: 14)
+    private lazy var startingLocationTextField: CustomTextField = {
+        let tf = CustomTextField(config: .location, placeholder: "Change current location", leftImage: UIImage.mappinIcon.unwrapImage(), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
         tf.delegate = self
-        
-        let paddingView = UIView()
-        paddingView.setDimensions(height: 30, width: 8)
-        tf.leftView = paddingView
-        tf.leftViewMode = .always
-        
+        tf.myDelegate = self
         return tf
     }()
+    
+    private lazy var destinationLocationTextField: CustomTextField = {
+        let tf = CustomTextField(config: .location, placeholder: "Enter a destination", leftImage: UIImage.mapIcon.unwrapImage(), keyboardType: .alphabet)
+        tf.delegate = self
+        return tf
+    }()
+    
+    weak var delegate: LocationInputViewDelegate?
     
     //MARK: - Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
-        addShadow()
+        backgroundColor = .mainWhiteTint
+        applyShadow()
         
         addSubview(backButton)
-        backButton.anchor(top: topAnchor, left: leftAnchor, paddingTop: 44, paddingLeft: 12, width: 24, height: 24)
+        backButton.anchor(left: leftAnchor, paddingLeft: 16, width: 32, height: 32)
         
         addSubview(titleLabel)
         titleLabel.centerY(inView: backButton)
         titleLabel.centerX(inView: self)
         
-        addSubview(startingLocationTextField)
-        startingLocationTextField.anchor(top: backButton.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 40, paddingRight: 40, height: 30)
+        let stack = UIStackView(arrangedSubviews: [startingLocationTextField, destinationLocationTextField])
+        stack.axis = .vertical
+        stack.distribution = .fill
+        stack.spacing = 16
         
-        addSubview(destinationLocationTextField)
-        destinationLocationTextField.anchor(top: startingLocationTextField.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12, paddingLeft: 40, paddingRight: 40, height: 30)
-        
-        addSubview(startLocationIndicatorView)
-        startLocationIndicatorView.setDimensions(height: 6, width: 6)
-        startLocationIndicatorView.centerY(inView: startingLocationTextField, leftAnchor: leftAnchor, paddingLeft: 20)
-        startLocationIndicatorView.layer.cornerRadius = 6 / 2
-        
-        addSubview(destinationIndicatorView)
-        destinationIndicatorView.setDimensions(height: 6, width: 6)
-        destinationIndicatorView.centerY(inView: destinationLocationTextField, leftAnchor: leftAnchor, paddingLeft: 20)
-
-        addSubview(linkingView)
-        linkingView.centerX(inView: startLocationIndicatorView)
-        linkingView.anchor(top: startLocationIndicatorView.bottomAnchor, bottom: destinationIndicatorView.topAnchor, paddingTop: 4, paddingBottom: 4, width: 0.5)
-        
-        
+        addSubview(stack)
+        stack.anchor(top: backButton.bottomAnchor, left: leftAnchor, right: rightAnchor, bottom: bottomAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16, paddingBottom: 16)
     }
     
     required init?(coder: NSCoder) {
@@ -131,16 +81,33 @@ class LocationInputView: UIView {
     @objc private func handleBackTapped() {
         delegate?.dismissLocationInputView()
     }
-    
 }
 
-
+//MARK: - UITextFieldDelegate
 extension LocationInputView: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let query = textField.text else { return false }
-        delegate?.executeSearch(query: query)
-        textField.resignFirstResponder()
-        return true
+        
+        if textField == startingLocationTextField {
+            //FIXME: - startingLocationTextField
+            print("DEBUG: startingLocationTextField")
+            textField.resignFirstResponder()
+        }
+        if textField == destinationLocationTextField {
+            guard let query = textField.text else { return false }
+            delegate?.executeSearch(query: query)
+            textField.resignFirstResponder()
+            return true
+        }
+        return false
     }
+}
+
+//MARK: - CustomTextFieldDelegate
+extension LocationInputView: CustomTextFieldDelegate {
+    func chooseCurrentLocation() {
+        //FIXME: - chooseCurrentLocation
+        print("DEBUG: Choose current location.")
+    }
+    
 }

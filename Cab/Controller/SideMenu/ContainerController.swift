@@ -148,14 +148,9 @@ extension ContainerController: SettingsControllerDelegate {
     }
     
     func deleteUser() {
-        print("DEBUG: Container deleteUser")
-        menuController.dismiss(animated: true)
-        homeController.dismiss(animated: true)
-        
+        //FIXME: - deleteUser
         presentLoginController()
         self.presentAlertController(withTitle: "Account deleted!", message: "")
-        print("DEBUG: user \(user)")
-        
     }
     
 }
@@ -197,7 +192,7 @@ extension ContainerController: MenuControllerDelegate {
                 alert.addAction(cancel)
                 self.present(alert, animated: true)
                 
-                //FIXME: - Fix
+                //FIXME: - Dismiss controllers
 //                                self.menuController.view.removeFromSuperview()
             }
         }

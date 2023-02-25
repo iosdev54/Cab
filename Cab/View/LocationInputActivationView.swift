@@ -8,18 +8,15 @@
 import UIKit
 
 protocol LocationInputActivationViewDelegate: AnyObject {
-    
     func presentLocationInputView()
 }
 
 class LocationInputActivationView: UIView {
     
     //MARK: - Properties
-    weak var delegate: LocationInputActivationViewDelegate?
-    
     private let indicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .mainGreenTint
         return view
     }()
     
@@ -30,20 +27,24 @@ class LocationInputActivationView: UIView {
         label.textColor = .darkGray
         return label
     }()
+    
+    weak var delegate: LocationInputActivationViewDelegate?
+    
     //MARK: - Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
-        addShadow()
+        backgroundColor = .mainWhiteTint
+        makeCorner(cornerRadius: 5)
+        applyShadow()
         
         addSubview(indicatorView)
         indicatorView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 16)
-        indicatorView.setDimensions(height: 6, width: 6)
+        indicatorView.setDimensions(height: 8, width: 8)
         
         addSubview(placeholderLabel)
-        placeholderLabel.centerY(inView: self, leftAnchor: indicatorView.rightAnchor, paddingLeft: 20)
+        placeholderLabel.centerY(inView: self, leftAnchor: indicatorView.rightAnchor, paddingLeft: 16)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(presentLocationInputView))
         addGestureRecognizer(tap)
@@ -51,6 +52,12 @@ class LocationInputActivationView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        indicatorView.makeCorner(cornerRadius: indicatorView.frame.size.height / 2)
     }
     
     //MARK: - Selectors

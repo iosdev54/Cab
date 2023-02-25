@@ -10,7 +10,7 @@ import UIKit
 class AccountTypeSegmentedControl: UISegmentedControl {
     
     //MARK: - Properties
-    private var radius: CGFloat = 5
+    private let radius: CGFloat = 5
     
     private var segmentInset: CGFloat = 0.1 {
         didSet{
@@ -35,20 +35,14 @@ class AccountTypeSegmentedControl: UISegmentedControl {
         super.layoutSubviews()
         
         backgroundColor = .clear
-        
-        layer.cornerRadius = radius
-        layer.masksToBounds = true
+        makeCorner(cornerRadius: radius)
         
         let selectedImageViewIndex = numberOfSegments
         if let selectedImageView = subviews[selectedImageViewIndex] as? UIImageView {
             selectedImageView.backgroundColor = UIColor.mainWhiteTint
             selectedImageView.image = nil
-            
             selectedImageView.bounds = selectedImageView.bounds.insetBy(dx: segmentInset, dy: segmentInset)
-            
-            selectedImageView.layer.cornerRadius = radius
-            selectedImageView.layer.masksToBounds = true
-            
+            selectedImageView.makeCorner(cornerRadius: 5)
             selectedImageView.layer.removeAnimation(forKey: "SelectionBounds")
         }
         
