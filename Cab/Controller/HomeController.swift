@@ -80,10 +80,11 @@ class HomeController: UIViewController {
     
     private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(AppImages.menuIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .default), for: .normal)
         button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         return button
     }()
+    
     private var actionButtonConfig = ActionButonConfiguration()
     
     
@@ -236,10 +237,10 @@ class HomeController: UIViewController {
     private func configureActionButton(config: ActionButonConfiguration) {
         switch config {
         case .showMenu:
-            actionButton.setImage(UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            actionButton.setImage(AppImages.menuIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .default), for: .normal)
             actionButtonConfig = .showMenu
         case .dismissActionView:
-            actionButton.setImage(UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            actionButton.setImage(AppImages.backIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .large), for: .normal)
             actionButtonConfig = .dismissActionView
         }
     }
@@ -281,11 +282,12 @@ class HomeController: UIViewController {
         view.addSubview(locationInpitView)
         locationInpitView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: locationInputViewHeight)
         locationInpitView.alpha = 0
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let `self` = self else { return }
             self.locationInpitView.alpha = 1
         } completion: { _ in
-            //            print("DEBUG: Present table view")
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                guard let `self` = self else { return }
                 self.tableView.frame.origin.y = self.locationInputViewHeight
             }
         }
@@ -300,19 +302,23 @@ class HomeController: UIViewController {
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .mainWhiteTint
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .lightGray
         tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
-        //        tableView.sectionHeaderTopPadding = 0
+        tableView.sectionHeaderTopPadding = 10
         let height = view.frame.height - locationInputViewHeight
         tableView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: height)
         view.addSubview(tableView)
     }
     
     private func dissmissLocationView(completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            guard let `self` = self else { return }
             self.locationInpitView.alpha = 0
             self.tableView.frame.origin.y = self.view.frame.height
-            self.locationInpitView.removeFromSuperview()
+//            self.locationInpitView.removeFromSuperview()
         }, completion: completion)
     }
     
@@ -578,17 +584,15 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         return section == 0 ? "Saved Locations" : "Results"
     }
     
-    //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //        let headerView = UIView()
-    //        headerView.backgroundColor = .systemGroupedBackground
-    //        let headerTitle = UILabel()
-    //        headerTitle.text = "Test"
-    //        headerTitle.font = UIFont.boldSystemFont(ofSize: 14)
-    //        headerTitle.textAlignment = .left
-    //        headerView.addSubview(headerTitle)
-    //        headerTitle.centerY(inView: headerView, leftAnchor: headerView.leftAnchor, paddingLeft: 20, rightAnchor: headerView.rightAnchor, paddingRight: 20)
-    //        return headerView
-    //    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            var content = headerView.defaultContentConfiguration()
+            content.text = section == 0 ? "Saved Locations" : "Results"
+            content.textProperties.font = .boldSystemFont(ofSize: 16)
+            content.textProperties.color = .darkGray
+            headerView.contentConfiguration = content
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
@@ -604,16 +608,15 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPlacemark = indexPath.section == 0 ? savedLocations[indexPath.row] : searchResults[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
         
+        let selectedPlacemark = indexPath.section == 0 ? savedLocations[indexPath.row] : searchResults[indexPath.row]
         configureActionButton(config: .dismissActionView)
         
         let destination = MKMapItem(placemark: selectedPlacemark)
         generatePolyline(toDestination: destination)
         
         dissmissLocationView { _ in
-            //            print("DEBUG: Add annotation here..")
-            
             self.mapView.addAnnotationAndSelect(forCoordinate: selectedPlacemark.coordinate)
             
             let annotations = self.mapView.annotations.filter { !($0.isKind(of: DriverAnnotation.self)) }

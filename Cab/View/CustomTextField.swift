@@ -96,8 +96,8 @@ class CustomTextField: UITextField {
         case .password:
             let frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
             rightButton.frame = frame
-            rightButton.setImage(UIImage.showPasswordIcon.unwrapImage(), for: .normal)
-            rightButton.setImage(UIImage.hidePasswordIcon.unwrapImage(), for: .selected)
+            rightButton.setImage(AppImages.showPasswordIcon.unwrapImage.editedImage(tintColor: .mainGreenTint, scale: .medium), for: .normal)
+            rightButton.setImage(AppImages.hidePasswordIcon.unwrapImage.editedImage(tintColor: .mainGreenTint, scale: .medium), for: .selected)
             rightButton.contentMode = .center
             rightButton.alpha = 0.7
             rightButton.addTarget(self, action: #selector(handleButtonAction), for: .touchUpInside)
@@ -109,7 +109,7 @@ class CustomTextField: UITextField {
         case .currentLocation:
             let frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
             rightButton.frame = frame
-            rightButton.setImage(UIImage.changeLocationIcon.unwrapImage(), for: .normal)
+            rightButton.setImage(AppImages.changeLocationIcon.unwrapImage.editedImage(tintColor: .mainGreenTint, scale: .large), for: .normal)
             rightButton.contentMode = .center
             rightButton.addTarget(self, action: #selector(handleButtonAction), for: .touchUpInside)
             let iconContainerView: UIView = UIView(frame: frame)

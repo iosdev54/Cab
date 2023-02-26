@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "LocationCell"
 
 protocol AddLocationControllerDelegate: AnyObject {
     func updateLocation(locationString: String, type: LocationType)
@@ -32,7 +32,6 @@ class AddLocationController: UIViewController {
     weak var delegate: AddLocationControllerDelegate?
     
     //MARK: - Lifecycle
-    
     init(type: LocationType, location: CLLocation) {
         self.type = type
         self.location = location
@@ -49,6 +48,7 @@ class AddLocationController: UIViewController {
         configureTableView()
         configureSearchBar()
         configureSearchCompleter()
+        hideKeyboardWhenTappedAround()
     }
     
     //MARK: - Helper Functions
@@ -58,8 +58,8 @@ class AddLocationController: UIViewController {
         tableView.backgroundColor = .mainWhiteTint
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .lightGray
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 50
+        tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = 60
         
         view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor)
@@ -69,8 +69,11 @@ class AddLocationController: UIViewController {
         searchBar.sizeToFit()
         searchBar.delegate = self
         searchBar.backgroundColor = .backgroundColor
-        searchBar.placeholder = "Enter the name or address of the location"
         searchBar.searchTextField.backgroundColor = .mainWhiteTint
+        searchBar.tintColor = .mainGreenTint
+        searchBar.placeholder = "Enter the name or address of the location"
+        searchBar.keyboardType = .default
+        searchBar.returnKeyType = .done
         navigationItem.titleView = searchBar
     }
     
@@ -87,14 +90,12 @@ extension AddLocationController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchResults.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        cell.backgroundColor = .clear
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
         let result = searchResults[indexPath.row]
-        var content = cell.defaultContentConfiguration()
-        content.text = result.title
-        content.secondaryText = searchResults[indexPath.row].subtitle
-        cell.contentConfiguration = content
+        cell.titleLabel.text = result.title
+        cell.addressLabel.text = result.subtitle
         return cell
     }
     
@@ -116,6 +117,18 @@ extension AddLocationController: UISearchBarDelegate {
         searchCompleter.queryFragment = searchText
         
         if searchText == "" { searchResults.removeAll() }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        dismiss(animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
     
 }

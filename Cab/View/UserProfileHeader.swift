@@ -57,7 +57,7 @@ class UserProfileHeader: UIView {
     
     private lazy var accountSettingsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.sliderSettingsIcon.unwrapImage(), for: .normal)
+        button.setImage(AppImages.sliderSettingsIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), for: .normal)
         button.menu = showMenu()
         button.showsMenuAsPrimaryAction = true
         return button
@@ -93,7 +93,7 @@ class UserProfileHeader: UIView {
     
     //MARK: - HelperFunctions
     func setupView() {
-
+        
         let stackUser = UIStackView(arrangedSubviews: [fullnameLabel, emailLabel])
         stackUser.axis = .vertical
         stackUser.distribution = .fillEqually
@@ -133,11 +133,11 @@ class UserProfileHeader: UIView {
     }
     
     private func showMenu() -> UIMenu {
-        let changeData = UIAction( title: "Change data", image: UIImage.changeDataIcon.unwrapImage()) { [weak self] _ in
+        let changeData = UIAction( title: "Change data", image: AppImages.changeDataIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .default)) { [weak self] _ in
             guard let `self` = self else { return }
             self.delegate?.handleChangeData()
         }
-        let deleteAccount = UIAction( title: "Delete account", image: UIImage.deleteAccountIcon.unwrapImage()) { [weak self] _ in
+        let deleteAccount = UIAction( title: "Delete account", image: AppImages.deleteAccountIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .default)) { [weak self] _ in
             guard let `self` = self else { return }
             self.delegate?.handleDeleteAccount()
         }

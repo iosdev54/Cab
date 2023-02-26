@@ -23,15 +23,15 @@ class SignUpController: UIViewController {
     }()
     
     private lazy var emailTextField: CustomTextField = {
-        return CustomTextField(config: .autorization, placeholder: "Email", leftImage: UIImage.envelopeImageIcon.unwrapImage(), keyboardType: .emailAddress)
+        return CustomTextField(config: .autorization, placeholder: "Email", leftImage: AppImages.envelopeImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .emailAddress)
     }()
     
     private lazy var fullNameTextField: CustomTextField = {
-        return CustomTextField(config: .autorization, placeholder: "Name", leftImage: UIImage.personImageIcon.unwrapImage(), keyboardType: .alphabet)
+        return CustomTextField(config: .autorization, placeholder: "Name", leftImage: AppImages.personImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .alphabet)
     }()
     
     private lazy var passwordTextField: CustomTextField = {
-        return CustomTextField(config: .autorization, placeholder: "Password", leftImage: UIImage.lockImageIcon.unwrapImage(), keyboardType: .default, isSecureTextEntry: true, rightButtonAction: .password)
+        return CustomTextField(config: .autorization, placeholder: "Password", leftImage: AppImages.lockImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .default, isSecureTextEntry: true, rightButtonAction: .password)
     }()
     
     private lazy var accountTypeSegmentedControl: AccountTypeSegmentedControl = {
@@ -54,6 +54,7 @@ class SignUpController: UIViewController {
     }()
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         self.view.endEditing(true)
     }
     

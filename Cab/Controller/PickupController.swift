@@ -34,7 +34,7 @@ class PickupController: UIViewController {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(AppImages.dismissIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), for: .normal)
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
         return button
     }()

@@ -1,34 +1,27 @@
 //
-//  LocationCell.swift
+//  FavoritesCell.swift
 //  Cab
 //
-//  Created by Dmytro Grytsenko on 24.01.2023.
+//  Created by Dmytro Grytsenko on 25.02.2023.
 //
 
 import UIKit
-import MapKit
 
-class LocationCell: UITableViewCell {
+class FavoritesCell: UITableViewCell {
     
     //MARK: - Properties
-    var placemark: MKPlacemark? {
-        didSet {
-            titleLabel.text = placemark?.name
-            addressLabel.text = placemark?.address
-        }
-    }
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .darkGray
+        label.textColor = .lightGray
         return label
     }()
     
     let addressLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = .white
         return label
     }()
     
@@ -45,6 +38,7 @@ class LocationCell: UITableViewCell {
     
     //MARK: - Helper Functions
     func setupCell() {
+        selectedBackgroundView = UIView().selectedBackgroundView
         backgroundColor = .clear
         
         let stack = UIStackView(arrangedSubviews: [titleLabel, addressLabel])

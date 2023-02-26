@@ -7,7 +7,7 @@
 
 import UIKit
 
-private let reuseIdentifier = "LocationCell"
+private let reuseIdentifier = "FavoritesCell"
 
 enum LocationType: Int, CaseIterable, CustomStringConvertible {
     case home
@@ -40,13 +40,13 @@ class SettingsController : UIViewController {
     private let tableView = UITableView()
     private let locationManager = LocationHandler.shared.locationManager
     
-    weak var delegate: SettingsControllerDelegate?
-    
     private lazy var userProfileHeader: UserProfileHeader = {
         let view = UserProfileHeader(user: user)
         view.delegate = self
         return view
     }()
+    
+    weak var delegate: SettingsControllerDelegate?
     
     //MARK: - Lifecycle
     init(user: User) {
@@ -86,7 +86,7 @@ class SettingsController : UIViewController {
         tableView.separatorColor = .mainGreenTint
         tableView.isScrollEnabled = false
         tableView.rowHeight = 60
-        tableView.register(LocationCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(FavoritesCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.sectionHeaderTopPadding = 10
         tableView.tableHeaderView = userProfileHeader
         
@@ -104,10 +104,10 @@ class SettingsController : UIViewController {
         navigationItem.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Settings"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.dismissIcon.unwrapImage(), style: .plain, target: self, action: #selector(handleDismissal))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: AppImages.dismissIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), style: .plain, target: self, action: #selector(handleDismissal))
     }
     
-    func locationText(forType type: LocationType) -> String {
+    private func locationText(forType type: LocationType) -> String {
         switch type {
         case .home:
             return user.homeLocation ?? type.subtitle
@@ -116,7 +116,7 @@ class SettingsController : UIViewController {
         }
     }
     
-    func autoLayoutHeaderView() {
+    private func autoLayoutHeaderView() {
         guard let headerView = self.tableView.tableHeaderView else { return }
         
         let width = self.tableView.bounds.size.width
@@ -138,7 +138,7 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! LocationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! FavoritesCell
         guard let type = LocationType(rawValue: indexPath.row) else { return cell }
         cell.titleLabel.text = type.description
         cell.addressLabel.text = locationText(forType: type)
@@ -160,17 +160,14 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
         view.backgroundColor = .clear
         
         let title = UILabel()
-        title.font = UIFont.systemFont(ofSize: 18)
-        title.textColor = .white
+        title.font = UIFont.boldSystemFont(ofSize: 18)
+        title.textColor = .lightGray
         title.text = "Favorites"
         
         view.addSubview(title)
         title.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 20, paddingRight: 16)
         
         return view
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
     }
     
 }
@@ -179,7 +176,8 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
 extension SettingsController: AddLocationControllerDelegate {
     
     func updateLocation(locationString: String, type: LocationType) {
-        PassengerService.shared.saveLocation(locationString: locationString, type: type) { err, ref in
+        PassengerService.shared.saveLocation(locationString: locationString, type: type) { [weak self] err, ref in
+            guard let`self` = self else { return }
             self.dismiss(animated: true)
             
             switch type {

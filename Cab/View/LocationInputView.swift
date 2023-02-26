@@ -21,7 +21,7 @@ class LocationInputView: UIView {
     
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.backIcon.unwrapImage(), for: .normal)
+        button.setImage(AppImages.backIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .large), for: .normal)
         button.addTarget(self, action: #selector(handleBackTapped), for: .touchUpInside)
         return button
     }()
@@ -35,14 +35,14 @@ class LocationInputView: UIView {
     }()
     
     private lazy var startingLocationTextField: CustomTextField = {
-        let tf = CustomTextField(config: .location, placeholder: "Change current location", leftImage: UIImage.mappinIcon.unwrapImage(), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
+        let tf = CustomTextField(config: .location, placeholder: "Change current location", leftImage: AppImages.mappinIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
         tf.delegate = self
         tf.myDelegate = self
         return tf
     }()
     
     private lazy var destinationLocationTextField: CustomTextField = {
-        let tf = CustomTextField(config: .location, placeholder: "Enter a destination", leftImage: UIImage.mapIcon.unwrapImage(), keyboardType: .alphabet)
+        let tf = CustomTextField(config: .location, placeholder: "Enter a destination", leftImage: AppImages.mapIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet)
         tf.delegate = self
         return tf
     }()

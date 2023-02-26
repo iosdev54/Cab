@@ -7,34 +7,43 @@
 
 import UIKit
 
+enum AppImages {
+    //For LoginController / SignUpController
+    static let envelopeImageIcon = UIImage(systemName: "envelope")
+    static let personImageIcon = UIImage(systemName: "person")
+    static let lockImageIcon = UIImage(systemName: "lock")
+    static let showPasswordIcon = UIImage(systemName: "eye")
+    static let hidePasswordIcon = UIImage(systemName: "eye.slash")
+    
+    //For HomeController / LocationInputView
+    static let menuIcon = UIImage(named: "menu")
+    static let backIcon = UIImage(systemName: "arrow.backward")
+    static let changeLocationIcon = UIImage(systemName: "location.magnifyingglass")
+    static let mappinIcon = UIImage(systemName: "mappin")
+    static let mapIcon = UIImage(systemName: "map")
+    
+    //For SettingsController / UserProfileHeader
+    static let dismissIcon = UIImage(systemName: "xmark")
+    static let sliderSettingsIcon = UIImage(systemName: "slider.horizontal.3")
+    static let changeDataIcon = UIImage(systemName: "pencil")
+    static let deleteAccountIcon = UIImage(systemName: "trash")
+}
+
 
 extension UIImage {
     
-    //For Login / Signup Controller
-    static let envelopeImageIcon = UIImage(systemName: "envelope")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
-    static let personImageIcon = UIImage(systemName: "person")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
-    static let lockImageIcon = UIImage(systemName: "lock")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
-    static let showPasswordIcon = UIImage(systemName: "eye")?.withTintColor(.mainGreenTint, renderingMode: .alwaysOriginal)
-    static let hidePasswordIcon = UIImage(systemName: "eye.slash")?.withTintColor(.mainGreenTint, renderingMode: .alwaysOriginal)
+    func editedImage(tintColor: UIColor, scale: SymbolScale) -> UIImage {
+        let editedImage = self.withTintColor(tintColor, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(scale: scale))
+        return editedImage
+    }
     
-    //For HomeController / LocationInputView
-    static let backIcon = UIImage(systemName: "arrow.backward")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-    static let changeLocationIcon = UIImage(systemName: "location.magnifyingglass")?.withTintColor(.mainGreenTint, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(scale: .large))
-    static let mappinIcon = UIImage(systemName: "mappin")?.withTintColor(.mapIconColor, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(scale: .large))
-    static let mapIcon = UIImage(systemName: "map")?.withTintColor(.mapIconColor, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(scale: .large))
-
-    //For SettingsController / UserProfileHeader
-    static let dismissIcon = UIImage(systemName: "xmark")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
-    static let sliderSettingsIcon = UIImage(systemName: "slider.horizontal.3")?.withTintColor(.mainWhiteTint, renderingMode: .alwaysOriginal)
-    static let changeDataIcon = UIImage(systemName: "pencil")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-    static let deleteAccountIcon = UIImage(systemName: "trash")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal)
 }
 
 extension Optional where Wrapped == UIImage {
     
-    func unwrapImage() -> UIImage {
+    var unwrapImage: UIImage {
         guard let image = self else { return UIImage() }
         return image
     }
+    
 }
-

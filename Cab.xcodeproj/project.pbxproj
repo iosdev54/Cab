@@ -48,6 +48,8 @@
 		18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */; };
 		18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */; };
 		18B97A4D298165740080B104 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B97A4C298165740080B104 /* LocationHandler.swift */; };
+		18D0DF6729AA610C008519F7 /* FavoritesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0DF6629AA610C008519F7 /* FavoritesCell.swift */; };
+		18D0DF6B29ABC30B008519F7 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0DF6A29ABC30B008519F7 /* MapManager.swift */; };
 		18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D4C703299B86E900A87007 /* GoogleService-Info.plist */; };
 		18E5739C298FCBE200106C38 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739B298FCBE200106C38 /* MenuController.swift */; };
 		18E5739E298FCC2100106C38 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739D298FCC2100106C38 /* ContainerController.swift */; };
@@ -99,6 +101,8 @@
 		18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPlacemark+Extensions.swift"; sourceTree = "<group>"; };
 		18B97A4C298165740080B104 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
+		18D0DF6629AA610C008519F7 /* FavoritesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCell.swift; sourceTree = "<group>"; };
+		18D0DF6A29ABC30B008519F7 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		18D4C703299B86E900A87007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18E5739B298FCBE200106C38 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		18E5739D298FCC2100106C38 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 			children = (
 				18886DB2298028B5009DF710 /* Service.swift */,
 				18B97A4C298165740080B104 /* LocationHandler.swift */,
+				18D0DF6A29ABC30B008519F7 /* MapManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -212,6 +217,7 @@
 				18727E05297EB7D40047811B /* LocationInputActivationView.swift */,
 				18727E09297ECE840047811B /* LocationInputView.swift */,
 				18886DB0297FFDA4009DF710 /* LocationCell.swift */,
+				18D0DF6629AA610C008519F7 /* FavoritesCell.swift */,
 				183F92CB298515ED00CF05FC /* RideActionView.swift */,
 				1836D079298FE562008AEBE8 /* MenuHeader.swift */,
 				1891BA372992892800DDD9E7 /* UserProfileHeader.swift */,
@@ -435,6 +441,7 @@
 				1891BA3429924D3B00DDD9E7 /* SettingsController.swift in Sources */,
 				181F72AA29A67CAE009852D7 /* UIView+Extensions.swift in Sources */,
 				18727E0A297ECE840047811B /* LocationInputView.swift in Sources */,
+				18D0DF6729AA610C008519F7 /* FavoritesCell.swift in Sources */,
 				1891BA362992714000DDD9E7 /* CustomNavigationController.swift in Sources */,
 				18931FEB29869E9B000818DD /* Trip.swift in Sources */,
 				18931FED2987DFB8000818DD /* PickupController.swift in Sources */,
@@ -452,6 +459,7 @@
 				1836D07A298FE562008AEBE8 /* MenuHeader.swift in Sources */,
 				18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */,
 				18883FFB299E6F8800393ED3 /* AccountTypeSegmentedControl.swift in Sources */,
+				18D0DF6B29ABC30B008519F7 /* MapManager.swift in Sources */,
 				183F92CC298515ED00CF05FC /* RideActionView.swift in Sources */,
 				18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */,
 				1829534D29814C46007BB880 /* User.swift in Sources */,
