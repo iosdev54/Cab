@@ -56,7 +56,6 @@ class HomeController: UIViewController {
                 fetchDrivers()
                 configureInputActivationView()
                 observeCurentTrip()
-                configrureSavedUserLocations()
             } else {
                 observeTrips()
             }
@@ -234,6 +233,14 @@ class HomeController: UIViewController {
     }
     
     //MARK: - Helper Functions
+    private func configureUI() {
+        configureMapView()
+        configureRideActionView()
+        
+        view.addSubview(actionButton)
+        actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 20, width: 30, height: 30)
+    }
+    
     private func configureActionButton(config: ActionButonConfiguration) {
         switch config {
         case .showMenu:
@@ -245,16 +252,6 @@ class HomeController: UIViewController {
         }
     }
     
-    private func configureUI() {
-        configureMapView()
-        configureRideActionView()
-        
-        view.addSubview(actionButton)
-        actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 20, width: 30, height: 30)
-        
-        configureTableView()
-    }
-    
     private func configureInputActivationView() {
         view.addSubview(inputActivationView)
         inputActivationView.centerX(inView: view)
@@ -262,19 +259,21 @@ class HomeController: UIViewController {
         inputActivationView.anchor(top: actionButton.bottomAnchor, paddingTop: 32)
         inputActivationView.alpha = 0
         inputActivationView.delegate = self
-        UIView.animate(withDuration: 2) {
-            self.inputActivationView.alpha = 1
-        }
+        showInputActivationView()
     }
     
-    private func configureMapView() {
-        view.addSubview(mapView)
-        mapView.frame = view.frame
-        
-        mapView.showsUserLocation = true
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
-        mapView.delegate = self
+    private func showInputActivationView(shouldShow: Bool = true) {
+        if shouldShow {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let `self` = self else { return }
+                self.inputActivationView.alpha = 1
+            }
+        } else {
+            UIView.animate(withDuration: 0.1) { [weak self] in
+                guard let `self` = self else { return }
+                self.inputActivationView.alpha = 0
+            }
+        }
     }
     
     private func configureLocationInputView() {
@@ -282,14 +281,25 @@ class HomeController: UIViewController {
         view.addSubview(locationInpitView)
         locationInpitView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: locationInputViewHeight)
         locationInpitView.alpha = 0
-        UIView.animate(withDuration: 0.5) { [weak self] in
+        UIView.animate(withDuration: 0.3) { [weak self] in
             guard let `self` = self else { return }
             self.locationInpitView.alpha = 1
-        } completion: { _ in
-            UIView.animate(withDuration: 0.2) { [weak self] in
-                guard let `self` = self else { return }
-                self.tableView.frame.origin.y = self.locationInputViewHeight
-            }
+            self.tableView.frame.origin.y = self.locationInputViewHeight
+        }
+    }
+    
+    private func dissmissLocationInputView(completion: (() -> Void)? = nil) {
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.locationInpitView.alpha = 0
+            self.tableView.frame.origin.y = self.view.frame.height
+        }) { [weak self] _ in
+            guard let `self` = self else { return }
+            self.locationInpitView.removeFromSuperview()
+            self.tableView.removeFromSuperview()
+            
+            guard let completion = completion else { return }
+            completion()
         }
     }
     
@@ -297,6 +307,26 @@ class HomeController: UIViewController {
         view.addSubview(rideActionView)
         rideActionView.delegate = self
         rideActionView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: rideActionViewHeight)
+    }
+    
+    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
+                                       config: RideActionViewConfiguration? = nil, user: User? = nil) {
+        let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let `self` = self else { return }
+            self.rideActionView.frame.origin.y = yOrigin
+        }
+        if shouldShow {
+            guard let config = config else { return }
+            if let destination = destination {
+                rideActionView.destination = destination
+            }
+            if let user = user {
+                rideActionView.user = user
+            }
+            rideActionView.config = config
+        }
     }
     
     private func configureTableView() {
@@ -310,45 +340,18 @@ class HomeController: UIViewController {
         tableView.sectionHeaderTopPadding = 10
         let height = view.frame.height - locationInputViewHeight
         tableView.frame = CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: height)
+        
         view.addSubview(tableView)
-    }
-    
-    private func dissmissLocationView(completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            guard let `self` = self else { return }
-            self.locationInpitView.alpha = 0
-            self.tableView.frame.origin.y = self.view.frame.height
-//            self.locationInpitView.removeFromSuperview()
-        }, completion: completion)
-    }
-    
-    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
-                                       config: RideActionViewConfiguration? = nil, user: User? = nil) {
-        let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
-        
-        UIView.animate(withDuration: 0.3) {
-            self.rideActionView.frame.origin.y = yOrigin
-        }
-        
-        if shouldShow {
-            guard let config = config else { return }
-            if let destination = destination {
-                rideActionView.destination = destination
-            }
-            if let user = user {
-                rideActionView.user = user
-            }
-            rideActionView.config = config
-        }
+        configrureSavedUserLocations()
     }
     
     private func configrureSavedUserLocations() {
         guard let user = user else { return }
         savedLocations.removeAll()
+        
         if let homeLocation = user.homeLocation {
             geocodeAddressString(address: homeLocation)
         }
-        
         if let workLocation = user.workLocation {
             geocodeAddressString(address: workLocation)
         }
@@ -356,7 +359,8 @@ class HomeController: UIViewController {
     
     private func geocodeAddressString(address: String) {
         let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(address) { placemarks, error in
+        geocoder.geocodeAddressString(address) { [weak self] placemarks, error in
+            guard let `self` = self else { return }
             guard let clPlacemark = placemarks?.first else { return }
             let placemark = MKPlacemark(placemark: clPlacemark)
             self.savedLocations.append(placemark)
@@ -368,6 +372,14 @@ class HomeController: UIViewController {
 
 //MARK: - MapView Helper Functions
 private extension HomeController {
+    
+    private func configureMapView() {
+        view.addSubview(mapView)
+        mapView.frame = view.frame
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
+        mapView.delegate = self
+    }
     
     func searchBy(naturalLanguageQuery: String, completion: @escaping ([MKPlacemark]) -> Void) {
         var results = [MKPlacemark]()
@@ -542,7 +554,8 @@ extension HomeController: CLLocationManagerDelegate {
 extension HomeController: LocationInputActivationViewDelegate {
     
     func presentLocationInputView() {
-        inputActivationView.alpha = 0
+        showInputActivationView(shouldShow: false)
+        configureTableView()
         configureLocationInputView()
     }
     
@@ -552,10 +565,9 @@ extension HomeController: LocationInputActivationViewDelegate {
 extension HomeController: LocationInputViewDelegate {
     
     func dismissLocationInputView() {
-        dissmissLocationView { _ in
-            UIView.animate(withDuration: 0.5) {
-                self.inputActivationView.alpha = 1
-            }
+        dissmissLocationInputView { [weak self] in
+            guard let `self` = self else { return }
+            self.showInputActivationView()
         }
     }
     
@@ -616,7 +628,8 @@ extension HomeController: UITableViewDelegate, UITableViewDataSource {
         let destination = MKMapItem(placemark: selectedPlacemark)
         generatePolyline(toDestination: destination)
         
-        dissmissLocationView { _ in
+        dissmissLocationInputView { [weak self] in
+            guard let `self` = self else { return }
             self.mapView.addAnnotationAndSelect(forCoordinate: selectedPlacemark.coordinate)
             
             let annotations = self.mapView.annotations.filter { !($0.isKind(of: DriverAnnotation.self)) }
@@ -683,7 +696,7 @@ extension HomeController: RideActionViewDelegate {
                 }
             }
         }
-
+        
     }
     
     func pickupPassenger() {
