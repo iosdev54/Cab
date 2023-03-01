@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Lottie
 
 extension UIView {
     
@@ -84,6 +85,28 @@ extension UIView {
             return view
         }
     }
+    
+    func addLottieAnimation(withName name: String, height: CGFloat, animationSpeed: CGFloat) -> UIView {
+        let view = UIView()
+        
+        let animationView = LottieAnimationView(name: name)
+        animationView.anchor(height: height)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .loop
+        animationView.animationSpeed = animationSpeed
+        animationView.play()
+        
+        view.addSubview(animationView)
+        animationView.centerX(inView: view)
+        animationView.centerY(inView: view)
+        
+        return view
+    }
+    
+    func flipX() {
+        transform = CGAffineTransform(scaleX: -transform.a, y: transform.d)
+    }
+    
     
     //    func inputContainerView(leftImage: UIImage, rightImage: UIImage, textField: UITextField) -> UIView {
     //        let view = UIView()

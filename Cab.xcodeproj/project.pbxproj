@@ -21,6 +21,7 @@
 		18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B98297ADEB1000E8EFC /* Extensions.swift */; };
 		18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9A297C2598000E8EFC /* SignUpController.swift */; };
 		18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* AuthButton.swift */; };
+		1822255A29AF6CD900B7FDE5 /* thanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 1822255929AF6CD900B7FDE5 /* thanks.json */; };
 		1823C5E1299C3D110002E65A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E0299C3D110002E65A /* .gitignore */; };
 		1823C5E3299C3D190002E65A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E2299C3D190002E65A /* README.md */; };
 		1829534D29814C46007BB880 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1829534C29814C46007BB880 /* User.swift */; };
@@ -53,6 +54,7 @@
 		18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D4C703299B86E900A87007 /* GoogleService-Info.plist */; };
 		18E5739C298FCBE200106C38 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739B298FCBE200106C38 /* MenuController.swift */; };
 		18E5739E298FCC2100106C38 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E5739D298FCC2100106C38 /* ContainerController.swift */; };
+		18F076B929AE36A900D360A0 /* RideUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F076B829AE36A900D360A0 /* RideUserView.swift */; };
 		18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F267AF29A8EED2007735A2 /* CustomTextField.swift */; };
 		2D2E5DBC0E03C81A2D71BA4D /* Pods_Cab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C7A236092560C4EB0DF411 /* Pods_Cab.framework */; };
 /* End PBXBuildFile section */
@@ -74,6 +76,7 @@
 		18207B98297ADEB1000E8EFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18207B9A297C2598000E8EFC /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
+		1822255929AF6CD900B7FDE5 /* thanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = thanks.json; sourceTree = "<group>"; };
 		1823C5E0299C3D110002E65A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		1823C5E2299C3D190002E65A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1829534C29814C46007BB880 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -106,6 +109,7 @@
 		18D4C703299B86E900A87007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18E5739B298FCBE200106C38 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		18E5739D298FCC2100106C38 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		18F076B829AE36A900D360A0 /* RideUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideUserView.swift; sourceTree = "<group>"; };
 		18F267AF29A8EED2007735A2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		23C7A236092560C4EB0DF411 /* Pods_Cab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42C3EBD47776177E14FCD421 /* Pods-Cab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cab.debug.xcconfig"; path = "Target Support Files/Pods-Cab/Pods-Cab.debug.xcconfig"; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				185DF6B829A2529C00692D3B /* yellow-taxi.json */,
+				1822255929AF6CD900B7FDE5 /* thanks.json */,
 				185DF6BA29A2778500692D3B /* taxiPath.json */,
 				1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */,
 				1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */,
@@ -219,6 +224,7 @@
 				18886DB0297FFDA4009DF710 /* LocationCell.swift */,
 				18D0DF6629AA610C008519F7 /* FavoritesCell.swift */,
 				183F92CB298515ED00CF05FC /* RideActionView.swift */,
+				18F076B829AE36A900D360A0 /* RideUserView.swift */,
 				1836D079298FE562008AEBE8 /* MenuHeader.swift */,
 				1891BA372992892800DDD9E7 /* UserProfileHeader.swift */,
 				18A0133E2997C8E7003D721C /* CircularProgressView.swift */,
@@ -378,6 +384,7 @@
 				18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */,
 				185DF6B929A2529C00692D3B /* yellow-taxi.json in Resources */,
 				1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */,
+				1822255A29AF6CD900B7FDE5 /* thanks.json in Resources */,
 				18207B87297AD157000E8EFC /* Assets.xcassets in Resources */,
 				18207B85297AD155000E8EFC /* Main.storyboard in Resources */,
 				1802B93229A3BDFE00FA5500 /* car-revolving-animation.json in Resources */,
@@ -444,6 +451,7 @@
 				18D0DF6729AA610C008519F7 /* FavoritesCell.swift in Sources */,
 				1891BA362992714000DDD9E7 /* CustomNavigationController.swift in Sources */,
 				18931FEB29869E9B000818DD /* Trip.swift in Sources */,
+				18F076B929AE36A900D360A0 /* RideUserView.swift in Sources */,
 				18931FED2987DFB8000818DD /* PickupController.swift in Sources */,
 				183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */,
 				18207B97297AD336000E8EFC /* LoginController.swift in Sources */,

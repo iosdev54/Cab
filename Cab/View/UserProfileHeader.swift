@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 protocol UserProfileHeaderDelegate: AnyObject {
     func handleChangeData()

@@ -37,6 +37,20 @@ class AuthButton: UIButton {
         }
     }
     
+    override var isEnabled: Bool {
+        get { return super.isEnabled }
+        set {
+            guard newValue != isEnabled else { return }
+            
+            if newValue == true {
+                alpha = 1
+            } else {
+                alpha = 0.5
+            }
+            super.isEnabled = newValue
+        }
+    }
+    
     //MARK: - Lifecycle
     init(title: String) {
         self.title = title
@@ -53,13 +67,13 @@ class AuthButton: UIButton {
     private func setupView() {
         setTitle(title, for: .normal)
         titleLabel?.font = .boldSystemFont(ofSize: 20)
-        setTitleColor(UIColor.white, for: .normal)
+        setTitleColor(UIColor.mainWhiteTint, for: .normal)
         backgroundColor = .mainGreenTint
         layer.cornerRadius = 5
         anchor(height: 40)
         
         spinner.hidesWhenStopped = true
-        spinner.color = .white
+        spinner.color = .mainWhiteTint
         spinner.style = .medium
         
         addSubview(spinner)
