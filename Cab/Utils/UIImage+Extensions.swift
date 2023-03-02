@@ -21,6 +21,7 @@ enum AppImages {
     static let changeLocationIcon = UIImage(systemName: "location.magnifyingglass")
     static let mappinIcon = UIImage(systemName: "mappin")
     static let mapIcon = UIImage(systemName: "map")
+    static let taxiIcon = UIImage(named: "taxi")
     
     //For SettingsController / UserProfileHeader
     static let dismissIcon = UIImage(systemName: "xmark")

@@ -40,7 +40,6 @@ class RideUserView: UIView {
     }()
     
     //MARK: - Lifecycle
-    
     init() {
         super.init(frame: .zero)
         setupView()

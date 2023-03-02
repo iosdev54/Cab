@@ -1,5 +1,5 @@
 //
-//  AuthButton.swift
+//  CustomButton.swift
 //  Cab
 //
 //  Created by Dmytro Grytsenko on 21.01.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AuthButton: UIButton {
+class CustomButton: UIButton {
     
     //MARK: - Properties
     private let title: String

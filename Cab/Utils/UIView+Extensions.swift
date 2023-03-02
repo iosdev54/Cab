@@ -10,6 +10,14 @@ import Lottie
 
 extension UIView {
     
+    var selectedBackgroundView: UIView {
+        get {
+            let view = UIView()
+            view.backgroundColor = .mainGreenTint.withAlphaComponent(0.5)
+            return view
+        }
+    }
+    
     func anchor(top: NSLayoutYAxisAnchor? = nil,
                 left: NSLayoutXAxisAnchor? = nil,
                 right: NSLayoutXAxisAnchor? = nil,
@@ -75,15 +83,10 @@ extension UIView {
     func makeCorner(cornerRadius: CGFloat) {
         layer.cornerRadius = cornerRadius
         layer.masksToBounds = true
-        //        layer.isOpaque = false
     }
     
-    var selectedBackgroundView: UIView {
-        get {
-            let view = UIView()
-            view.backgroundColor = .mainGreenTint.withAlphaComponent(0.5)
-            return view
-        }
+    func flipX() {
+        transform = CGAffineTransform(scaleX: -transform.a, y: transform.d)
     }
     
     func addLottieAnimation(withName name: String, height: CGFloat, animationSpeed: CGFloat) -> UIView {
@@ -102,46 +105,5 @@ extension UIView {
         
         return view
     }
-    
-    func flipX() {
-        transform = CGAffineTransform(scaleX: -transform.a, y: transform.d)
-    }
-    
-    
-    //    func inputContainerView(leftImage: UIImage, rightImage: UIImage, textField: UITextField) -> UIView {
-    //        let view = UIView()
-    //
-    //        let leftImageView = UIImageView()
-    //        leftImageView.image = leftImage
-    //        leftImageView.contentMode = .scaleAspectFit
-    //        view.addSubview(leftImageView)
-    //        leftImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, paddingTop: 5, paddingLeft: 5, paddingBottom: 5, width: 40)
-    //        leftImageView.backgroundColor = .red
-    //
-    //        let rightImageView = UIImageView()
-    //        rightImageView.image = rightImage
-    //        rightImageView.contentMode = .scaleAspectFit
-    //        rightImageView.isUserInteractionEnabled = true
-    //        view.addSubview(rightImageView)
-    //        rightImageView.anchor(top: view.topAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingRight: 0, paddingBottom: 0, width: 60)
-    //        rightImageView.backgroundColor = .red
-    //
-    //        view.addSubview(textField)
-    //        textField.anchor(top: view.topAnchor, left: leftImageView.rightAnchor, right: rightImageView.leftAnchor, bottom: view.bottomAnchor, paddingLeft: 10, paddingRight: 10)
-    //
-    //        let rightImageViewTap = UIGestureRecognizer(target: self, action: #selector(handleRightImageTap))
-    //        rightImageView.addGestureRecognizer(rightImageViewTap)
-    //
-    //        view.makeCorner(cornerRadius: 5)
-    //        view.layer.borderColor = UIColor.backgroundColor.cgColor
-    //        view.layer.borderWidth = 0.75
-    //
-    //        return view
-    //    }
-    //
-    //
-    //    @objc private func handleRightImageTap() {
-    //        print("DEBUG: Opapa")
-    //    }
     
 }

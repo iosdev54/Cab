@@ -28,8 +28,8 @@ class LoginController: UIViewController {
         return CustomTextField(config: .autorization, placeholder: "Password", leftImage: AppImages.lockImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .default, isSecureTextEntry: true, rightButtonAction: .password)
     }()
     
-    private lazy var loginButton: AuthButton = {
-        let button = AuthButton(title: "Log In")
+    private lazy var loginButton: CustomButton = {
+        let button = CustomButton(title: "Log In")
         button.addTarget(self, action: #selector(handleLogIn), for: .touchUpInside)
         return button
     }()

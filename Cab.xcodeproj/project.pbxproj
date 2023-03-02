@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */; };
-		1802B93029A3BD7A00FA5500 /* water-animation-on-the-map.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */; };
+		1802B93029A3BD7A00FA5500 /* green-search-annimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */; };
 		1802B93229A3BDFE00FA5500 /* car-revolving-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */; };
 		180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */; };
 		181F72AA29A67CAE009852D7 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181F72A929A67CAE009852D7 /* UIView+Extensions.swift */; };
@@ -18,9 +18,8 @@
 		18207B87297AD157000E8EFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18207B86297AD157000E8EFC /* Assets.xcassets */; };
 		18207B8A297AD157000E8EFC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18207B88297AD157000E8EFC /* LaunchScreen.storyboard */; };
 		18207B97297AD336000E8EFC /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B96297AD336000E8EFC /* LoginController.swift */; };
-		18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B98297ADEB1000E8EFC /* Extensions.swift */; };
 		18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9A297C2598000E8EFC /* SignUpController.swift */; };
-		18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* AuthButton.swift */; };
+		18207B9D297C4A09000E8EFC /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B9C297C4A09000E8EFC /* CustomButton.swift */; };
 		1822255A29AF6CD900B7FDE5 /* thanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 1822255929AF6CD900B7FDE5 /* thanks.json */; };
 		1823C5E1299C3D110002E65A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E0299C3D110002E65A /* .gitignore */; };
 		1823C5E3299C3D190002E65A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1823C5E2299C3D190002E65A /* README.md */; };
@@ -61,7 +60,7 @@
 
 /* Begin PBXFileReference section */
 		1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "radar-animation-for-maps.json"; sourceTree = "<group>"; };
-		1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "water-animation-on-the-map.json"; sourceTree = "<group>"; };
+		1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "green-search-annimation.json"; sourceTree = "<group>"; };
 		1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "car-revolving-animation.json"; sourceTree = "<group>"; };
 		180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		181F72A929A67CAE009852D7 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -73,9 +72,8 @@
 		18207B89297AD157000E8EFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18207B8B297AD157000E8EFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18207B96297AD336000E8EFC /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		18207B98297ADEB1000E8EFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		18207B9A297C2598000E8EFC /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
-		18207B9C297C4A09000E8EFC /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
+		18207B9C297C4A09000E8EFC /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		1822255929AF6CD900B7FDE5 /* thanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = thanks.json; sourceTree = "<group>"; };
 		1823C5E0299C3D110002E65A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		1823C5E2299C3D190002E65A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -135,7 +133,7 @@
 				1822255929AF6CD900B7FDE5 /* thanks.json */,
 				185DF6BA29A2778500692D3B /* taxiPath.json */,
 				1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */,
-				1802B92F29A3BD7A00FA5500 /* water-animation-on-the-map.json */,
+				1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */,
 				1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */,
 			);
 			path = Animation;
@@ -179,14 +177,13 @@
 		18207B91297AD1C9000E8EFC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				18207B98297ADEB1000E8EFC /* Extensions.swift */,
 				18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */,
+				181F72A929A67CAE009852D7 /* UIView+Extensions.swift */,
 				189FE633299D051100361CB2 /* UIImage+Extensions.swift */,
 				18883FF8299E6B6B00393ED3 /* UIColor+Extensions.swift */,
 				180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */,
 				18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */,
 				18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */,
-				181F72A929A67CAE009852D7 /* UIView+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -204,9 +201,9 @@
 		18207B93297AD1CE000E8EFC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				18E57399298FCB8000106C38 /* Authentication */,
 				1891BA392992AFB600DDD9E7 /* Settings */,
 				18E5739A298FCBB500106C38 /* SideMenu */,
-				18E57399298FCB8000106C38 /* Authentication */,
 				18B44070297D8C5100739E91 /* HomeController.swift */,
 				18931FEC2987DFB8000818DD /* PickupController.swift */,
 			);
@@ -216,7 +213,7 @@
 		18207B94297AD1D4000E8EFC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				18207B9C297C4A09000E8EFC /* AuthButton.swift */,
+				18207B9C297C4A09000E8EFC /* CustomButton.swift */,
 				18F267AF29A8EED2007735A2 /* CustomTextField.swift */,
 				18883FFA299E6F8800393ED3 /* AccountTypeSegmentedControl.swift */,
 				18727E05297EB7D40047811B /* LocationInputActivationView.swift */,
@@ -380,7 +377,7 @@
 				1823C5E3299C3D190002E65A /* README.md in Resources */,
 				1823C5E1299C3D110002E65A /* .gitignore in Resources */,
 				18207B8A297AD157000E8EFC /* LaunchScreen.storyboard in Resources */,
-				1802B93029A3BD7A00FA5500 /* water-animation-on-the-map.json in Resources */,
+				1802B93029A3BD7A00FA5500 /* green-search-annimation.json in Resources */,
 				18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */,
 				185DF6B929A2529C00692D3B /* yellow-taxi.json in Resources */,
 				1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */,
@@ -442,7 +439,7 @@
 			files = (
 				18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */,
 				18207B9B297C2598000E8EFC /* SignUpController.swift in Sources */,
-				18207B9D297C4A09000E8EFC /* AuthButton.swift in Sources */,
+				18207B9D297C4A09000E8EFC /* CustomButton.swift in Sources */,
 				18B44071297D8C5100739E91 /* HomeController.swift in Sources */,
 				189FE634299D051100361CB2 /* UIImage+Extensions.swift in Sources */,
 				1891BA3429924D3B00DDD9E7 /* SettingsController.swift in Sources */,
@@ -473,7 +470,6 @@
 				1829534D29814C46007BB880 /* User.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
 				18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */,
-				18207B99297ADEB1000E8EFC /* Extensions.swift in Sources */,
 				180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */,
 				18A0133F2997C8E7003D721C /* CircularProgressView.swift in Sources */,
 				18886DB1297FFDA4009DF710 /* LocationCell.swift in Sources */,

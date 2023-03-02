@@ -9,7 +9,7 @@ __App Features:__
 * Firebase
 * GeoFire
 * UI Programmatically
-* 
+* Lottie Animation
 * 
 * 
 

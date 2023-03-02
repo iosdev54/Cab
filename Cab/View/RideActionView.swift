@@ -103,8 +103,8 @@ class RideActionView: UIView {
         return addLottieAnimation(withName: "thanks", height: 170, animationSpeed: 0.35)
     }()
     
-    private(set) lazy var actionButton: AuthButton = {
-        let button = AuthButton(title: ButtonAction.requestRide.description)
+    private(set) lazy var actionButton: CustomButton = {
+        let button = CustomButton(title: ButtonAction.requestRide.description)
         button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -166,8 +166,8 @@ class RideActionView: UIView {
     private func configureUI(withConfig config: RideActionViewConfiguration) {
         switch config {
         case .requestRide:
-            buttonAction = .requestRide
             changeSubviewInStack(inStack: rideUserStack, view: yellowTaxiAnimationView, at: 0)
+            buttonAction = .requestRide
             actionButton.setTitle(buttonAction.description, for: .normal)
             actionButton.isEnabled = true
         case .tripAccepted:
@@ -212,6 +212,7 @@ class RideActionView: UIView {
         case .endTrip:
             guard let user = user else { return }
             titleLabel.text = "Arrival at destination"
+            addressLabel.text = ""
             if user.accountType == .driver {
                 changeSubviewInStack(inStack: rideUserStack, view: thanksAnimationView, at: 0)
                 buttonAction = .tripIsOver
@@ -222,7 +223,6 @@ class RideActionView: UIView {
                 actionButton.setTitle(buttonAction.description, for: .normal)
                 actionButton.isEnabled = true
             }
-            
         }
     }
     

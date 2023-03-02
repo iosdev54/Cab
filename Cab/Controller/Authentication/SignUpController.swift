@@ -38,8 +38,8 @@ class SignUpController: UIViewController {
         return AccountTypeSegmentedControl(items: ["Passenger", "Driver"])
     }()
     
-    private lazy var signUpButton: AuthButton = {
-        let button = AuthButton(title: "Sign Up")
+    private lazy var signUpButton: CustomButton = {
+        let button = CustomButton(title: "Sign Up")
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()

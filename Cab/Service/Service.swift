@@ -76,6 +76,14 @@ struct PassengerService {
         }
     }
     
+//    func removeDrivers(location: CLLocation, completion: @escaping () -> Void) {
+//        let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+//        REF_DRIVER_LOCATIONS.observe(.value) { snapshot in
+//            geofire.query(at: location, withRadius: 50).removeAllObservers()
+//        }
+//        completion()
+//    }
+    
     func uploadTrip(_ pickupCoordinates: CLLocationCoordinate2D, _ destinationCoordinates: CLLocationCoordinate2D, completion: @escaping (Error?, DatabaseReference) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let pickupArray = [pickupCoordinates.latitude, pickupCoordinates.longitude]

@@ -39,20 +39,7 @@ class MenuController: UIViewController {
     }()
     
     private lazy var menuFooter: UIView = {
-        let view = UIView()
-        
-        let animationView = LottieAnimationView(name: "water-animation-on-the-map")
-        animationView.setDimensions(height: 150, width: 150)
-        animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .loop
-        animationView.animationSpeed = 0.5
-        animationView.play()
-        
-        view.addSubview(animationView)
-        animationView.centerX(inView: view)
-        animationView.centerY(inView: view)
-        
-        return view
+        return UIView().addLottieAnimation(withName: "green-search-annimation", height: 150, animationSpeed: 0.5)
     }()
     
     weak var delegate: MenuControllerDelegate?

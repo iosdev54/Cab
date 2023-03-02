@@ -18,7 +18,8 @@ class DriverAnnotation: NSObject, MKAnnotation {
     }
     
     func updateAnnotationPosition(withCoordinate coordinate: CLLocationCoordinate2D) {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            guard let `self` = self else { return }
             self.coordinate = coordinate
         }
     }
