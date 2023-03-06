@@ -34,8 +34,8 @@ class LocationInputView: UIView {
         return label
     }()
     
-    private lazy var startingLocationTextField: CustomTextField = {
-        let tf = CustomTextField(config: .location, placeholder: "Change current location", leftImage: AppImages.mappinIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
+    lazy var startingLocationTextField: CustomTextField = {
+        let tf = CustomTextField(config: .location, placeholder: "Current location", leftImage: AppImages.mappinIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
         tf.delegate = self
         tf.myDelegate = self
         return tf
@@ -105,7 +105,7 @@ extension LocationInputView: UITextFieldDelegate {
 
 //MARK: - CustomTextFieldDelegate
 extension LocationInputView: CustomTextFieldDelegate {
-    func chooseCurrentLocation() {
+    func setCurrentLocation() {
         //FIXME: - chooseCurrentLocation
         print("DEBUG: Choose current location.")
     }

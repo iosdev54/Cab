@@ -126,7 +126,7 @@ class PickupController: UIViewController {
         let region = MKCoordinateRegion(center: trip.pickupCoordinates, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapView.setRegion(region, animated: false)
         
-        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
+        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates, title: "Destination")
         
         //Second way
         //        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)

@@ -9,22 +9,33 @@ import CoreLocation
 
 class LocationHandler: NSObject, CLLocationManagerDelegate {
     
+    //MARK: - Priperties
     static let shared = LocationHandler()
+    var locationManager = CLLocationManager()
     
-    var locationManager: CLLocationManager!
-    var location: CLLocation?
-    
+    //MARK: - Lifecycle
     override init() {
         super.init()
-        locationManager = CLLocationManager()
         locationManager.delegate = self
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    //MARK: - Helper Functions
+    func checkLocationAuthorization(manager: CLLocationManager, completion: () -> Void) {
         
-        if status == .authorizedWhenInUse {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted, .denied:
+            completion()
+        case .authorizedAlways:
+            locationManager.startUpdatingLocation()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        case .authorizedWhenInUse:
             locationManager.requestAlwaysAuthorization()
+        @unknown default:
+            break
         }
     }
+    
 }
 

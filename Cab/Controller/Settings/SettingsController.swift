@@ -148,7 +148,7 @@ extension SettingsController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let type = LocationType(rawValue: indexPath.row) else { return }
-        guard let location = locationManager?.location else { return }
+        guard let location = locationManager.location else { return }
         let controller = AddLocationController(type: type, location: location)
         controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)

@@ -9,7 +9,8 @@ import UIKit
 import MapKit
 
 protocol RideActionViewDelegate: AnyObject {
-    func uploadTrip(_ view: RideActionView)
+//    func uploadTrip(_ view: RideActionView)
+    func uploadTrip(toDestination destination: MKPlacemark)
     func cancelTrip()
     func pickupPassenger()
     func dropOffPassenger()
@@ -126,7 +127,8 @@ class RideActionView: UIView {
     @objc private func actionButtonPressed() {
         switch buttonAction {
         case .requestRide:
-            delegate?.uploadTrip(self)
+            guard let destination = destination else { return }
+            delegate?.uploadTrip(toDestination: destination)
         case .cancel:
             delegate?.cancelTrip()
         case .pickup:

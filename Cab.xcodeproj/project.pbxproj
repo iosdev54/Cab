@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1801B2B829B3798100772B13 /* PickupLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1801B2B729B3798100772B13 /* PickupLocationView.swift */; };
 		1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */; };
 		1802B93029A3BD7A00FA5500 /* green-search-annimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */; };
 		1802B93229A3BDFE00FA5500 /* car-revolving-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */; };
@@ -47,7 +48,7 @@
 		18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */; };
 		18B62CF829A0FF92008E10CE /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */; };
 		18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */; };
-		18B97A4D298165740080B104 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B97A4C298165740080B104 /* LocationHandler.swift */; };
+		18D0CD0929B64C460019B784 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0CD0829B64C460019B784 /* LocationHandler.swift */; };
 		18D0DF6729AA610C008519F7 /* FavoritesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0DF6629AA610C008519F7 /* FavoritesCell.swift */; };
 		18D0DF6B29ABC30B008519F7 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0DF6A29ABC30B008519F7 /* MapManager.swift */; };
 		18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D4C703299B86E900A87007 /* GoogleService-Info.plist */; };
@@ -59,6 +60,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1801B2B729B3798100772B13 /* PickupLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupLocationView.swift; sourceTree = "<group>"; };
 		1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "radar-animation-for-maps.json"; sourceTree = "<group>"; };
 		1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "green-search-annimation.json"; sourceTree = "<group>"; };
 		1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "car-revolving-animation.json"; sourceTree = "<group>"; };
@@ -101,7 +103,7 @@
 		18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extensions.swift"; sourceTree = "<group>"; };
 		18B62CF729A0FF92008E10CE /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKPlacemark+Extensions.swift"; sourceTree = "<group>"; };
-		18B97A4C298165740080B104 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
+		18D0CD0829B64C460019B784 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		18D0DF6629AA610C008519F7 /* FavoritesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCell.swift; sourceTree = "<group>"; };
 		18D0DF6A29ABC30B008519F7 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		18D4C703299B86E900A87007 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -192,7 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				18886DB2298028B5009DF710 /* Service.swift */,
-				18B97A4C298165740080B104 /* LocationHandler.swift */,
+				18D0CD0829B64C460019B784 /* LocationHandler.swift */,
 				18D0DF6A29ABC30B008519F7 /* MapManager.swift */,
 			);
 			path = Service;
@@ -225,6 +227,7 @@
 				1836D079298FE562008AEBE8 /* MenuHeader.swift */,
 				1891BA372992892800DDD9E7 /* UserProfileHeader.swift */,
 				18A0133E2997C8E7003D721C /* CircularProgressView.swift */,
+				1801B2B729B3798100772B13 /* PickupLocationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -453,12 +456,12 @@
 				183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */,
 				18207B97297AD336000E8EFC /* LoginController.swift in Sources */,
 				18883FF9299E6B6B00393ED3 /* UIColor+Extensions.swift in Sources */,
+				1801B2B829B3798100772B13 /* PickupLocationView.swift in Sources */,
 				18207B7E297AD155000E8EFC /* AppDelegate.swift in Sources */,
 				1891BA382992892800DDD9E7 /* UserProfileHeader.swift in Sources */,
 				1891BA3B2992B00200DDD9E7 /* AddLocationController.swift in Sources */,
 				18207B80297AD155000E8EFC /* SceneDelegate.swift in Sources */,
 				18E5739C298FCBE200106C38 /* MenuController.swift in Sources */,
-				18B97A4D298165740080B104 /* LocationHandler.swift in Sources */,
 				18E5739E298FCC2100106C38 /* ContainerController.swift in Sources */,
 				18B62CFA29A0FFCD008E10CE /* MKPlacemark+Extensions.swift in Sources */,
 				1836D07A298FE562008AEBE8 /* MenuHeader.swift in Sources */,
@@ -468,6 +471,7 @@
 				183F92CC298515ED00CF05FC /* RideActionView.swift in Sources */,
 				18B62CF629A0FF19008E10CE /* MKMapView+Extensions.swift in Sources */,
 				1829534D29814C46007BB880 /* User.swift in Sources */,
+				18D0CD0929B64C460019B784 /* LocationHandler.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
 				18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */,
 				180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */,

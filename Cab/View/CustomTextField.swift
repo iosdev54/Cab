@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CustomTextFieldDelegate: AnyObject {
-    func chooseCurrentLocation()
+    func setCurrentLocation()
 }
 
 enum CustomTextFieldConfiguration {
@@ -127,7 +127,7 @@ class CustomTextField: UITextField {
         case .password:
             togglePasswordVisibility()
         case .currentLocation:
-            myDelegate?.chooseCurrentLocation()
+            myDelegate?.setCurrentLocation()
         default: break
         }
     }
