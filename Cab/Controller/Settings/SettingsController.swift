@@ -29,7 +29,7 @@ enum LocationType: Int, CaseIterable, CustomStringConvertible {
 }
 
 protocol SettingsControllerDelegate: AnyObject {
-    func updateUser(_ controller: SettingsController)
+    func updateUser(withUser: User)
     func deleteUser()
 }
 
@@ -186,7 +186,7 @@ extension SettingsController: AddLocationControllerDelegate {
             case .work:
                 self.user.workLocation = locationString
             }
-            self.delegate?.updateUser(self)
+            self.delegate?.updateUser(withUser: self.user)
             self.tableView.reloadData()
         }
     }

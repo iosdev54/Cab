@@ -36,7 +36,7 @@ class MenuHeader: UIView {
     private lazy var fullnameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .white
+        label.textColor = .mainWhiteTint
         label.text = user.fullname
         return label
     }()
@@ -153,8 +153,8 @@ class MenuHeader: UIView {
     
     //MARK: - Selectors
     @objc func handlePickupModeChanged() {
-        //FIXME: - handlePickupModeChanged
         pickupModeLabel.attributedText = attributtedStringForPickupModeLabel()
+        //FIXME: - handlePickupModeChanged
     }
     
 }

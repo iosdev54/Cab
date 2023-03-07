@@ -134,6 +134,15 @@ struct Service {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
+    func signOut(completion: () -> Void) {
+        do {
+            try Auth.auth().signOut()
+            completion()
+        } catch {
+            print("DEBUG: Error signing out")
+        }
+    }
+    
     func deleteAccount(completion: @escaping(Error?) -> Void) {
         let user = Auth.auth().currentUser
         user?.delete(completion: completion)

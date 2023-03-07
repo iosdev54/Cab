@@ -36,7 +36,7 @@ class HomeController: UIViewController {
     private let mapView = MKMapView()
     
     private let locationManager = LocationHandler.shared.locationManager
-    private(set) lazy var mapManager = MapManager(mapView: mapView)
+    private lazy var mapManager = MapManager(mapView: mapView)
     private var inputActivationView = LocationInputActivationView()
     private let locationInpitView = LocationInputView()
     private let rideActionView = RideActionView()
@@ -49,7 +49,7 @@ class HomeController: UIViewController {
     
     private var route: MKRoute?
     
-    private(set) lazy var pickupPlacemark: CLPlacemark? = nil {
+    private lazy var pickupPlacemark: CLPlacemark? = nil {
         didSet {
             pickupLocationView.address = setupStartingLocationText(withPlacemark: pickupPlacemark)
             locationInpitView.startingLocationTextField.text = setupStartingLocationText(withPlacemark: pickupPlacemark)
@@ -82,21 +82,21 @@ class HomeController: UIViewController {
         }
     }
     
-    private(set) lazy var showUserLocationButton: UIButton = {
+    private lazy var showUserLocationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(AppImages.location.unwrapImage.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(showUserLocationHandler), for: .touchUpInside)
         return button
     }()
     
-    private(set) lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(AppImages.menuIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .default), for: .normal)
         button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         return button
     }()
     
-    private(set) lazy var pinImage: UIImageView = {
+    private lazy var pinImage: UIImageView = {
         let imageView = UIImageView(image: AppImages.pin.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large))
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -133,7 +133,8 @@ class HomeController: UIViewController {
     }
     
     @objc func showUserLocationHandler() {
-        mapManager.showUserLocation() {
+        mapManager.showUserLocation() { [weak self] in
+            guard let `self` = self else { return }
             self.presentAlertController(withTitle: "Oops!", message: "Current location not found.")
         }
     }
@@ -375,7 +376,7 @@ class HomeController: UIViewController {
     
     private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil,
                                        config: RideActionViewConfiguration? = nil, user: User? = nil) {
-        let yOrigin = shouldShow ? self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
+        let yOrigin = shouldShow ? self.view.frame.height - rideActionViewHeight : self.view.frame.height
         
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let `self` = self else { return }
@@ -476,7 +477,6 @@ private extension HomeController {
         mapView.userTrackingMode = .follow
         mapView.delegate = self
         locationManager.delegate = self
-        //        mapManager.locationManager.delegate = self
     }
     
     func generatePolyline(fromPickup pickup: MKMapItem? = nil, toDestination destination: MKMapItem) {
@@ -487,7 +487,8 @@ private extension HomeController {
         request.requestsAlternateRoutes = true
         
         let directionRequest = MKDirections(request: request)
-        directionRequest.calculate { responce, error in
+        directionRequest.calculate { [weak self] responce, error in
+            guard let `self` = self else { return }
             guard let responce = responce else { return }
             self.route = responce.routes.first
             guard let polyline = self.route?.polyline else { return }
@@ -561,24 +562,21 @@ extension HomeController: CLLocationManagerDelegate {
         
         if region.identifier == AnnotationType.pickup.rawValue {
             print("DEBUG: Driver did enter to pickup region \(region)")
-            DriverService.shared.updateTripState(trip: trip, state: .driverArrived) { err, ref in
+            DriverService.shared.updateTripState(trip: trip, state: .driverArrived) { [weak self] err, ref in
+                guard let `self` = self else { return }
                 self.rideActionView.config = .pickupPassenger
             }
         }
         if region.identifier == AnnotationType.destination.rawValue {
             print("DEBUG: Driver did enter to destination region \(region)")
-            DriverService.shared.updateTripState(trip: trip, state: .arriveAtDestination) { err, ref in
+            DriverService.shared.updateTripState(trip: trip, state: .arriveAtDestination) { [weak self] err, ref in
+                guard let `self` = self else { return }
                 self.rideActionView.config = .endTrip
             }
         }
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        //        mapManager.checkLocationAuthorization(manager: manager) { [weak self] in
-        //            guard let `self` = self else { return }
-        //            self.presentAlertController(withTitle: "Your location is not available", message: "To give permission go to: Settings -> CAB -> Location")
-        //        }
-        
         LocationHandler.shared.checkLocationAuthorization(manager: manager) { [weak self] in
             guard let `self` = self else { return }
             self.presentAlertController(withTitle: "Your location is not available", message: "To give permission go to: Settings -> CAB -> Location")

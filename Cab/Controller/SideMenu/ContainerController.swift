@@ -11,18 +11,18 @@ import FirebaseAuth
 class ContainerController: UIViewController {
     
     //MARK: - Properties
-    private let homeController = HomeController()
-    private var menuController: MenuController!
-    private var isExpanded: Bool = false
+    private var homeController: HomeController? = nil
+    private var menuController: MenuController? = nil
     
     private var user: User? {
         didSet {
-            guard let user = user else { return }
+            guard let user, let homeController, let menuController else { return }
             homeController.user = user
-            configureMenuController(withUser: user)
+            menuController.user = user
         }
     }
     
+    private var isExpanded: Bool = false
     private let blackView = UIView()
     
     override var prefersStatusBarHidden: Bool {
@@ -37,8 +37,9 @@ class ContainerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .backgroundColor
         chechIfUserIsLoggedIn()
-//        signOut()
+        //        signOut()
     }
     
     //MARK: - Selectors
@@ -59,36 +60,44 @@ class ContainerController: UIViewController {
     
     private func fetchUserData() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        Service.shared.fetchUserData(uid: currentUid) { user in
+        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
+            guard let `self` = self else { return }
             self.user = user
         }
     }
     
     private func signOut() {
-        do {
-            try Auth.auth().signOut()
-            presentLoginController()
-        } catch {
-            print("DEBUG: Error signing out")
+        Service.shared.signOut { [weak self] in
+            guard let `self` = self else { return }
+            self.presentLoginController()
+            self.dismissChildController(homeController)
+            self.dismissChildController(menuController)
+            
+            self.homeController = nil
+            self.menuController = nil
+            self.user = nil
         }
     }
     
     //MARK: - Helper Functions
     func configure() {
-        view.backgroundColor = .backgroundColor
         configureHomeController()
+        configureMenuController()
         fetchUserData()
     }
     
     private func configureHomeController() {
+        homeController = HomeController()
+        guard let homeController else { return }
         addChild(homeController)
         homeController.didMove(toParent: self)
         view.addSubview(homeController.view)
         homeController.delegate = self
     }
     
-    private func configureMenuController(withUser user: User) {
-        menuController = MenuController(user: user)
+    private func configureMenuController() {
+        menuController = MenuController()
+        guard let menuController else { return }
         addChild(menuController)
         menuController.didMove(toParent: self)
         view.insertSubview(menuController.view, at: 0)
@@ -98,17 +107,18 @@ class ContainerController: UIViewController {
     }
     
     private func presentLoginController() {
-        DispatchQueue.main.async {
-            let controller = LoginController()
-            let nav = CustomNavigationController(rootViewController: controller)
-//            let nav = UINavigationController(rootViewController: LoginController())
-            nav.isModalInPresentation = true
-            nav.modalPresentationStyle = .fullScreen
-            self.present(nav, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            let loginController = LoginController()
+            let navigationController = CustomNavigationController(rootViewController: loginController)
+            navigationController.isModalInPresentation = true
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true)
         }
     }
     
     private func configureBlackView() {
+        guard let homeController else { return }
         blackView.frame = view.frame
         blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
         blackView.alpha = 0
@@ -120,13 +130,15 @@ class ContainerController: UIViewController {
     
     private func animateMenu(shouldExpend: Bool, completion: ((Bool) -> Void)? = nil) {
         if shouldExpend {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                self.homeController.view.frame.origin.x = self.view.frame.width - 80
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) { [weak self] in
+                guard let `self` = self else { return }
+                self.homeController?.view.frame.origin.x = self.view.frame.width - 80
                 self.blackView.alpha = 1
             }
         } else {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-                self.homeController.view.frame.origin.x = 0
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
+                guard let `self` = self else { return }
+                self.homeController?.view.frame.origin.x = 0
                 self.blackView.alpha = 0
             }, completion: completion)
         }
@@ -134,25 +146,18 @@ class ContainerController: UIViewController {
     }
     
     private func animateStatusBar() {
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            guard let `self` = self else { return }
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
-}
-
-//MARK: - SettingsControllerDelegate
-extension ContainerController: SettingsControllerDelegate {
-   
-    func updateUser(_ controller: SettingsController) {
-        self.user = controller.user
-    }
     
-    func deleteUser() {
-        //FIXME: - deleteUser
-        presentLoginController()
-        self.presentAlertController(withTitle: "Account deleted!", message: "")
+    private func dismissChildController(_ controller: UIViewController?) {
+        guard let controller else { return }
+        controller.willMove(toParent: nil)
+        controller.view.removeFromSuperview()
+        controller.removeFromParent()
     }
-    
 }
 
 //MARK: - HomeControllerDelegate
@@ -170,32 +175,40 @@ extension ContainerController: MenuControllerDelegate {
     
     func didSelect(option: MenuOptions) {
         isExpanded.toggle()
-        animateMenu(shouldExpend: isExpanded) { _ in
+        
+        animateMenu(shouldExpend: isExpanded) { [weak self] _ in
+            guard let `self` = self else { return }
             switch option {
             case .yourTrips:
                 break
             case .settings:
                 guard let user = self.user else { return }
-                let controller = SettingsController(user: user)
-                controller.delegate = self
-                let nav = CustomNavigationController(rootViewController: controller)
-//                let nav = UINavigationController(rootViewController: controller)
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
+                let settingsController = SettingsController(user: user)
+                settingsController.delegate = self
+                let navigationController = CustomNavigationController(rootViewController: settingsController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true)
             case .logout:
-                let alert = UIAlertController(title: nil, message: "Are you sure you want to log out?", preferredStyle: .actionSheet)
-                let logout = UIAlertAction(title: "Log Out", style: .destructive) { _ in
+                self.presentAlertController(withTitle: "Are you sure you want to log out?", actionName: "Log Out") { [weak self] _ in
+                    guard let `self` = self else { return }
                     self.signOut()
                 }
-                let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-                alert.addAction(logout)
-                alert.addAction(cancel)
-                self.present(alert, animated: true)
-                
-                //FIXME: - Dismiss controllers
-//                                self.menuController.view.removeFromSuperview()
             }
         }
+    }
+    
+}
+
+//MARK: - SettingsControllerDelegate
+extension ContainerController: SettingsControllerDelegate {
+    func updateUser(withUser user: User) {
+        self.user = user
+    }
+    
+    func deleteUser() {
+        signOut()
+        //FIXME: - Add a func to remove a user and his data from Firebase
+        self.presentAlertController(withTitle: "Account deleted!")
     }
     
 }

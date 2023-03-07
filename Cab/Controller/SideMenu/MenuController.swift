@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Lottie
 
 private let reuseIdentifier = "MenuCell"
 
@@ -31,22 +30,22 @@ protocol MenuControllerDelegate: AnyObject {
 class MenuController: UIViewController {
     
     //MARK: - Properties
-    private let user: User
+    var user: User? {
+        didSet {
+            guard let user else { return }
+            tableView.tableHeaderView = MenuHeader(user: user)
+        }
+    }
     private let tableView = UITableView()
     
-    private lazy var menuHeader: MenuHeader = {
-        return MenuHeader(user: user)
-    }()
-    
-    private lazy var menuFooter: UIView = {
+    private let menuFooter: UIView = {
         return UIView().addLottieAnimation(withName: "green-search-annimation", height: 150, animationSpeed: 0.5)
     }()
     
     weak var delegate: MenuControllerDelegate?
     
     //MARK: - Lyfecycle
-    init(user: User) {
-        self.user = user
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,7 +76,6 @@ class MenuController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.rowHeight = 50
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.tableHeaderView = menuHeader
         tableView.tableFooterView = menuFooter
         
         self.view.addSubview(tableView)
@@ -85,9 +83,9 @@ class MenuController: UIViewController {
     }
     
     func autoLayoutHeaderView() {
-        guard let headerView = self.tableView.tableHeaderView else { return }
+        guard let headerView = tableView.tableHeaderView else { return }
         
-        let width = self.tableView.bounds.size.width
+        let width = tableView.bounds.size.width
         let size = headerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
         
         if headerView.frame.size.height != size.height {
@@ -129,7 +127,7 @@ extension MenuController: UITableViewDelegate, UITableViewDataSource {
         
         var content = cell.defaultContentConfiguration()
         content.text = option.description
-        content.textProperties.color = .white
+        content.textProperties.color = .mainWhiteTint
         content.textProperties.font = UIFont.systemFont(ofSize: 18)
         cell.contentConfiguration = content
         return cell

@@ -94,17 +94,17 @@ class RideActionView: UIView {
     
     private let rideUserView = RideUserView()
     
-    private(set) lazy var yellowTaxiAnimationView: UIView = {
+    private lazy var yellowTaxiAnimationView: UIView = {
         let view = addLottieAnimation(withName: "yellow-taxi", height: 150, animationSpeed: 0.5)
         view.flipX()
         return view
     }()
     
-    private(set) lazy var thanksAnimationView: UIView = {
+    private lazy var thanksAnimationView: UIView = {
         return addLottieAnimation(withName: "thanks", height: 170, animationSpeed: 0.35)
     }()
     
-    private(set) lazy var actionButton: CustomButton = {
+    private lazy var actionButton: CustomButton = {
         let button = CustomButton(title: ButtonAction.requestRide.description)
         button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         return button

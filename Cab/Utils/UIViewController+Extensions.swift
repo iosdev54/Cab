@@ -9,14 +9,14 @@ import UIKit
 
 extension UIViewController {
     
-    func presentAlertController(withTitle title: String, message: String) {
+    func presentAlertController(withTitle title: String, message: String? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .cancel)
         alert.addAction(okAction)
         present(alert, animated: true)
     }
     
-    func presentAlertController(withTitle title: String, message: String, actionName: String, completion: @escaping (UIAlertAction) -> Void) {
+    func presentAlertController(withTitle title: String, message: String? = nil, actionName: String, completion: @escaping (UIAlertAction) -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let action = UIAlertAction(title: actionName, style: .destructive, handler: completion)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
