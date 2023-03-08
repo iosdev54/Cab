@@ -10,7 +10,6 @@ import UIKit
 class FavoritesCell: UITableViewCell {
     
     //MARK: - Properties
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)

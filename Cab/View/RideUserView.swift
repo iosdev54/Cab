@@ -55,7 +55,7 @@ class RideUserView: UIView {
     }
     
     //MARK: - HelperFunctions
-    func setupView() {
+    private func setupView() {
         profileImageView.setDimensions(height: 64, width: 64)
         
         profileImageView.addSubview(initialLabel)

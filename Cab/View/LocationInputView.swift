@@ -35,14 +35,13 @@ class LocationInputView: UIView {
     }()
     
     lazy var startingLocationTextField: CustomTextField = {
-        let tf = CustomTextField(config: .location, placeholder: "Current location", leftImage: AppImages.mappinIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
+        let tf = CustomTextField(config: .location, placeholder: "Current location", leftImage: AppImages.mappinIcon.unwrapImage.editedImage(tintColor: .mapIconTint, scale: .large), keyboardType: .alphabet, backgroundColor: .systemGroupedBackground, rightButtonAction: .currentLocation)
         tf.delegate = self
-        tf.myDelegate = self
         return tf
     }()
     
     private lazy var destinationLocationTextField: CustomTextField = {
-        let tf = CustomTextField(config: .location, placeholder: "Enter a destination", leftImage: AppImages.mapIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large), keyboardType: .alphabet)
+        let tf = CustomTextField(config: .location, placeholder: "Enter a destination", leftImage: AppImages.mapIcon.unwrapImage.editedImage(tintColor: .mapIconTint, scale: .large), keyboardType: .alphabet)
         tf.delegate = self
         return tf
     }()
@@ -50,7 +49,6 @@ class LocationInputView: UIView {
     weak var delegate: LocationInputViewDelegate?
     
     //MARK: - Lifecycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -81,6 +79,7 @@ class LocationInputView: UIView {
     @objc private func handleBackTapped() {
         delegate?.dismissLocationInputView()
     }
+    
 }
 
 //MARK: - UITextFieldDelegate
@@ -89,8 +88,7 @@ extension LocationInputView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField == startingLocationTextField {
-            //FIXME: - startingLocationTextField
-            print("DEBUG: startingLocationTextField")
+            //FIXME: - Add a new table with the ability to select the address of the current location (Perspective)
             textField.resignFirstResponder()
         }
         if textField == destinationLocationTextField {
@@ -100,14 +98,6 @@ extension LocationInputView: UITextFieldDelegate {
             return true
         }
         return false
-    }
-}
-
-//MARK: - CustomTextFieldDelegate
-extension LocationInputView: CustomTextFieldDelegate {
-    func setCurrentLocation() {
-        //FIXME: - chooseCurrentLocation
-        print("DEBUG: Choose current location.")
     }
     
 }

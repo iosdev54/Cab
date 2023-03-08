@@ -8,10 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1801B2B829B3798100772B13 /* PickupLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1801B2B729B3798100772B13 /* PickupLocationView.swift */; };
-		1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */; };
 		1802B93029A3BD7A00FA5500 /* green-search-annimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */; };
-		1802B93229A3BDFE00FA5500 /* car-revolving-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */; };
-		180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */; };
 		181F72AA29A67CAE009852D7 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181F72A929A67CAE009852D7 /* UIView+Extensions.swift */; };
 		18207B7E297AD155000E8EFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B7D297AD155000E8EFC /* AppDelegate.swift */; };
 		18207B80297AD155000E8EFC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18207B7F297AD155000E8EFC /* SceneDelegate.swift */; };
@@ -29,7 +26,6 @@
 		183F92CA2982971500CF05FC /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F92C92982971500CF05FC /* DriverAnnotation.swift */; };
 		183F92CC298515ED00CF05FC /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183F92CB298515ED00CF05FC /* RideActionView.swift */; };
 		185DF6B929A2529C00692D3B /* yellow-taxi.json in Resources */ = {isa = PBXBuildFile; fileRef = 185DF6B829A2529C00692D3B /* yellow-taxi.json */; };
-		185DF6BB29A2778500692D3B /* taxiPath.json in Resources */ = {isa = PBXBuildFile; fileRef = 185DF6BA29A2778500692D3B /* taxiPath.json */; };
 		18727E06297EB7D40047811B /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18727E05297EB7D40047811B /* LocationInputActivationView.swift */; };
 		18727E0A297ECE840047811B /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18727E09297ECE840047811B /* LocationInputView.swift */; };
 		18883FF9299E6B6B00393ED3 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18883FF8299E6B6B00393ED3 /* UIColor+Extensions.swift */; };
@@ -61,10 +57,7 @@
 
 /* Begin PBXFileReference section */
 		1801B2B729B3798100772B13 /* PickupLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupLocationView.swift; sourceTree = "<group>"; };
-		1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "radar-animation-for-maps.json"; sourceTree = "<group>"; };
 		1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "green-search-annimation.json"; sourceTree = "<group>"; };
-		1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "car-revolving-animation.json"; sourceTree = "<group>"; };
-		180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		181F72A929A67CAE009852D7 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		18207B7A297AD155000E8EFC /* Cab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18207B7D297AD155000E8EFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,7 +77,6 @@
 		183F92C92982971500CF05FC /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		183F92CB298515ED00CF05FC /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		185DF6B829A2529C00692D3B /* yellow-taxi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "yellow-taxi.json"; sourceTree = "<group>"; };
-		185DF6BA29A2778500692D3B /* taxiPath.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = taxiPath.json; sourceTree = "<group>"; };
 		18727E05297EB7D40047811B /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		18727E09297ECE840047811B /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
 		18883FF8299E6B6B00393ED3 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -133,10 +125,7 @@
 			children = (
 				185DF6B829A2529C00692D3B /* yellow-taxi.json */,
 				1822255929AF6CD900B7FDE5 /* thanks.json */,
-				185DF6BA29A2778500692D3B /* taxiPath.json */,
-				1802B92B29A3BB2A00FA5500 /* radar-animation-for-maps.json */,
 				1802B92F29A3BD7A00FA5500 /* green-search-annimation.json */,
-				1802B93129A3BDFE00FA5500 /* car-revolving-animation.json */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -183,7 +172,6 @@
 				181F72A929A67CAE009852D7 /* UIView+Extensions.swift */,
 				189FE633299D051100361CB2 /* UIImage+Extensions.swift */,
 				18883FF8299E6B6B00393ED3 /* UIColor+Extensions.swift */,
-				180CCBA3299D16F2001A2EAE /* UITextField+Extensions.swift */,
 				18B62CF529A0FF19008E10CE /* MKMapView+Extensions.swift */,
 				18B62CF929A0FFCD008E10CE /* MKPlacemark+Extensions.swift */,
 			);
@@ -203,11 +191,11 @@
 		18207B93297AD1CE000E8EFC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1891BA352992714000DDD9E7 /* CustomNavigationController.swift */,
 				18E57399298FCB8000106C38 /* Authentication */,
 				1891BA392992AFB600DDD9E7 /* Settings */,
-				18E5739A298FCBB500106C38 /* SideMenu */,
-				18B44070297D8C5100739E91 /* HomeController.swift */,
-				18931FEC2987DFB8000818DD /* PickupController.swift */,
+				18E5739A298FCBB500106C38 /* MainContainerController */,
+				1861052F29B8B40600386D2A /* PickupController */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -251,12 +239,19 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		1861052F29B8B40600386D2A /* PickupController */ = {
+			isa = PBXGroup;
+			children = (
+				18931FEC2987DFB8000818DD /* PickupController.swift */,
+			);
+			path = PickupController;
+			sourceTree = "<group>";
+		};
 		1891BA392992AFB600DDD9E7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				1891BA3A2992B00200DDD9E7 /* AddLocationController.swift */,
 				1891BA3329924D3B00DDD9E7 /* SettingsController.swift */,
-				1891BA352992714000DDD9E7 /* CustomNavigationController.swift */,
+				1891BA3A2992B00200DDD9E7 /* AddLocationController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -290,13 +285,14 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		18E5739A298FCBB500106C38 /* SideMenu */ = {
+		18E5739A298FCBB500106C38 /* MainContainerController */ = {
 			isa = PBXGroup;
 			children = (
+				18B44070297D8C5100739E91 /* HomeController.swift */,
 				18E5739B298FCBE200106C38 /* MenuController.swift */,
 				18E5739D298FCC2100106C38 /* ContainerController.swift */,
 			);
-			path = SideMenu;
+			path = MainContainerController;
 			sourceTree = "<group>";
 		};
 		7D23D8C9953D78C8E5215A02 /* Pods */ = {
@@ -376,18 +372,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				185DF6BB29A2778500692D3B /* taxiPath.json in Resources */,
 				1823C5E3299C3D190002E65A /* README.md in Resources */,
 				1823C5E1299C3D110002E65A /* .gitignore in Resources */,
 				18207B8A297AD157000E8EFC /* LaunchScreen.storyboard in Resources */,
 				1802B93029A3BD7A00FA5500 /* green-search-annimation.json in Resources */,
 				18D4C704299B86EA00A87007 /* GoogleService-Info.plist in Resources */,
 				185DF6B929A2529C00692D3B /* yellow-taxi.json in Resources */,
-				1802B92C29A3BB2A00FA5500 /* radar-animation-for-maps.json in Resources */,
 				1822255A29AF6CD900B7FDE5 /* thanks.json in Resources */,
 				18207B87297AD157000E8EFC /* Assets.xcassets in Resources */,
 				18207B85297AD155000E8EFC /* Main.storyboard in Resources */,
-				1802B93229A3BDFE00FA5500 /* car-revolving-animation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +467,6 @@
 				18D0CD0929B64C460019B784 /* LocationHandler.swift in Sources */,
 				18886DB3298028B5009DF710 /* Service.swift in Sources */,
 				18F267B029A8EED2007735A2 /* CustomTextField.swift in Sources */,
-				180CCBA4299D16F2001A2EAE /* UITextField+Extensions.swift in Sources */,
 				18A0133F2997C8E7003D721C /* CircularProgressView.swift in Sources */,
 				18886DB1297FFDA4009DF710 /* LocationCell.swift in Sources */,
 			);

@@ -9,7 +9,7 @@ import UIKit
 
 class CustomNavigationController: UINavigationController {
     
-    let navController = UINavigationController()
+    private let navController = UINavigationController()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

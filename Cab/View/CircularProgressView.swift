@@ -78,4 +78,5 @@ class CircularProgressView: UIView {
         
         CATransaction.commit()
     }
+    
 }

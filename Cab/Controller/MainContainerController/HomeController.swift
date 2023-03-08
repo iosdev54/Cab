@@ -97,7 +97,7 @@ class HomeController: UIViewController {
     }()
     
     private lazy var pinImage: UIImageView = {
-        let imageView = UIImageView(image: AppImages.pin.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .large))
+        let imageView = UIImageView(image: AppImages.pin.unwrapImage.editedImage(tintColor: .mapIconTint, scale: .large))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()

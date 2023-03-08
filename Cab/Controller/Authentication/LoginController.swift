@@ -20,11 +20,11 @@ class LoginController: UIViewController {
         return label
     }()
     
-    private lazy var emailTextField: CustomTextField = {
+    private let emailTextField: CustomTextField = {
         return CustomTextField(config: .autorization, placeholder: "Email", leftImage: AppImages.envelopeImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .emailAddress)
     }()
     
-    private lazy var passwordTextField: CustomTextField = {
+    private let passwordTextField: CustomTextField = {
         return CustomTextField(config: .autorization, placeholder: "Password", leftImage: AppImages.lockImageIcon.unwrapImage.editedImage(tintColor: .mainWhiteTint, scale: .large), keyboardType: .default, isSecureTextEntry: true, rightButtonAction: .password)
     }()
     

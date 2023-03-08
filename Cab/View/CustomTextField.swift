@@ -27,7 +27,7 @@ class CustomTextField: UITextField {
     private let config: CustomTextFieldConfiguration
     private let leftImage: UIImage
     
-    private var containerSize: CGFloat = 40
+    private let containerSize: CGFloat = 40
     
     private lazy var rightButton: UIButton = UIButton(type: .custom)
     private let rightButtonAction: CustomTextFieldButtonAction?

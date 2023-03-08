@@ -16,7 +16,7 @@ class PickupController: UIViewController {
     
     //MARK: - Properties
     private let mapView = MKMapView()
-    var trip: Trip
+    private var trip: Trip
     private var isAccepted = false
     weak var delegate: PickupControllerDelegate?
     
@@ -38,20 +38,19 @@ class PickupController: UIViewController {
         button.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
         return button
     }()
+    
     private let pickupLabel: UILabel = {
         let label = UILabel()
         label.text = "Would you like to pickup this passenger?"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .mainWhiteTint
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
-    private lazy var acceptTripButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        button.setTitle("ACCEPT TRIP", for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button.setTitleColor(.black, for: .normal)
+    
+    private lazy var acceptTripButton: CustomButton = {
+        let button = CustomButton(title: "ACCEPT TRIP")
         button.addTarget(self, action: #selector(handleAcceptTrip), for: .touchUpInside)
         return button
     }()
@@ -66,7 +65,6 @@ class PickupController: UIViewController {
     }
     
     //MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,7 +83,7 @@ class PickupController: UIViewController {
     }
     @objc private func handleAcceptTrip() {
         isAccepted = true
-        DriverService.shared.acceptTrip(trip: trip) { [weak self] err, reff in
+        DriverService.shared.acceptTrip(trip: trip) { [weak self] err, ref in
             guard let `self` = self else { return }
             self.trip.state = .accepted
             self.delegate?.didAcceptTrip(self.trip)
@@ -94,7 +92,8 @@ class PickupController: UIViewController {
     
     @objc private func animateProgress() {
         circularProgressView.animatePulsatingLayer()
-        circularProgressView.setProgressWithAnimation(duration: 10, value: 0) {
+        circularProgressView.setProgressWithAnimation(duration: 10, value: 0) { [weak self] in
+            guard let `self` = self else { return }
             guard self.isAccepted == false else { return }
             DriverService.shared.updateTripState(trip: self.trip, state: .denied) { [weak self] err, ref in
                 guard let `self` = self else { return }
@@ -105,10 +104,10 @@ class PickupController: UIViewController {
     
     //MARK: - Helper Functions
     private func configureUI() {
-        view.backgroundColor = .black
+        view.backgroundColor = .backgroundColor
         
         view.addSubview(cancelButton)
-        cancelButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingLeft: 16)
+        cancelButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingRight: 16)
         
         view.addSubview(circularProgressView)
         circularProgressView.setDimensions(height: 360, width: 360)
@@ -117,21 +116,19 @@ class PickupController: UIViewController {
         
         view.addSubview(pickupLabel)
         pickupLabel.centerX(inView: view)
-        pickupLabel.anchor(top: circularProgressView.bottomAnchor, paddingTop: 32)
+        pickupLabel.anchor(top: circularProgressView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 50, paddingLeft: 16, paddingRight: 16)
         
         view.addSubview(acceptTripButton)
-        acceptTripButton.anchor(top: pickupLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 32, paddingRight: 32, height: 50)
+        acceptTripButton.anchor(top: pickupLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
     }
     private func configureMapView() {
         let region = MKCoordinateRegion(center: trip.pickupCoordinates, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapView.setRegion(region, animated: false)
+        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates, title: "Pickup")
         
-        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates, title: "Destination")
-        
-        //Second way
-        //        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates)
-        //        mapView.showAnnotations([annotation], animated: true)
+        //        Second way
+        //        mapView.addAnnotationAndSelect(forCoordinate: trip.pickupCoordinates, title: "Pickup")
+        //        mapView.showAnnotations(mapView.annotations, animated: true)
     }
-    
     
 }

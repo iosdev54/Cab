@@ -9,8 +9,7 @@ import UIKit
 import MapKit
 
 protocol RideActionViewDelegate: AnyObject {
-//    func uploadTrip(_ view: RideActionView)
-    func uploadTrip(toDestination destination: MKPlacemark)
+    func uploadTrip(toDestination: MKPlacemark)
     func cancelTrip()
     func pickupPassenger()
     func dropOffPassenger()

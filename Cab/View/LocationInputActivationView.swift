@@ -31,7 +31,6 @@ class LocationInputActivationView: UIView {
     weak var delegate: LocationInputActivationViewDelegate?
     
     //MARK: - Lifecycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

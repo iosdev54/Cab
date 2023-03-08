@@ -19,4 +19,5 @@ extension MKPlacemark {
             return "\(subThoroughfare) \(thoroughfare), \(locality), \(administrativeArea)"
         }
     }
+    
 }

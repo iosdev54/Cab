@@ -7,7 +7,6 @@
 
 import FirebaseDatabase
 import GeoFire
-import CoreLocation
 import FirebaseAuth
 
 //MARK: - Database Refs
@@ -76,14 +75,6 @@ struct PassengerService {
         }
     }
     
-//    func removeDrivers(location: CLLocation, completion: @escaping () -> Void) {
-//        let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
-//        REF_DRIVER_LOCATIONS.observe(.value) { snapshot in
-//            geofire.query(at: location, withRadius: 50).removeAllObservers()
-//        }
-//        completion()
-//    }
-    
     func uploadTrip(_ pickupCoordinates: CLLocationCoordinate2D, _ destinationCoordinates: CLLocationCoordinate2D, completion: @escaping (Error?, DatabaseReference) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let pickupArray = [pickupCoordinates.latitude, pickupCoordinates.longitude]
@@ -126,10 +117,6 @@ struct Service {
         Auth.auth().createUser(withEmail: email, password: password, completion: completion)
     }
     
-    //    func uploadUserData(uid: String, values: [String: Any], completion: @escaping(Error?, DatabaseReference) -> Void) {
-    //        REF_USERS.child(uid).updateChildValues(values, withCompletionBlock: completion)
-    //    }
-    
     func logIn(withEmail email: String, password: String, completion: @escaping(AuthDataResult?, Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
@@ -146,9 +133,8 @@ struct Service {
     func deleteAccount(completion: @escaping(Error?) -> Void) {
         let user = Auth.auth().currentUser
         user?.delete(completion: completion)
+        //FIXME: - //FIXME: - Add the ability to remove user data (Perspective)
     }
-    
-    
     
     func fetchUserData(uid: String, completion: @escaping (User) -> Void) {
         REF_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in

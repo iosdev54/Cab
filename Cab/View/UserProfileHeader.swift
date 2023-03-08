@@ -136,7 +136,7 @@ class UserProfileHeader: UIView {
             guard let `self` = self else { return }
             self.delegate?.handleChangeData()
         }
-        let deleteAccount = UIAction( title: "Delete account", image: AppImages.deleteAccountIcon.unwrapImage.editedImage(tintColor: .mapIconColor, scale: .default)) { [weak self] _ in
+        let deleteAccount = UIAction( title: "Delete account", image: AppImages.deleteAccountIcon.unwrapImage.editedImage(tintColor: .mapIconTint, scale: .default)) { [weak self] _ in
             guard let `self` = self else { return }
             self.delegate?.handleDeleteAccount()
         }

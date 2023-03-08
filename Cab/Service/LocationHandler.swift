@@ -11,7 +11,7 @@ class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     //MARK: - Priperties
     static let shared = LocationHandler()
-    var locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     
     //MARK: - Lifecycle
     override init() {
