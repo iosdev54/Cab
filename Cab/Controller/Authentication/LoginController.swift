@@ -67,17 +67,16 @@ class LoginController: UIViewController {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         
         Service.shared.logIn(withEmail: email, password: password) { [weak self] result, error in
-            guard let `self` = self else { return }
             if let error = error {
-                self.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
-                self.loginButton.isLoading = false
+                self?.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
+                self?.loginButton.isLoading = false
                 return
             }
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             //Old record
             //            guard let controller = UIApplication.shared.keyWindow?.rootViewController as? ContainerController else { return }
             controller.configure()
-            self.dismiss(animated: true)
+            self?.dismiss(animated: true)
         }
     }
     

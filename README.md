@@ -10,11 +10,10 @@ __App Features:__
 * GeoFire
 * UI Programmatically
 * Lottie Animation
-* 
-* 
 
 __Capabilities:__
 * View your location on a map
+* Change the passenger's current location
 * View drivers location on a map
 * Search for a place and address on the map
 * Order a trip
@@ -22,6 +21,5 @@ __Capabilities:__
 * Route tracking in real time
 * Adding favorite addresses
 * Trip cancellation
-* 
-* 
-* 
+
+__Video:__

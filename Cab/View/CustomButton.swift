@@ -28,8 +28,7 @@ class CustomButton: UIButton {
                 titleLabel?.alpha = 0.25
             } else {
                 UIView.animate(withDuration: animationDuration) { [weak self] in
-                    guard let `self` = self else { return }
-                    self.titleLabel?.alpha = 1
+                    self?.titleLabel?.alpha = 1
                 }
                 super.isHighlighted = newValue
             }
@@ -85,17 +84,15 @@ class CustomButton: UIButton {
         
         if isLoading {
             UIView.animate(withDuration: animationDuration) { [weak self] in
-                guard let `self` = self else { return }
-                self.spinner.startAnimating()
-                self.setTitle("", for: .normal)
-                self.isEnabled = false
+                self?.spinner.startAnimating()
+                self?.setTitle("", for: .normal)
+                self?.isEnabled = false
             }
         } else {
             UIView.animate(withDuration: animationDuration) { [weak self] in
-                guard let `self` = self else { return }
-                self.spinner.stopAnimating()
-                self.setTitle(self.title, for: .normal)
-                self.isEnabled = true
+                self?.spinner.stopAnimating()
+                self?.setTitle(self?.title, for: .normal)
+                self?.isEnabled = true
             }
         }
     }

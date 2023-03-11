@@ -61,21 +61,19 @@ class ContainerController: UIViewController {
     private func fetchUserData() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
-            guard let `self` = self else { return }
-            self.user = user
+            self?.user = user
         }
     }
     
     private func signOut() {
         Service.shared.signOut { [weak self] in
-            guard let `self` = self else { return }
-            self.presentLoginController()
-            self.dismissChildController(homeController)
-            self.dismissChildController(menuController)
+            self?.presentLoginController()
+            self?.dismissChildController(homeController)
+            self?.dismissChildController(menuController)
             
-            self.homeController = nil
-            self.menuController = nil
-            self.user = nil
+            self?.homeController = nil
+            self?.menuController = nil
+            self?.user = nil
         }
     }
     
@@ -108,12 +106,11 @@ class ContainerController: UIViewController {
     
     private func presentLoginController() {
         DispatchQueue.main.async { [weak self] in
-            guard let `self` = self else { return }
             let loginController = LoginController()
             let navigationController = CustomNavigationController(rootViewController: loginController)
             navigationController.isModalInPresentation = true
             navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true)
+            self?.present(navigationController, animated: true)
         }
     }
     
@@ -137,9 +134,8 @@ class ContainerController: UIViewController {
             }
         } else {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                guard let `self` = self else { return }
-                self.homeController?.view.frame.origin.x = 0
-                self.blackView.alpha = 0
+                self?.homeController?.view.frame.origin.x = 0
+                self?.blackView.alpha = 0
             }, completion: completion)
         }
         animateStatusBar()
@@ -147,8 +143,7 @@ class ContainerController: UIViewController {
     
     private func animateStatusBar() {
         UIView.animate(withDuration: 0.5) { [weak self] in
-            guard let `self` = self else { return }
-            self.setNeedsStatusBarAppearanceUpdate()
+            self?.setNeedsStatusBarAppearanceUpdate()
         }
     }
     
@@ -177,21 +172,19 @@ extension ContainerController: MenuControllerDelegate {
         isExpanded.toggle()
         
         animateMenu(shouldExpend: isExpanded) { [weak self] _ in
-            guard let `self` = self else { return }
             switch option {
             case .yourTrips:
                 break
             case .settings:
-                guard let user = self.user else { return }
+                guard let user = self?.user else { return }
                 let settingsController = SettingsController(user: user)
                 settingsController.delegate = self
                 let navigationController = CustomNavigationController(rootViewController: settingsController)
                 navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true)
+                self?.present(navigationController, animated: true)
             case .logout:
-                self.presentAlertController(withTitle: "Are you sure you want to log out?", actionName: "Log Out") { [weak self] _ in
-                    guard let `self` = self else { return }
-                    self.signOut()
+                self?.presentAlertController(withTitle: "Are you sure you want to log out?", actionName: "Log Out") { [weak self] _ in
+                    self?.signOut()
                 }
             }
         }

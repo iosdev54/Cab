@@ -133,12 +133,10 @@ class UserProfileHeader: UIView {
     
     private func showMenu() -> UIMenu {
         let changeData = UIAction( title: "Change data", image: AppImages.changeDataIcon.unwrapImage.editedImage(tintColor: .backgroundColor, scale: .default)) { [weak self] _ in
-            guard let `self` = self else { return }
-            self.delegate?.handleChangeData()
+            self?.delegate?.handleChangeData()
         }
         let deleteAccount = UIAction( title: "Delete account", image: AppImages.deleteAccountIcon.unwrapImage.editedImage(tintColor: .mapIconTint, scale: .default)) { [weak self] _ in
-            guard let `self` = self else { return }
-            self.delegate?.handleDeleteAccount()
+            self?.delegate?.handleDeleteAccount()
         }
         let menuActions = [changeData, deleteAccount]
         let menu = UIMenu( title: "", children: menuActions)

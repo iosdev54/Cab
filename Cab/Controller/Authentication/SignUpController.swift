@@ -83,27 +83,27 @@ class SignUpController: UIViewController {
         }
         
         Service.shared.signUp(withEmail: email, password: password) { [weak self] result, error in
-            guard let `self` = self else { return }
             if let error = error {
-                self.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
-                self.signUpButton.isLoading = false
+                self?.presentAlertController(withTitle: "Oops!", message: error.localizedDescription)
+                self?.signUpButton.isLoading = false
                 return
             }
             guard let uid = result?.user.uid else { return }
             let values = ["email": email,
                           "fullname": fullname,
-                          "accountType": accountTypeIndex]
+                          "accountType": accountTypeIndex] as [String: Any]
             
             if accountTypeIndex == 1 {
-                if let location = self.location {
+                if let location = self?.location {
                     let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
                     geofire.setLocation(location, forKey: uid) { error in
-                        self.uploadUserDataAndShowHomeController(uid: uid, values: values)
+                        self?.uploadUserDataAndShowHomeController(uid: uid, values: values)
                         return
                     }
                 }
+            } else {
+                self?.uploadUserDataAndShowHomeController(uid: uid, values: values)
             }
-            self.uploadUserDataAndShowHomeController(uid: uid, values: values)
         }
     }
     
@@ -113,22 +113,21 @@ class SignUpController: UIViewController {
     
     //MARK: - Helper Functions
     private func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
-        REF_USERS.child(uid).updateChildValues(values) { error, ref in
+        REF_USERS.child(uid).updateChildValues(values) { [weak self] error, ref in
             if error != nil {
                 Service.shared.deleteAccount { [weak self] error in
-                    guard let `self` = self else { return }
                     if let error = error {
-                        self.signUpButton.isLoading = false
-                        self.presentAlertController(withTitle: "Oops!", message: "Registration failed, \(error.localizedDescription)")
+                        self?.signUpButton.isLoading = false
+                        self?.presentAlertController(withTitle: "Oops!", message: "Registration failed, \(error.localizedDescription)")
                     } else {
-                        self.signUpButton.isLoading = false
-                        self.presentAlertController(withTitle: "Oops!", message: "Registration failed. Try to register later.")
+                        self?.signUpButton.isLoading = false
+                        self?.presentAlertController(withTitle: "Oops!", message: "Registration failed. Try to register later.")
                     }
                 }
             }
             guard let controller = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first?.rootViewController as? ContainerController else { return }
             controller.configure()
-            self.dismiss(animated: true)
+            self?.dismiss(animated: true)
         }
     }
     

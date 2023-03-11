@@ -202,12 +202,11 @@ extension SettingsController: UserProfileHeaderDelegate {
     func handleDeleteAccount() {
         presentAlertController(withTitle: "Are you sure you want to delete your account?", message: "All your data will be deleted.", actionName: "Delete") { _ in
             Service.shared.deleteAccount { [weak self] error in
-                guard let `self` = self else { return }
                 if let error {
-                    self.presentAlertController(withTitle: "Oops!", message: "Deletion error, \(error.localizedDescription)")
+                    self?.presentAlertController(withTitle: "Oops!", message: "Deletion error, \(error.localizedDescription)")
                 } else {
                     //FIXME: - Add the ability to remove user data (Perspective)
-                    self.delegate?.deleteUser()
+                    self?.delegate?.deleteUser()
                 }
             }
         }
