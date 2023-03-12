@@ -23,3 +23,7 @@ __Capabilities:__
 * Trip cancellation
 
 __Video:__
+
+Passenger side | At both sides
+:-: | :-:
+<video src='https://drive.google.com/file/d/1Rm2s36V80Vz00RS8VL5_zVizMl63sSvw/view?usp=share_link' width=180/> | <video src='https://drive.google.com/file/d/1Ox9PHMss4jzW3l9ptHu5BMI5WtX_aSpE/view?usp=share_link' width=180/>

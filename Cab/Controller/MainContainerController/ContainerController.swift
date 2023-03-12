@@ -130,11 +130,15 @@ class ContainerController: UIViewController {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) { [weak self] in
                 guard let `self` = self else { return }
                 self.homeController?.view.frame.origin.x = self.view.frame.width - 80
+                self.homeController?.inputActivationView.isUserInteractionEnabled = false
+                self.homeController?.inputActivationView.alpha = 0.7
                 self.blackView.alpha = 1
             }
         } else {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                 self?.homeController?.view.frame.origin.x = 0
+                self?.homeController?.inputActivationView.isUserInteractionEnabled = true
+                self?.homeController?.inputActivationView.alpha = 1
                 self?.blackView.alpha = 0
             }, completion: completion)
         }

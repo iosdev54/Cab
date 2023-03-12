@@ -37,7 +37,7 @@ class HomeController: UIViewController {
     
     private let locationManager = LocationHandler.shared.locationManager
     private lazy var mapManager = MapManager(mapView: mapView)
-    private var inputActivationView = LocationInputActivationView()
+    let inputActivationView = LocationInputActivationView()
     private let locationInpitView = LocationInputView()
     private let rideActionView = RideActionView()
     private let pickupLocationView = PickupLocationView()
